@@ -32,7 +32,7 @@ Modul ini berisi form untuk request menambahkan buku ke database. Form ini akan 
 ### Desain (Azmy)
 
 ## Sumber Dataset Katalog Buku
-Kami menggunakan dataset katalog yang bersumber di link berikut [berikut](https://drive.google.com/file/d/17jiAwHx_68zUrolbTl75IoLRFK_JLYrx/view)
+Kami menggunakan dataset katalog yang bersumber di link [berikut](https://drive.google.com/file/d/17jiAwHx_68zUrolbTl75IoLRFK_JLYrx/view)
 
 ##  Role Pengguna Aplikasi
 - ### Role admin
