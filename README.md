@@ -13,10 +13,10 @@
 
 # Nama Aplikasi: BookMate
 
-## Cerita dan Manfaat Aplikasi
+## 💡 Cerita dan Manfaat Aplikasi
  BookMate adalah platform yang menghubungkan pecinta buku. Tujuannya adalah memfasilitasi koneksi dan pengalaman berbagi antar pembaca dengan minat buku yang serupa. Di era digital ini, banyak orang merasa kesulitan menemukan teman dengan minat buku yang serupa. Oleh karena itu, BookMate menciptakan wadah yang memudahkan pecinta buku untuk terhubung, berinteraksi, dan memperdalam minat mereka dalam dunia literasi.
 
-## Daftar Modul
+## 🔍 Daftar Modul
 ### 1. Authentication (Ester)
 Modul ini berisi pengaturan autentikasi pengguna, baik sign up maupun sign in. Ketika pengguna sign up, pengguna perlu memasukkan data-data pribadi seperti username dan password. Selain itu, pengguna diminta memilih interest mereka (genre buku). Setelah terautentikasi, pengguna akan diarahkan ke homepage.   
 ### 2. Homepage (Ester)
@@ -32,8 +32,7 @@ Modul ini berisi form untuk request menambahkan buku ke database. Form ini akan 
 ### Desain (Azmy)
 
 ## Sumber Dataset Katalog Buku
-Kami menggunakan dataset katalog yang bersumber di link berikut
-https://drive.google.com/file/d/17jiAwHx_68zUrolbTl75IoLRFK_JLYrx/view
+Kami menggunakan dataset katalog yang bersumber di link berikut [berikut](https://drive.google.com/file/d/17jiAwHx_68zUrolbTl75IoLRFK_JLYrx/view)
 
 ##  Role Pengguna Aplikasi
 - ### Role admin
@@ -44,5 +43,7 @@ https://drive.google.com/file/d/17jiAwHx_68zUrolbTl75IoLRFK_JLYrx/view
 - ### Role logged in user
     Role ini dapat mengakses seluruh fitur BookMate seperti melihat review orang lain, matching dengan orang lain, edit profile user, dan lain-lain. 
 
+# 📃 Berita Acara
+Tautan berita acara dapat diakses [di sini](https://1drv.ms/x/s!AjrL352WxT7K00bPGNhQ-V5CHek-?e=NiacUk) 
 
 # Panduan Penggunaan (Dev Only)
