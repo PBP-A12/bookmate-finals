@@ -1,4 +1,4 @@
-> Proyek ini dibuat untuk memenuhi tugas Proyek Tengah Semester (PTS)
+> Proyek ini dibuat untuk memenuhi tugas Proyek Akhir Semester (PAS)
 > pada mata kuliah Pemrograman Berbasis Platform (CSGE602022) yang
 > diselenggarakan oleh Fakultas Ilmu Komputer, Universitas Indonesia
 > pada Semester Gasal, Tahun Ajaran 2023/2024.
