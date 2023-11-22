@@ -36,13 +36,22 @@ Kami menggunakan dataset katalog yang bersumber di link [berikut](https://drive.
 
 ##  Role Pengguna Aplikasi
 - ### Role admin
-    - Role ini diakses melalui Django Admin Interface. Admin dapat melihat dan mengatur seluruh database seperti list user, list buku, dan lain-lain. 
+    Role ini diakses melalui Django Admin Interface. Admin dapat melihat dan mengatur seluruh database seperti list user, list buku, dan lain-lain. 
 - ### Role guest user
     Role ini tidak dapat mengakses fitur apapun, akan diberikan arahan untuk login. 
 - ### Role logged in user
     Role ini dapat mengakses seluruh fitur BookMate seperti melihat review orang lain, matching dengan orang lain, edit profile user, dan lain-lain. 
 
+# Alur pengintegrasian dengan web service untuk terhubung dengan aplikasi web yang sudah dibuat saat Proyek Tengah Semester
+1. Integrasi aplikasi mobile dan web service dapat dilakukan dengan cara melakukan pengambilan data berformat JSON atau Javascript Object Notation di aplikasi mobile pada web service dengan menggunakan url untuk deploy Proyek Tengah Semester.
+
+2. Proses fetch dapat dilakukan dengan menggunakan Uri.parse di dalam file Dart, lalu mengambilnya menggunakan get dengan tipe application/json. 
+3. Selanjutnya, data yang telah diambil tadi dapat di-decode menggunakan jsonDecode() yang nantinya akan di-convert melalui model yang telah dibuat dan ditampilkan secara asinkronus menggunakan widget FutureBuilder
+
+4. Data - data JSON tadi dapat digunakan secara CRUD pada kedua media secara asinkronus
+
 # 📃 Berita Acara
 Tautan berita acara dapat diakses [di sini](https://1drv.ms/x/s!AjrL352WxT7K00bPGNhQ-V5CHek-?e=NiacUk) 
+
 
 # Panduan Penggunaan (Dev Only)
