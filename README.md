@@ -18,17 +18,17 @@
 
 ## 🔍 Daftar Modul
 ### 1. Authentication (Ester)
-Modul ini berisi pengaturan autentikasi pengguna, baik sign up maupun sign in. Ketika pengguna sign up, pengguna perlu memasukkan data-data pribadi seperti username dan password. Selain itu, pengguna diminta memilih interest mereka (genre buku). Setelah terautentikasi, pengguna akan diarahkan ke homepage.   
+Modul ini berisi pengaturan autentikasi pengguna, baik _sign up_ maupun _sign in_. Ketika pengguna _sign up_, pengguna perlu memasukkan data-data pribadi seperti _username_ dan _password_. Selain itu, pengguna diminta memilih interest mereka (genre buku). Setelah terautentikasi, pengguna akan diarahkan ke _homepage_.   
 ### 2. Homepage (Ester)
-Modul ini berisi halaman utama ketika user mengunjungi website BookMate. Bagi pengguna yang belum login, halaman utamanya berupa landing page yang akan mengarahkan user tersebut untuk login. Sementara itu, bagi user yang sudah login, halaman utama akan berisi list rekomendasi buku (berdasarkan interest) serta search bar untuk mencari buku. User tersebut bisa memilih salah satu buku untuk pergi ke dashboard buku tersebut. Selain list rekomendasi buku, akan ada list pengguna yang sudah di-match dengan pengguna sekarang. 
+Modul ini berisi halaman utama ketika user membuka aplikasi BookMate. Bagi pengguna yang belum _login_, halaman utamanya berupa _landing page_ yang akan mengarahkan user tersebut untuk _login_. Sementara itu, bagi user yang sudah _login_, halaman utama akan berisi list rekomendasi buku (berdasarkan _interest_) serta _search bar_ untuk mencari buku. User tersebut bisa memilih salah satu buku untuk pergi ke _dashboard_ buku tersebut. Selain list rekomendasi buku, akan ada list pengguna yang sudah di-_match_ dengan pengguna sekarang. 
 ### 3. Dashboard Profile (Azmy)
-Modul ini akan menampilkan profil, baik dirinya sendiri maupun profil pengguna lain. Profil berisi data-data pribadi yang tidak bersifat rahasia, interest, dan buku yang sudah pernah diulas. Pengguna bisa mengedit profilnya sendiri. Pengguna juga bisa melihat profil pengguna lain dalam aplikasi, supaya membantu pengguna untuk berinteraksi dan menjelajahi minat bersama. 
+Modul ini akan menampilkan profil, baik dirinya sendiri maupun profil pengguna lain. Profil berisi data-data pribadi yang tidak bersifat rahasia, _interest_, dan buku yang sudah pernah diulas. Pengguna bisa mengedit profilnya sendiri. Pengguna juga bisa melihat profil pengguna lain dalam aplikasi, supaya membantu pengguna untuk berinteraksi dan menjelajahi minat bersama. 
 ### 4. Matching (Vinka)
-Modul ini berisi rekomendasi pengguna lain yang cocok dengan pengguna berdasarkan  buku yang sudah ia review. Pengguna bisa memilih untuk menerima rekomendasi (sehingga di-match) maupun tidak. 
+Modul ini berisi rekomendasi pengguna lain yang cocok dengan pengguna berdasarkan  buku yang sudah ia _review_. Pengguna bisa memilih untuk menerima rekomendasi (sehingga di-_match_) maupun tidak. 
 ### 5. Dashboard Buku (Reyhan)
-Modul ini berisi informasi tentang suatu buku, seperti cover, judul, deskripsi, dan lain-lain, serta terdapat pilihan untuk memberikan review buku. 
+Modul ini berisi informasi tentang suatu buku, seperti _cover_, judul, deskripsi, dan lain-lain, serta terdapat pilihan untuk memberikan _review_ buku. 
 ### 6. Request Buku (Clarence)
-Modul ini berisi form untuk request menambahkan buku ke database. Form ini akan menampilkan juga list buku yang sudah pernah di-request user tersebut. 
+Modul ini berisi form untuk _request_ menambahkan buku ke database. Form ini akan menampilkan juga list buku yang sudah pernah di-_request_ user tersebut. 
 ### Desain (Azmy)
 
 ## Sumber Dataset Katalog Buku
@@ -36,22 +36,28 @@ Kami menggunakan dataset katalog yang bersumber di link [berikut](https://drive.
 
 ##  Role Pengguna Aplikasi
 - ### Role admin
-    Role ini diakses melalui Django Admin Interface. Admin dapat melihat dan mengatur seluruh database seperti list user, list buku, dan lain-lain. 
+    Role ini diakses melalui `Django Admin Interface`. Admin dapat melihat dan mengatur seluruh database seperti list user, list buku, dan lain-lain. 
 - ### Role guest user
-    Role ini tidak dapat mengakses fitur apapun, akan diberikan arahan untuk login. 
+    Role ini tidak dapat mengakses fitur apapun, akan diberikan arahan untuk _login_. 
 - ### Role logged in user
-    Role ini dapat mengakses seluruh fitur BookMate seperti melihat review orang lain, matching dengan orang lain, edit profile user, dan lain-lain. 
+    Role ini dapat mengakses seluruh fitur BookMate seperti melihat _review_ orang lain, _matching_ dengan orang lain, edit profile user, dan lain-lain. 
 
-# Alur pengintegrasian dengan web service untuk terhubung dengan aplikasi web yang sudah dibuat saat Proyek Tengah Semester
-1. Integrasi aplikasi mobile dan web service dapat dilakukan dengan cara melakukan pengambilan data berformat JSON atau Javascript Object Notation di aplikasi mobile pada web service dengan menggunakan url untuk deploy Proyek Tengah Semester.
+## 🌐 Alur pengintegrasian dengan web service untuk terhubung dengan aplikasi web yang sudah dibuat saat Proyek Tengah Semester
+1. Integrasi aplikasi mobile dan web service dapat dilakukan dengan cara melakukan pengambilan data berformat `JSON` atau `Javascript Object Notation` di aplikasi mobile pada web service dengan menggunakan url untuk deploy Proyek Tengah Semester.
+2. Proses _fetch_ dapat dilakukan dengan menggunakan `Uri.parse` di dalam file Dart, lalu mengambilnya menggunakan get dengan tipe `application/json`. 
+3. Selanjutnya, data yang telah diambil tadi dapat di-_decode_ menggunakan `jsonDecode()` yang nantinya akan di-_convert_ melalui model yang telah dibuat dan ditampilkan secara asinkronus menggunakan widget `FutureBuilder`
+4. Data - data `JSON` tadi dapat digunakan secara CRUD pada kedua media secara asinkronus
 
-2. Proses fetch dapat dilakukan dengan menggunakan Uri.parse di dalam file Dart, lalu mengambilnya menggunakan get dengan tipe application/json. 
-3. Selanjutnya, data yang telah diambil tadi dapat di-decode menggunakan jsonDecode() yang nantinya akan di-convert melalui model yang telah dibuat dan ditampilkan secara asinkronus menggunakan widget FutureBuilder
-
-4. Data - data JSON tadi dapat digunakan secara CRUD pada kedua media secara asinkronus
-
-# 📃 Berita Acara
+## 📃 Berita Acara
 Tautan berita acara dapat diakses [di sini](https://1drv.ms/x/s!AjrL352WxT7K00bPGNhQ-V5CHek-?e=NiacUk) 
+
+## 🚀 Deployment Aplikasi
+- Deployment Web-App dapat diakses [di sini](https://bookmate-a12-tk.pbp.cs.ui.ac.id/)
+- GitHub Release: APK BookMate akan tersedia [di sini]()
+- Platform Cloud: Kami akan menggunakan [Microsoft App Center]() untuk distribusi dan pengujian
 
 
 # Panduan Penggunaan (Dev Only)
+
+
+*© Kelompok A12, Fakultas Ilmu Komputer, Universitas Indonesia - 2023/2024*
