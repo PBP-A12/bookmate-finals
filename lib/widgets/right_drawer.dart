@@ -1,14 +1,11 @@
 import 'package:bookmate/screens/home.dart';
 import 'package:flutter/material.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
 
 class RightDrawer extends StatelessWidget {
   const RightDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
     return Drawer(
       child: ListView(
         children: [
@@ -47,13 +44,13 @@ class RightDrawer extends StatelessWidget {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HomePage(),
+                    builder: (context) => const HomePage(),
                   ));
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.list_alt_rounded),
-            title: const Text('Match'),
+          const ListTile(
+            leading: Icon(Icons.list_alt_rounded),
+            title: Text('Match'),
             // Bagian redirection ke MATCH
             // onTap: () {
             //   Navigator.pushReplacement(
@@ -63,9 +60,9 @@ class RightDrawer extends StatelessWidget {
             //       ));
             // },
           ),
-          ListTile(
-            leading: const Icon(Icons.library_add_outlined),
-            title: const Text('Book Review'),
+          const ListTile(
+            leading: Icon(Icons.library_add_outlined),
+            title: Text('Book Review'),
             // Bagian redirection ke BOOK REVIEW
             // onTap: () {
             //   Navigator.pushReplacement(
@@ -74,9 +71,9 @@ class RightDrawer extends StatelessWidget {
             // );
             // },
           ),
-          ListTile(
-            leading: const Icon(Icons.book_outlined),
-            title: const Text('Book Request'),
+          const ListTile(
+            leading: Icon(Icons.book_outlined),
+            title: Text('Book Request'),
             // Bagian redirection ke BOOK REQUEST
             // onTap: () {
             //   Navigator.pushReplacement(
@@ -85,9 +82,9 @@ class RightDrawer extends StatelessWidget {
             // );
             // },
           ),
-          ListTile(
-            leading: const Icon(Icons.person_outline),
-            title: const Text('Profile'),
+          const ListTile(
+            leading: Icon(Icons.person_outline),
+            title: Text('Profile'),
             // Bagian redirection ke PROFILE
             // onTap: () {
             //   Navigator.pushReplacement(
@@ -96,9 +93,9 @@ class RightDrawer extends StatelessWidget {
             // );
             // },
           ),
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Logout'),
+          const ListTile(
+            leading: Icon(Icons.logout),
+            title: Text('Logout'),
             // Bagian redirection ke LoginPage
             // onTap: () async {
             //   final response = await request.logout(
