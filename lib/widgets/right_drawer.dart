@@ -1,4 +1,5 @@
 import 'package:bookmate/screens/home.dart';
+import 'package:bookmate/screens/request.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,7 @@ class RightDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.list_alt_rounded),
+            leading: const Icon(Icons.favorite_border),
             title: const Text('Match'),
             // Bagian redirection ke MATCH
             // onTap: () {
@@ -64,7 +65,7 @@ class RightDrawer extends StatelessWidget {
             // },
           ),
           ListTile(
-            leading: const Icon(Icons.library_add_outlined),
+            leading: const Icon(Icons.rate_review_outlined),
             title: const Text('Book Review'),
             // Bagian redirection ke BOOK REVIEW
             // onTap: () {
@@ -78,12 +79,12 @@ class RightDrawer extends StatelessWidget {
             leading: const Icon(Icons.book_outlined),
             title: const Text('Book Request'),
             // Bagian redirection ke BOOK REQUEST
-            // onTap: () {
-            //   Navigator.pushReplacement(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const ShopFormPage()),
-            // );
-            // },
+            onTap: () {
+              Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const RequestPage()),
+            );
+            },
           ),
           ListTile(
             leading: const Icon(Icons.person_outline),
