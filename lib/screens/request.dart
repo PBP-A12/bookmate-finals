@@ -7,7 +7,7 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-// import 'package:mutliselect_formfield/mutliselect_formfield.dart';
+import 'package:multiselect_formfield/multiselect_formfield.dart';
 class RequestPage extends StatefulWidget {
     const RequestPage({Key? key}) : super(key: key);
 
@@ -19,7 +19,7 @@ class _RequestsPageState extends State<RequestPage> {
 Future<List<BookRequest>>? _future;
   Future<List<BookRequest>> fetchAllRequest(CookieRequest request, String sort) async {
     final response = await http.get(
-    Uri.parse('http://127.0.0.1:8000/request/get-requests_json?sortby=$sort'),
+    Uri.parse('http://127.0.0.1:8000/request/get-requests-json?sortby=$sort'),
     headers: request.headers,
     );
     // Perform error handling for the response
@@ -40,7 +40,7 @@ Future<List<BookRequest>>? _future;
   }
   Future<List<BookRequest>> fetchUserRequest(CookieRequest request, String sort) async {
     final response = await http.get(
-    Uri.parse('http://127.0.0.1:8000/request/get-request_json_user?sortby=$sort'),
+    Uri.parse('http://127.0.0.1:8000/request/get-request-json-user?sortby=$sort'),
     headers: request.headers,
     );
     // Perform error handling for the response
@@ -288,34 +288,41 @@ Widget build(BuildContext context) {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8),
-                                          // child: MultiSelectFormField(
-                                          //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                                          //   chipDisplay: MultiSelectChipDisplay(
-                                          //     onTap: (value) {
-                                          //       setState(() {
-                                          //         _selectedSubjects.remove(value);
-                                          //       });
-                                          //     },
-                                          //   ),
-                                          //   title: Text('Subjects'),
-                                          //   validator: (value) {
-                                          //     if (value == null || value.isEmpty) {
-                                          //       return 'Please select at least one subject';
-                                          //     }
-                                          //     return null;
-                                          //   },
-                                          //   dataSource: _subjects_list,
-                                          //   textField: 'display',
-                                          //   valueField: 'value',
-                                          //   okButtonLabel: 'OK',
-                                          //   cancelButtonLabel: 'CANCEL',
-                                          //   initialValue: _selectedSubjects,
-                                          //   onSaved: (value) {
+                                        child: MultiSelectFormField(
+                                        //   // Add your identifier here
+                                        //   identifier: 'example',
+                                        // ),
+                                          autovalidate: AutovalidateMode.onUserInteraction,
+                                          // chipDisplay: MultiSelectChipDisplay<String>(
+                                          //   onTap: (value) {
                                           //     setState(() {
-                                          //       _selectedSubjects = value!;
+                                          //       _selectedSubjects.remove(value);
                                           //     });
                                           //   },
                                           // ),
+                                          title: const Text('Subjects'),
+                                          validator: (value) {
+                                            if (value == null || value.isEmpty) {
+                                              return 'Please select at least one subject';
+                                            }
+                                            return null;
+                                          },
+                                          dataSource: [
+                                            {'display': 'Option 1', 'value': 'option1'},
+                                            {'display': 'Option 2', 'value': 'option2'},
+                                            {'display': 'Option 3', 'value': 'option3'},
+                                          ],
+                                          textField: 'display',
+                                          valueField: 'value',
+                                          okButtonLabel: 'OK',
+                                          cancelButtonLabel: 'CANCEL',
+                                          initialValue: _selectedSubjects,
+                                          onSaved: (value) {
+                                            setState(() {
+                                              _selectedSubjects = value!;
+                                            });
+                                          },
+                                        ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8),
