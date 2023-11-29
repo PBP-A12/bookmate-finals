@@ -10,8 +10,10 @@
 - Reyhan Wiyasa Puspanegara (2206081925)
 - Vinka Alrezky As (2206820200)
 
-
-# Nama Aplikasi: BookMate
+# BookMate
+[![Staging](https://github.com/PBP-A12/bookmate-finals/actions/workflows/staging.yml/badge.svg)](https://github.com/PBP-A12/bookmate-finals/actions/workflows/staging.yml)
+[![Pre-Release](https://github.com/PBP-A12/bookmate-finals/actions/workflows/pre-release.yml/badge.svg)](https://github.com/PBP-A12/bookmate-finals/actions/workflows/pre-release.yml)
+[![Release](https://github.com/PBP-A12/bookmate-finals/actions/workflows/release.yml/badge.svg)](https://github.com/PBP-A12/bookmate-finals/actions/workflows/release.yml)
 
 ## 💡 Cerita dan Manfaat Aplikasi
  BookMate adalah platform yang menghubungkan pecinta buku. Tujuannya adalah memfasilitasi koneksi dan pengalaman berbagi antar pembaca dengan minat buku yang serupa. Di era digital ini, banyak orang merasa kesulitan menemukan teman dengan minat buku yang serupa. Oleh karena itu, BookMate menciptakan wadah yang memudahkan pecinta buku untuk terhubung, berinteraksi, dan memperdalam minat mereka dalam dunia literasi.
