@@ -29,10 +29,10 @@ class LoginPage extends StatefulWidget {
     const LoginPage({super.key});
 
     @override
-    _LoginPageState createState() => _LoginPageState();
+    LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
     final TextEditingController _usernameController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
 
@@ -68,11 +68,10 @@ class _LoginPageState extends State<LoginPage> {
                                 String username = _usernameController.text;
                                 String password = _passwordController.text;
 
-                                // Cek kredensial
-                                // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                                // Cek kredensial                                
                                 // Untuk menyambungkan Android emulator dengan Django pada localhost,
                                 // gunakan URL http://10.0.2.2/
-                                final response = await request.login("http://127.0.0.1:8000/auth/login-flutter/", {
+                                final response = await request.login("https://bookmate-a12-tk.pbp.cs.ui.ac.id/auth/login-flutter/", {
                                 'username': username,
                                 'password': password,
                                 });
@@ -80,31 +79,33 @@ class _LoginPageState extends State<LoginPage> {
                                 if (request.loggedIn) {
                                     String message = response['message'];
                                     String uname = response['username'];
-                                    // Navigator.pushReplacement(
-                                    //     context,
-                                    //     MaterialPageRoute(builder: (context) => RequestPage()),
-                                    // );
+                                    if (!context.mounted) return; 
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const HomePage()),
+                                    );
                                     ScaffoldMessenger.of(context)
                                         ..hideCurrentSnackBar()
                                         ..showSnackBar(
                                             SnackBar(content: Text("$message Selamat datang, $uname.")));
                                     } else {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                            title: const Text('Login Gagal'),
-                                            content:
-                                                Text(response['message']),
-                                            actions: [
-                                                TextButton(
-                                                    child: const Text('OK'),
-                                                    onPressed: () {
-                                                        Navigator.pop(context);
-                                                    },
-                                                ),
-                                            ],
-                                        ),
-                                    );
+                                      if (!context.mounted) return; 
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                              title: const Text('Login Gagal'),
+                                              content:
+                                                  Text(response['message']),
+                                              actions: [
+                                                  TextButton(
+                                                      child: const Text('OK'),
+                                                      onPressed: () {
+                                                          Navigator.pop(context);
+                                                      },
+                                                  ),
+                                              ],
+                                          ),
+                                      );
                                 }
                             },
                             child: const Text('Login'),
@@ -114,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () {
                                 Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => RegisterPage()),
+                                    MaterialPageRoute(builder: (context) => const RegisterPage()),
                                 );
                             },
                             child: const Text('Register'),
