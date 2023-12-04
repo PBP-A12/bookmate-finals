@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:bookmate/models/book_request.dart';
 import 'package:bookmate/widgets/right_drawer.dart';
@@ -19,7 +20,7 @@ class _RequestsPageState extends State<RequestPage> {
 Future<List<BookRequest>>? _future;
   Future<List<BookRequest>> fetchAllRequest(CookieRequest request, String sort) async {
     final response = await http.get(
-    Uri.parse('http://127.0.0.1:8000/request/get-requests-json?sortby=$sort'),
+    Uri.parse('http://127.0.0.1:8000/request/get-all-request-json/?sortby=$sort'),
     headers: request.headers,
     );
     // Perform error handling for the response
@@ -27,20 +28,20 @@ Future<List<BookRequest>>? _future;
         // Decode the response body
         var data = jsonDecode(utf8.decode(response.bodyBytes));
         // Convert the JSON data to a list of Product objects
-        List<BookRequest> my_request_list = [];
+        List<BookRequest> myRequestList = [];
         for (var d in data) {
           if (d != null) {
-            my_request_list.add(BookRequest.fromJson(d));
+            myRequestList.add(BookRequest.fromJson(d));
           }
         }
-        return my_request_list;
+        return myRequestList;
       } else {
         throw Exception('Failed to fetch products');
       }
   }
   Future<List<BookRequest>> fetchUserRequest(CookieRequest request, String sort) async {
     final response = await http.get(
-    Uri.parse('http://127.0.0.1:8000/request/get-request-json-user?sortby=$sort'),
+    Uri.parse('http://127.0.0.1:8000/request/get-request-json-user/?sortby=$sort'),
     headers: request.headers,
     );
     // Perform error handling for the response
@@ -48,14 +49,14 @@ Future<List<BookRequest>>? _future;
         // Decode the response body
         var data = jsonDecode(utf8.decode(response.bodyBytes));
         // Convert the JSON data to a list of Product objects
-        List<BookRequest> user_request_list = [];
+        List<BookRequest> userRequestList = [];
         for (var d in data) {
           if (d != null) {
-            user_request_list.add(BookRequest.fromJson(d));
+            userRequestList.add(BookRequest.fromJson(d));
           }
         }
         // print(user_request_list);
-        return user_request_list;
+        return userRequestList;
       } else {
         throw Exception('Failed to fetch products');
       }
@@ -69,13 +70,15 @@ Future<List<BookRequest>>? _future;
       if (response.statusCode == 200) {
         // Decode the response body
         var data = jsonDecode(utf8.decode(response.bodyBytes));
-        List<String> subjects_list = [];
+        // print(data);r
+        List<String> subjectsList = [];
         for (var d in data) {
           if (d != null) {
-            subjects_list.add(d);
+            String name = d['fields']['name'];
+            subjectsList.add(name);
           }
         }
-        return subjects_list;
+        return subjectsList;
       } else {
         throw Exception('Failed to fetch subjects');
       }
@@ -90,7 +93,7 @@ Widget build(BuildContext context) {
   String _author = "";
   int _year = 0;
   String _language = "";
-  Future<List<String>> _subjects_list = fetchSubjects(request); 
+  Future<List<String>> _subjects_list = fetchSubjects(request);
   return Scaffold(
     appBar: AppBar(
       title: Text('Book Requests'),
@@ -232,7 +235,7 @@ Widget build(BuildContext context) {
                                 // ),
                                 Container(
                                 width: 500, // take up all available width
-                                height: 500.0,
+                                height: double.infinity,
                                 child: Form(
                                   key: _formKey,
                                   child: Column(
@@ -246,7 +249,9 @@ Widget build(BuildContext context) {
                                             if (value == null || value.isEmpty) {
                                               return 'Please enter a title';
                                             }
-                                            return null;
+                                            else {
+                                              _title = value;
+                                            }
                                           },
                                         ),
                                       ),
@@ -258,7 +263,9 @@ Widget build(BuildContext context) {
                                             if (value == null || value.isEmpty) {
                                               return 'Please enter an author';
                                             }
-                                            return null;
+                                            else {
+                                              _author = value;
+                                            }
                                           },
                                         ),
                                       ),
@@ -270,7 +277,12 @@ Widget build(BuildContext context) {
                                             if (value == null || value.isEmpty) {
                                               return 'Please enter a year';
                                             }
-                                            return null;
+                                            else if (int.tryParse(value) == null) {
+                                              return 'Please enter a valid year';
+                                            }
+                                            else {
+                                              _year = int.parse(value);
+                                            }
                                           },
                                         ),
                                       ),
@@ -280,47 +292,57 @@ Widget build(BuildContext context) {
                                           decoration: InputDecoration(labelText: 'Language'),
                                           validator: (value) {
                                             if (value == null || value.isEmpty) {
-                                              return 'Please enter a description';
+                                              return 'Please enter a language';
                                             }
-                                            return null;
+                                            else {
+                                              _language = value;
+                                            }
                                           },
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8),
-                                        child: MultiSelectFormField(
-                                        //   // Add your identifier here
-                                        //   identifier: 'example',
-                                        // ),
-                                          autovalidate: AutovalidateMode.onUserInteraction,
-                                          // chipDisplay: MultiSelectChipDisplay<String>(
-                                          //   onTap: (value) {
-                                          //     setState(() {
-                                          //       _selectedSubjects.remove(value);
-                                          //     });
-                                          //   },
-                                          // ),
-                                          title: const Text('Subjects'),
-                                          validator: (value) {
-                                            if (value == null || value.isEmpty) {
-                                              return 'Please select at least one subject';
+                                        child: FutureBuilder<List<String>>(
+                                          future: _subjects_list,
+                                          builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                                            if (snapshot.hasData) {
+                                              List<dynamic> dataSource = snapshot.data!
+                                                  .map((e) => {'display': e, 'value': e})
+                                                  .toList()
+                                                  .cast<dynamic>();
+                                              return MultiSelectFormField(
+                                                autovalidate: AutovalidateMode.onUserInteraction,
+                                                chipLabelStyle: const TextStyle(), // Add an identifier and provide a valid TextStyle
+                                                dataSource: dataSource,
+                                                textField: 'display',
+                                                valueField: 'value',
+                                                title: const Text('Subjects'),
+                                                validator: (value) {
+                                                  if (value == null || value.isEmpty) {
+                                                    return 'Please select one or more subject(s)';
+                                                  }
+                                                  return null;
+                                                },
+                                                okButtonLabel: 'OK',
+                                                cancelButtonLabel: 'CANCEL',
+                                                initialValue: _selectedSubjects,
+                                                hintWidget: const Text('Please choose one or more'),
+                                                onSaved: (newValue) {
+                                                  // print(newValue);
+                                                  if (newValue == null) return;
+                                                  setState(() {
+                                                    _selectedSubjects = newValue.cast<String>().toList();
+
+                                                  });
+                                                  // print(_selectedSubjects);
+                                                },
+                                                // ...
+                                              );
+                                            } else if (snapshot.hasError) {
+                                              return Text('Error: ${snapshot.error}');
+                                            } else {
+                                              return const CircularProgressIndicator();
                                             }
-                                            return null;
-                                          },
-                                          dataSource: [
-                                            {'display': 'Option 1', 'value': 'option1'},
-                                            {'display': 'Option 2', 'value': 'option2'},
-                                            {'display': 'Option 3', 'value': 'option3'},
-                                          ],
-                                          textField: 'display',
-                                          valueField: 'value',
-                                          okButtonLabel: 'OK',
-                                          cancelButtonLabel: 'CANCEL',
-                                          initialValue: _selectedSubjects,
-                                          onSaved: (value) {
-                                            setState(() {
-                                              _selectedSubjects = value!;
-                                            });
                                           },
                                         ),
                                       ),
@@ -328,9 +350,36 @@ Widget build(BuildContext context) {
                                         padding: const EdgeInsets.all(8),
                                         child: ElevatedButton(
                                           child: const Text('Submit'),
-                                          onPressed: () {
+                                          onPressed: () async {
                                             if (_formKey.currentState!.validate()) {
-                                              _formKey.currentState!.save();
+                                              // If the form is valid, display a Snackbar.
+                                              final response = await request.postJson(
+                                                "http://127.0.0.1:8000/request/requesting-flutter/",
+                                                jsonEncode(<String, String>{
+                                                  'title': _title,
+                                                  'author': _author,
+                                                  'year': _year.toString(),
+                                                  'language': _language,
+                                                  'subjects': _selectedSubjects.toString(),
+                                                }));
+                                                if (response['status'] == 'success') {
+                                                    ScaffoldMessenger.of(context)
+                                                        .showSnackBar(const SnackBar(
+                                                    content: Text("Request has been saved!"),
+                                                    ));
+                                                } else if (response['status'] == 'failed') {
+                                                    ScaffoldMessenger.of(context)
+                                                        .showSnackBar(const SnackBar(
+                                                        content:
+                                                            Text("Request failed to be saved! Please try again.")));
+                                                } else {
+                                                    ScaffoldMessenger.of(context)
+                                                        .showSnackBar(const SnackBar(
+                                                        content:
+                                                            Text("Request failed to be saved! Please try again."),
+                                                    ));
+                                                }
+                                              _formKey.currentState!.reset();
                                             }
                                           },
                                         ),
