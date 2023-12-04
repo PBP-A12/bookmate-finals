@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
         return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Game Inventory',
+          'BookMate tes title App Bar',
         ),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                 // Widget Text untuk menampilkan tulisan dengan alignment center dan style yang sesuai
                 child: Text(
-                  'Game Inventory', // Text yang menandakan toko
+                  'BookMate', 
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,

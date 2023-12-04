@@ -1,5 +1,5 @@
 import 'package:bookmate/models/book_request.dart';
-import 'package:bookmate/screens/home.dart';
+import 'package:bookmate/ester/screens/home.dart';
 import 'package:bookmate/screens/register.dart';
 import 'package:bookmate/screens/request.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +71,7 @@ class LoginPageState extends State<LoginPage> {
                                 // Cek kredensial                                
                                 // Untuk menyambungkan Android emulator dengan Django pada localhost,
                                 // gunakan URL http://10.0.2.2/
-                                final response = await request.login("https://bookmate-a12-tk.pbp.cs.ui.ac.id/auth/login-flutter/", {
+                                final response = await request.login("http://127.0.0.1:8000/auth/login-flutter/", {
                                 'username': username,
                                 'password': password,
                                 });
