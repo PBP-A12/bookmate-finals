@@ -15,7 +15,7 @@ class RightDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-            color: Colors.indigo,
+            color: Color(0xFFC44B6A),
           ),
           child: Column(
             children: [

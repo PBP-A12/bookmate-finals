@@ -89,7 +89,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       context, 
                       MaterialPageRoute(builder: (context) => LoginPage()),
                       );
+                  } else if (response['status']=='username_exists'){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Username already exists!'),
+                      ),
+                    );
                   }
+                  
                   else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
