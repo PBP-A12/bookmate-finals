@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:bookmate/widgets/right_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_cards/swipe_cards.dart';
+
 
 class MatchPage extends StatefulWidget {
   const MatchPage({Key? key}) : super(key: key);
@@ -36,18 +37,18 @@ class _MatchPageState extends State<MatchPage> {
         // Other actions...
       ));
     }
-
     _matchEngine = MatchEngine(swipeItems: _swipeItems);
   }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('Match Page'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Match"),
         backgroundColor: const Color(0xFFB6536B).withOpacity(0.9),
       ),
-      child: SafeArea(
+      drawer: RightDrawer(),
+      body: SafeArea(
         child: Column(
           children: [
             Expanded(
