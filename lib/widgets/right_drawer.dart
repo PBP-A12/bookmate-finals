@@ -1,5 +1,6 @@
 import 'package:bookmate/screens/home.dart';
 import 'package:flutter/material.dart';
+import 'package:bookmate/screens/match.dart';
 
 class RightDrawer extends StatelessWidget {
   const RightDrawer({super.key});
@@ -11,7 +12,7 @@ class RightDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-            color: Colors.indigo,
+            color: Color(0xFFB6536B),
           ),
           child: Column(
             children: [
@@ -49,40 +50,6 @@ class RightDrawer extends StatelessWidget {
             },
           ),
           const ListTile(
-            leading: Icon(Icons.list_alt_rounded),
-            title: Text('Match'),
-            // Bagian redirection ke MATCH
-            // onTap: () {
-            //   Navigator.pushReplacement(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => const (),
-            //       ));
-            // },
-          ),
-          const ListTile(
-            leading: Icon(Icons.library_add_outlined),
-            title: Text('Book Review'),
-            // Bagian redirection ke BOOK REVIEW
-            // onTap: () {
-            //   Navigator.pushReplacement(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const ShopFormPage()),
-            // );
-            // },
-          ),
-          const ListTile(
-            leading: Icon(Icons.book_outlined),
-            title: Text('Book Request'),
-            // Bagian redirection ke BOOK REQUEST
-            // onTap: () {
-            //   Navigator.pushReplacement(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const ShopFormPage()),
-            // );
-            // },
-          ),
-          const ListTile(
             leading: Icon(Icons.person_outline),
             title: Text('Profile'),
             // Bagian redirection ke PROFILE
@@ -93,6 +60,41 @@ class RightDrawer extends StatelessWidget {
             // );
             // },
           ),
+          const ListTile(
+            leading: Icon(Icons.reviews_outlined),
+            title: Text('Book Review'),
+            // Bagian redirection ke BOOK REVIEW
+            // onTap: () {
+            //   Navigator.pushReplacement(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => const ShopFormPage()),
+            // );
+            // },
+          ),
+          const ListTile(
+            leading: Icon(Icons.my_library_add_outlined),
+            title: Text('Book Request'),
+            // Bagian redirection ke BOOK REQUEST
+            // onTap: () {
+            //   Navigator.pushReplacement(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => const ShopFormPage()),
+            // );
+            // },
+          ),
+
+          ListTile(
+            leading: Icon(Icons.diversity_1_outlined),
+            title: Text('Match'),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MatchPage(), // Remove the 'const' keyword
+                ),
+              );
+            },
+          ),          
           const ListTile(
             leading: Icon(Icons.logout),
             title: Text('Logout'),
