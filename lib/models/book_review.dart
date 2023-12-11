@@ -11,25 +11,29 @@ String reviewToJson(List<Review> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Review {
-  String title;
-  String author;
-  int year;
+  int pk;
+  String reviewerAccountUsername;
+  int book;
+  String review;
 
   Review({
-    required this.title,
-    required this.author,
-    required this.year,
+    required this.pk,
+    required this.reviewerAccountUsername,
+    required this.book,
+    required this.review,
   });
 
   factory Review.fromJson(Map<String, dynamic> json) => Review(
-        title: json["title"],
-        author: json["author"],
-        year: json["year"],
+        pk: json["pk"],
+        reviewerAccountUsername: json["reviewer__account__username"],
+        book: json["book"],
+        review: json["review"],
       );
 
   Map<String, dynamic> toJson() => {
-        "title": title,
-        "author": author,
-        "year": year,
+        "pk": pk,
+        "reviewer__account__username": reviewerAccountUsername,
+        "book": book,
+        "review": review,
       };
 }

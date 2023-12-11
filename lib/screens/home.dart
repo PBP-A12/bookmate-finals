@@ -12,9 +12,9 @@ class HomePage extends StatelessWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-    @override
-    Widget build(BuildContext context) {
-        return Scaffold(
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       appBar: AppBar(
         title: const Text(
           'Game Inventory',
@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
         foregroundColor: Colors.white,
       ),
       // Masukkan drawer sebagai parameter nilai drawer dari widget Scaffold
-      endDrawer: const RightDrawer(),
+      drawer: const RightDrawer(),
       body: SingleChildScrollView(
         // Widget wrapper yang dapat discroll
         child: Padding(
@@ -52,12 +52,11 @@ class HomePage extends StatelessWidget {
                 mainAxisSpacing: 10,
                 crossAxisCount: 3,
                 shrinkWrap: true,
-                
               ),
             ],
           ),
         ),
       ),
     );
-    }
+  }
 }

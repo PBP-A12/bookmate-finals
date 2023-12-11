@@ -1,3 +1,4 @@
+import 'package:bookmate/screens/dashboardbuku.dart';
 import 'package:bookmate/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -14,30 +15,29 @@ class RightDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-            color: Colors.indigo,
-          ),
-          child: Column(
-            children: [
-              Text(
-                'Bookmate',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              Padding(padding: EdgeInsets.all(10)),
-              Text("",
+              color: Colors.indigo,
+            ),
+            child: Column(
+              children: [
+                Text(
+                  'Bookmate',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.normal,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
                     color: Colors.white,
-                  )
                   ),
-            ],
-          ),
+                ),
+                Padding(padding: EdgeInsets.all(10)),
+                Text("",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.white,
+                    )),
+              ],
+            ),
           ),
           ListTile(
             leading: const Icon(Icons.home_outlined),
@@ -66,6 +66,13 @@ class RightDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.library_add_outlined),
             title: const Text('Book Review'),
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookDashboard(),
+                  ));
+            },
             // Bagian redirection ke BOOK REVIEW
             // onTap: () {
             //   Navigator.pushReplacement(
@@ -124,7 +131,7 @@ class RightDrawer extends StatelessWidget {
             //             builder: (context) => const LoginPage(),
             //           ));
             //     },
-              )
+          )
         ],
       ),
     );

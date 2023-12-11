@@ -1,4 +1,6 @@
+import 'package:bookmate/screens/dashboardbuku.dart';
 import 'package:bookmate/screens/login.dart';
+import 'package:bookmate/screens/review.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -13,11 +15,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-     return Provider(
-            create: (_) {
-                CookieRequest request = CookieRequest();
-                return request;
-            },
+    return Provider(
+      create: (_) {
+        CookieRequest request = CookieRequest();
+        return request;
+      },
       child: MaterialApp(
         title: 'Game Inventory',
         theme: ThemeData(
@@ -29,4 +31,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
