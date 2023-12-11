@@ -1,13 +1,27 @@
-import 'package:bookmate/models/book_request.dart';
-import 'package:bookmate/screens/home.dart';
 import 'package:bookmate/screens/login.dart';
-import 'package:bookmate/screens/request.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => NavigationProvider(),
+      child: MyApp(),
+    ),
+  );
+}
+class NavigationProvider extends ChangeNotifier {
+  int _currentIndex = 0;
+  int get currentIndex => _currentIndex;
+
+  void setIndex(int index) {
+    _currentIndex = index;
+    notifyListeners();
+  }
+  int getCurrentIndex(){
+    return _currentIndex;
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -22,9 +36,10 @@ class MyApp extends StatelessWidget {
                 return request;
             },
       child: MaterialApp(
-        title: 'Game Inventory',
+        title: 'BookMate',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+          // colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFC44B6A)),
+        
           useMaterial3: true,
         ),
         home: LoginPage(),
