@@ -17,26 +17,29 @@ class LandingPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text("BookMate",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  )),
-              const Text("Temukan cinta di halaman buku anda!"),
-              ButtonBar( // center this 
+              Container (
+                height: 200,
+                width: 200,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/app-logo.png'),
+                    fit: BoxFit.scaleDown,
+                  ),
+                ),
+                child: const Column(children: [
+                  Text("BookMate", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: const Color(0xFFC44B6A))),
+                  Text("Temukan cinta di halaman buku anda", style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: const Color(0xFFC44B6A))),
+                ]),
+              ),
+              Column( // center this 
                 children: [
                   PrimaryButton(text: "Login", onPressed: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
                     },
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
+                  SecondaryButton(text: 'Register', onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
                     },
-                    child: const Text('Register',
-                        style: TextStyle(
-                          color: Colors.black,
-                        )),
                   ),
 
                   //   onPressed: () {
