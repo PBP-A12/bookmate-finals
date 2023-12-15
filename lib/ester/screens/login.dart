@@ -1,5 +1,5 @@
-import 'package:bookmate/screens/home.dart';
-import 'package:bookmate/screens/register.dart';
+// import 'package:bookmate/ester/screens/home.dart';
+import 'package:bookmate/ester/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';

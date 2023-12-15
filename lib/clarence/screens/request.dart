@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'package:bookmate/models/book_request.dart';
-import 'package:bookmate/widgets/app_bar.dart';
-import 'package:bookmate/widgets/nav_bar.dart';
+import 'package:bookmate/clarence/models/book_request.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:http/http.dart' as http;
@@ -223,10 +221,11 @@ class _RequestsPageState extends State<RequestPage> {
     _future = fetchUserRequest(request, "title");
     // PreferredSizeWidget appBar = AppBarWidget();
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: AppBarWidget(),
-      ),
+      //我不懂这是什么
+      // appBar: PreferredSize(
+      //   preferredSize: Size.fromHeight(kToolbarHeight),
+      //   child: AppBarWidget(),
+      // ),
       //  AppBar(
       //   title:
       //   Text('Requests',
@@ -234,8 +233,7 @@ class _RequestsPageState extends State<RequestPage> {
       //    ),
       //   centerTitle: true,
       //   backgroundColor: Color(0xFFC44B6A)),
-      //我不懂这是什么
-      bottomNavigationBar: NavBar(),
+      // bottomNavigationBar: NavBar(),
       // BottomAppBar(
       //   // color: Color(0xFFC44B6A),
       //   child: Row(

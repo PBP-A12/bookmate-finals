@@ -1,6 +1,8 @@
+import 'package:bookmate/clarence/widgets/app_bar.dart';
+// import 'package:bookmate/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:bookmate/ester/screens/home.dart';
-
+import 'package:bookmate/clarence/screens/request.dart';
 class Layout extends StatefulWidget {
   const Layout({Key? key}) : super(key: key);
 
@@ -13,20 +15,19 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
-    const fgColor = Colors.white;
-    const bgColor = Color(0xFFC44B6A);
-    const textStyle = TextStyle(
-      fontSize: 20,
-      fontWeight: FontWeight.bold,
-      color: fgColor,
-    );
-    Image appLogo = Image.asset(
-      "assets/images/app-logo.png",
-      fit: BoxFit.contain,
-      height: 72,
-    );
 
-    return Scaffold(
+      return WillPopScope(
+        onWillPop: () async {
+          setState(() {
+            currentPageIndex = 0;
+          });
+          return false;
+        },
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70),
+          child: AppBarWidget(),
+        ),
         // appBar: AppBar(
         //   title: appLogo,
         //   backgroundColor: Colors.white,
@@ -70,38 +71,39 @@ class _LayoutState extends State<Layout> {
               currentPageIndex = index;
             });
           },
-          indicatorColor: Colors.amber,
+          indicatorColor: Color(0xFFC44B6A),
           selectedIndex: currentPageIndex,
           destinations: const <Widget>[
             NavigationDestination(
               icon: Icon(Icons.home_outlined),
-              selectedIcon: Icon(Icons.home),
+              selectedIcon: Icon(Icons.home, color: Colors.white,),
               label: 'Home',
+
             ),
             NavigationDestination(
-              icon: Icon(Icons.list_alt_rounded),
-              selectedIcon: Icon(Icons.list_alt_rounded),
+              icon: Icon(Icons.favorite_outline_sharp),
+              selectedIcon: Icon(Icons.favorite, color: Colors.white,),
               label: 'Match',
             ),
             NavigationDestination(
-              icon: Icon(Icons.library_add_outlined),
-              selectedIcon: Icon(Icons.library_add_outlined),
+                icon: Icon(Icons.rate_review_outlined),
+              selectedIcon: Icon(Icons.rate_review, color: Colors.white,),
               label: 'Review',
             ),
             NavigationDestination(
               icon: Icon(Icons.book_outlined),
-              selectedIcon: Icon(Icons.book_outlined),
+              selectedIcon: Icon(Icons.book, color: Colors.white,),
               label: 'Request',
             ),
             NavigationDestination(
               icon: Icon(Icons.person_outline),
-              selectedIcon: Icon(Icons.person),
+              selectedIcon: Icon(Icons.person, color: Colors.white,),
               label: 'Profile',
             ),
-          ],
+          ],          
         ),
         body: <Widget>[
-          const HomePage(),
+          HomePage(),
           // TODO: Add other pages here
           Container(
             alignment: Alignment.center,
@@ -117,13 +119,7 @@ class _LayoutState extends State<Layout> {
               style: TextStyle(fontSize: 24),
             ),
           ),
-          Container(
-            alignment: Alignment.center,
-            child: const Text(
-              'Request',
-              style: TextStyle(fontSize: 24),
-            ),
-          ),
+          RequestPage(),
           Container(
             alignment: Alignment.center,
             child: const Text(
@@ -131,6 +127,8 @@ class _LayoutState extends State<Layout> {
               style: TextStyle(fontSize: 24),
             ),
           ),
-        ][currentPageIndex]);
+        ][currentPageIndex]
+      ),
+        );
   }
 }
