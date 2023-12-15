@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
         foregroundColor: Colors.white,
       ),
       // Masukkan drawer sebagai parameter nilai drawer dari widget Scaffold
-      endDrawer: const RightDrawer(),
+      endDrawer: RightDrawer(),
       body: SingleChildScrollView(
         // Widget wrapper yang dapat discroll
         child: Padding(

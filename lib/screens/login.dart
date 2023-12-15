@@ -3,11 +3,12 @@ import 'package:bookmate/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:bookmate/screens/match.dart';
 
 
-void main() {
-  runApp(const LoginApp());
-}
+// void main() {
+//   runApp(const LoginApp());
+// }
 
 class LoginApp extends StatelessWidget {
   const LoginApp({super.key});
@@ -64,6 +65,7 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: () async {
+                print('aaaa');
                 String username = _usernameController.text;
                 String password = _passwordController.text;
 

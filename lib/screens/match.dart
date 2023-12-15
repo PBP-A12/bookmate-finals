@@ -15,10 +15,11 @@ class MatchPage extends StatefulWidget {
 
 class _MatchPageState extends State<MatchPage> {
   String name = '';
-  String interest = '';
+  List<dynamic> interest = [];
   String bio = '';
   String matchingId = '';
   String userId = '';
+  String picture = '';
 
 
 Future<void> getMatch(CookieRequest request) async {
@@ -35,6 +36,7 @@ Future<void> getMatch(CookieRequest request) async {
         bio = data['bio'];
         matchingId = data['matching_id'].toString();
         userId = data['id'].toString();
+        picture = data["picture"];
       } else {
         throw Exception('Failed to fetch subjects');
       }
@@ -81,7 +83,7 @@ Future<void> getMatch(CookieRequest request) async {
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                  _getRandomImageUrl(), // URL gambar random
+                                  picture, // URL gambar random
                                 ),
                               ),
                             ),
@@ -92,29 +94,56 @@ Future<void> getMatch(CookieRequest request) async {
                             style: const TextStyle(fontSize: 20, fontStyle: FontStyle.italic, color: Color.fromARGB(255, 80, 80, 80)),
                           ),
                           const SizedBox(height: 16.0),  // Tambahkan jarak vertikal di sini
-                          RichText(
-                            textAlign: TextAlign.justify,
-                            text: TextSpan(
-                              text: '🌙 Interest: ',
-                              style: const TextStyle(
+                          const Text('Interest: ',
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                                 color: Colors.black,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: '$interest\n',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
+                              ),),
+                          RichText(
+                            textAlign: TextAlign.center,
+
+                            text: TextSpan(
+                              children: 
+                              List.generate(interest.length, (index) {
+                                SizedBox(height: 10,);
+                                return WidgetSpan(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                    child: Container(
+                                      padding: const EdgeInsets.only(left: 10,right: 10, bottom: 5),
+                                      decoration: BoxDecoration(
+                                        color:  const Color(0xFFB6536B),
+                                        // border: Border.all(color: Colors.pink),
+                                        borderRadius: BorderRadius.circular(16.0),
+                                      ),
+                                      child: Text(
+                                        interest[index].toString(),
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                );
+                              }
+                              ),
+                              
                             ),
                           ),
+
                           const SizedBox(height: 12.0),  // Tambahkan jarak vertikal di sini
-                          ElevatedButton.icon(
+                          
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: 
+                    Column(children: [
+                      ElevatedButton.icon(
                                 onPressed: () {
                                 },
                                 icon: const Icon(
@@ -160,7 +189,6 @@ Future<void> getMatch(CookieRequest request) async {
                                   final response = await request.post("http://10.0.2.2:8000/match/accept-flutter/",
                                   jsonEncode(<String, String>{
                                     "name" : name,
-                                    "interest" : interest,
                                     "bio" : bio,
                                     "matching_id" : matchingId,
                                     'id' : userId,
@@ -192,10 +220,8 @@ Future<void> getMatch(CookieRequest request) async {
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
+                    ]),
+                    )
                 ],
               );
             }
@@ -206,8 +232,6 @@ Future<void> getMatch(CookieRequest request) async {
   }
 }
 
-  String _getRandomImageUrl() {
-    return 'https://picsum.photos/200/300?random=${DateTime.now().millisecondsSinceEpoch}';
-  }
+
 
 
