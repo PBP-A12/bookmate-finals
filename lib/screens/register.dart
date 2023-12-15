@@ -4,8 +4,6 @@ import 'package:bookmate/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:bookmate/ester/widgets/primary_button.dart';
-import 'package:bookmate/ester/widgets/secondary_button.dart'; 
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
