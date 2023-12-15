@@ -68,6 +68,7 @@ class _DetailReviewPage extends State<DetailReviewPage> {
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
               const SizedBox(height: 20.0), // Add some spacing
