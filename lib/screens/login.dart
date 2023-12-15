@@ -2,37 +2,18 @@ import 'package:bookmate/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:bookmate/ester/widgets/primary_button.dart';
 import 'package:bookmate/ester/widgets/secondary_button.dart';
 import 'package:bookmate/ester/screens/layout.dart';
-
-void main() {
-  runApp(const LoginApp());
-}
-
-class LoginApp extends StatelessWidget {
-  const LoginApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Login',
-      theme: ThemeData(
-        // TODO: probably needs to change this
-        primarySwatch: Colors.red,
-      ),
-      home: const LoginPage(),
-    );
-  }
-}
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  LoginPageState createState() => LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -63,7 +44,7 @@ class LoginPageState extends State<LoginPage> {
               obscureText: true,
             ),
             const SizedBox(height: 24.0),
-            ElevatedButton(
+            FilledButton(
               onPressed: () async {
                 String username = _usernameController.text;
                 String password = _passwordController.text;
@@ -71,6 +52,7 @@ class LoginPageState extends State<LoginPage> {
                 // Cek kredensial
                 // Untuk menyambungkan Android emulator dengan Django pada localhost,
                 // gunakan URL http://10.0.2.2/
+                // TODO: ganti URL sesuai dengan URL Django
                 final response = await request
                     .login("http://127.0.0.1:8000/auth/login-flutter/", {
                   'username': username,
@@ -112,7 +94,7 @@ class LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 12.0),
             SecondaryButton(
-              text: 'Register',
+              text: 'Don\'t have an account? Register',
               onPressed: () {
                 Navigator.pushReplacement(
                   context,

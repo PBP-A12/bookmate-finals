@@ -17,9 +17,9 @@ class SecondaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      style: TextButton.styleFrom(        
-        foregroundColor: textColor ?? Colors.black,
-      ),
+      // style: TextButton.styleFrom(        
+      //   foregroundColor: textColor ?? Colors.black,
+      // ),
       onPressed: onPressed,
       child: Text(text),
     );

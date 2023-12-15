@@ -4,6 +4,8 @@ import 'package:bookmate/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:bookmate/ester/widgets/primary_button.dart';
+import 'package:bookmate/ester/widgets/secondary_button.dart'; 
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -66,8 +68,8 @@ class RegisterPageState extends State<RegisterPage> {
                 },
               ),
               const SizedBox(height: 24.0),
-              ElevatedButton(
-                child: const Text('Register'),
+              PrimaryButton(
+                text: 'Register',
                 onPressed: () async {
                   String username = _usernameController.text;
                   String password1 = _passwordController.text;
@@ -84,7 +86,7 @@ class RegisterPageState extends State<RegisterPage> {
                         "password2": password2,
                       }));
 
-                  if (!context.mounted) return; 
+                  if (!context.mounted) return;
 
                   if (response['status'] == 'success') {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -94,7 +96,8 @@ class RegisterPageState extends State<RegisterPage> {
                     );
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const LoginPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -105,6 +108,15 @@ class RegisterPageState extends State<RegisterPage> {
                   }
                 },
               ),
+              SecondaryButton(
+                text: 'Already have an account? Log in', 
+                onPressed: () => {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                  )
+                }                
+              )
             ],
           ),
         ),

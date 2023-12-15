@@ -11,51 +11,44 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFFFFFFFF),
-        body: Center(
-            child: Column(
+      body: Container(
+          padding: const EdgeInsets.all(16.0),
+          width: double.infinity,
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container (
+            children: <Widget>[
+              const SizedBox(
                 height: 200,
                 width: 200,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/app-logo.png'),
-                    fit: BoxFit.scaleDown,
-                  ),
-                ),
-                child: const Column(children: [
-                  Text("BookMate", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: const Color(0xFFC44B6A))),
-                  Text("Temukan cinta di halaman buku anda", style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: const Color(0xFFC44B6A))),
+                child: Column(children: [
+                  Image(image: AssetImage('assets/images/app-logo.png')),
+                  // Text("Temukan Cinta di Halaman Buku Anda!",
+                  //   textAlign:TextAlign.center,
+                  //   style:TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFFC44B6A))
+                  // ),
                 ]),
               ),
-              Column( // center this 
-                children: [
-                  PrimaryButton(text: "Login", onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
-                    },
-                  ),
-                  SecondaryButton(text: 'Register', onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
-                    },
-                  ),
-
-                  //   onPressed: () {
-                  //     Navigator.pushNamed(context, '/login');
-                  //   },
-                  //   child: const Text('Login'),
-                  // ),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     Navigator.pushNamed(context, '/register');
-                  //   },
-                  //   child: const Text('Register'),
-                  // ),
-                ],
-              )
+              FilledButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()));
+                },
+                child: const Text('Login'),
+              ),
+              const SizedBox(height: 12.00), 
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RegisterPage()));
+                },
+                child: const Text('Register'),
+              ),
             ],
-        )));
+          )),
+    );
   }
 }

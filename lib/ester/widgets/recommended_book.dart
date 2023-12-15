@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:bookmate/ester/models/book.dart';
 
+
 class RecommendedBook extends StatefulWidget {
   const RecommendedBook({Key? key}) : super(key: key);
 
@@ -29,34 +30,30 @@ class _RecommendedBookState extends State<RecommendedBook> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400.00,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black)
-      ),
-      child: FutureBuilder(
-        future: fetchBook(),
-        builder: (BuildContext context, AsyncSnapshot<Book> snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              children: [
-                Text(
-                  snapshot.data!.title,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  )
-                ),
-                Text(snapshot.data!.author),
-                Text(snapshot.data!.subjects.join(", ")),
-              ],
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-      )
+    return FutureBuilder(
+      future: fetchBook(),
+      builder: (BuildContext context, AsyncSnapshot<Book> snapshot) {
+        if (snapshot.hasData) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                snapshot.data!.title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  
+                )),
+              Text(snapshot.data!.author, textAlign: TextAlign.center),
+              // Text(snapshot.data!.subjects.join(", ")),
+            ],
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }

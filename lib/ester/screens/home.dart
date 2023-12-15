@@ -1,6 +1,19 @@
-import 'package:bookmate/widgets/right_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:bookmate/ester/widgets/recommended_book.dart';
+
+class DummyBook extends StatelessWidget {
+  const DummyBook({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return  Scaffold(
+      appBar: AppBar(
+        title: const Text("Dummy Book Page"),
+      ),
+      body: const Text("This is the page for book review"),
+    );
+  }
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,20 +31,40 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int counter = 0;
-  String username = "asteriskzie";
+  var data = [];
+  final borderRadius = BorderRadius.circular(24);
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(8),
-      children: [
-        SizedBox(
-          height: 200.00,
-          child: Center(child: Text("Halo $username!")),
-        ),
-        RecommendedBook(),        
-      ],
-    );
+    return Container(
+        padding: const EdgeInsets.all(16.0),
+        child: CarouselSlider(
+          options: CarouselOptions(
+            height: MediaQuery.of(context).size.height,
+          ),
+          items: [1, 2, 3, 4, 5].map((i) {
+            return Builder(
+              builder: (BuildContext context) {
+                return Card(
+                    elevation: 0,
+                    color: Theme.of(context).colorScheme.surfaceVariant,
+                    child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DummyBook()));
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                          // decoration: BoxDecoration(color: Colors.amber),
+                          padding: const EdgeInsets.all(8.00),
+                          child: const Center(child: RecommendedBook()),
+                        )));
+              },
+            );
+          }).toList(),
+        ));
   }
 }

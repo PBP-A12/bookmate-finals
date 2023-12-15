@@ -1,12 +1,22 @@
-import 'package:bookmate/ester/screens/landing.dart';
+import 'package:bookmate/ester/screens/splash.dart';
 import 'package:bookmate/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
 final ThemeData myTheme = ThemeData(
-  primaryColor: const Color(0xFFC44B6A), // Replace with your hex code
-  useMaterial3: true,
+  // primaryColor: const Color(0xFFC44B6A), // Replace with your hex code
+  brightness: Brightness.light,
+  useMaterial3: true, 
+  textTheme: const TextTheme(
+    displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+    bodyLarge: TextStyle(fontSize: 18, color: Colors.black87),
+  ),
+  appBarTheme: const AppBarTheme(
+    
+    iconTheme: IconThemeData(color: Colors.white),
+  ),
+  colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFC44B6A))
   // other theme properties...
 );
 
@@ -28,7 +38,13 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'BookMate',
         theme: myTheme,
-        home: const LandingPage(),
+        // home: const LoginPage(),
+        initialRoute: '/splash',
+        routes: {
+          '/splash': (context) => const SplashScreen(),
+          '/login': (context) => const LoginPage()
+          // Add other routes for your app screens here
+        },    
       ),
     );
   }
