@@ -14,13 +14,19 @@ class BookDashboard extends StatefulWidget {
 }
 
 class _BookDashboardState extends State<BookDashboard> {
-  Future<List<Books>> fetchProduct() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/books');
+  Future<List<Books>> fetchProduct(String judul) async {
+    var url;
+    if (judul == "") {
+      url = Uri.parse('http://10.0.2.2:8000/api/books');
+    } else {
+      url = Uri.parse('http://10.0.2.2:8000/review/search-flutter/$judul/');
+    }
+
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
     );
-
+    // print(response.body);
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
     List<Books> list_product = [];
@@ -50,6 +56,8 @@ class _BookDashboardState extends State<BookDashboard> {
     return list_review;
   }
 
+  String judul = "";
+
   @override
   Widget build(BuildContext context) {
     Future<List<Review>> list_review;
@@ -60,7 +68,8 @@ class _BookDashboardState extends State<BookDashboard> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              width: 200, // Adjust the width as needed
+              width: MediaQuery.of(context).size.width *
+                  0.7, // Adjust the width as needed
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Search...',
@@ -71,6 +80,9 @@ class _BookDashboardState extends State<BookDashboard> {
                 ),
                 onChanged: (value) {
                   // Implement search functionality here
+                  setState(() {
+                    judul = value;
+                  });
                 },
               ),
             ),
@@ -79,7 +91,7 @@ class _BookDashboardState extends State<BookDashboard> {
       ),
       drawer: RightDrawer(),
       body: FutureBuilder(
-        future: fetchProduct(),
+        future: fetchProduct(judul),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return const Center(child: CircularProgressIndicator());
@@ -100,67 +112,71 @@ class _BookDashboardState extends State<BookDashboard> {
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
+                    crossAxisCount:
+                        MediaQuery.of(context).size.width > 600 ? 4 : 1,
                     crossAxisSpacing: 16.0,
                     mainAxisSpacing: 16.0,
                   ),
                   itemCount: snapshot.data!.length,
                   itemBuilder: (_, index) => Card(
-                    margin: const EdgeInsets.all(0),
-                    elevation: 5.0,
-                    child: SingleChildScrollView(
+                    margin: const EdgeInsets.all(8.0),
+                    elevation: 0.0, // Set elevation to 0.0 to remove the shadow
+                    child: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        color:
+                            Color.fromARGB(255, 255, 255, 255).withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(
+                          color: Colors.grey.shade900, // Darker border
+                        ),
+                      ),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "${snapshot.data![index].title}",
-                                  style: const TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  "${snapshot.data![index].author}",
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  "${snapshot.data![index].subjects}",
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                          Text(
+                            "${snapshot.data![index].title}",
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
                             ),
+                            textAlign: TextAlign.center,
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(10.0),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.transparent,
-                                side: BorderSide(color: Colors.grey.shade300),
-                              ),
-                              onPressed: () {
-                                print(
-                                    'Add Review clicked: ${snapshot.data![index].title}');
-                                list_review =
-                                    fetchReview(snapshot.data![index].id);
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DetailReviewPage(
-                                      book: snapshot.data![index],
-                                      review: list_review,
-                                    ),
+                          const SizedBox(height: 10),
+                          Text(
+                            "${snapshot.data![index].author}",
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            "${snapshot.data![index].subjects}",
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFC44B6A),
+                              side: BorderSide(color: Colors.transparent),
+                            ),
+                            onPressed: () {
+                              print(
+                                  'Add Review clicked: ${snapshot.data![index].title}');
+                              list_review =
+                                  fetchReview(snapshot.data![index].id);
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailReviewPage(
+                                    book: snapshot.data![index],
+                                    review: list_review,
                                   ),
-                                );
-                              },
-                              child: Text('Add Review'),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Add Review',
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ],

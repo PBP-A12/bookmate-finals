@@ -78,7 +78,7 @@ class _AddReview extends State<AddReview> {
                       // Kirim ke Django dan tunggu respons
                       // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
                       final response = await request.postJson(
-                          "http://localhost:8000/review/add-review-flutter/",
+                          "http://10.0.2.2:8000/review/add-review-flutter/",
                           jsonEncode(<String, String>{
                             'id': widget.book.id.toString(),
                             'review': _review,

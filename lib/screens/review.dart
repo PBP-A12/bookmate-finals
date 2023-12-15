@@ -20,7 +20,7 @@ class DetailReviewPage extends StatefulWidget {
 class _DetailReviewPage extends State<DetailReviewPage> {
   Future<List<Review>> fetchReview(int id) async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-    var url = Uri.parse('http://localhost:8000/review/get-review/$id/');
+    var url = Uri.parse('http://10.0.2.2:8000/review/get-review/$id/');
     // var http;
     var response = await http.get(
       url,
@@ -47,120 +47,130 @@ class _DetailReviewPage extends State<DetailReviewPage> {
     id = widget.book.id;
     _review = fetchReview(id);
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Item Detail'),
-        ),
-        drawer: const RightDrawer(),
-        body: RefreshIndicator(
-          onRefresh: () async {
-            _review = fetchReview(id);
-          },
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Book Title
-                Center(
-                  child: Text(
-                    widget.book.title,
-                    style: const TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+      appBar: AppBar(
+        title: const Text('Item Detail'),
+      ),
+      drawer: const RightDrawer(),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          _review = fetchReview(id);
+        },
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Book Title
+              Center(
+                child: Text(
+                  widget.book.title,
+                  style: const TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 20.0), // Add some spacing
+              ),
+              const SizedBox(height: 20.0), // Add some spacing
 
-                // Add Review Button
-                ElevatedButton(
-                  onPressed: () {
-                    // Add functionality to navigate to the "Add Review" screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddReview(
-                          book: widget.book,
-                          review: widget.review,
-                        ),
+              // Add Review Button
+              ElevatedButton(
+                onPressed: () {
+                  // Add functionality to navigate to the "Add Review" screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddReview(
+                        book: widget.book,
+                        review: widget.review,
                       ),
-                    );
-                  },
-                  child: const Text('Add Review'),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFC44B6A), // Pink background color
                 ),
-                const SizedBox(height: 20.0), // Add some spacing
+                child: const Text(
+                  'Add Review',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              const SizedBox(height: 20.0), // Add some spacing
 
-                // User Reviews
-                FutureBuilder(
-                  future: _review,
-                  builder: (context, AsyncSnapshot<List<Review>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      // Create rows for user reviews
-                      List<Widget> rows = [];
-                      for (int i = 0; i < snapshot.data!.length; i += 3) {
-                        List<Widget> reviewsInRow = [];
-                        for (int j = i;
-                            j < i + 3 && j < snapshot.data!.length;
-                            j++) {
-                          var review = snapshot.data![j];
-                          reviewsInRow.add(
-                            Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 12),
-                                padding: const EdgeInsets.all(20.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Colors.black, blurRadius: 2.0),
-                                  ],
+              // User Reviews
+              FutureBuilder(
+                future: _review,
+                builder: (context, AsyncSnapshot<List<Review>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    // Create rows for user reviews
+                    List<Widget> rows = [];
+                    for (int i = 0; i < snapshot.data!.length; i += 2) {
+                      List<Widget> reviewsInRow = [];
+                      for (int j = i;
+                          j < i + 2 && j < snapshot.data!.length;
+                          j++) {
+                        var review = snapshot.data![j];
+                        reviewsInRow.add(
+                          Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 12),
+                              padding: const EdgeInsets.all(20.0),
+                              decoration: BoxDecoration(
+                                color: Colors.white, // Pure white background
+                                borderRadius: BorderRadius.circular(30.0),
+                                border: Border.all(
+                                  color: Colors.black, // Black border
                                 ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const SizedBox(height: 15),
-                                    Text(
-                                      "${review.review}",
-                                      style: const TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.black, blurRadius: 2.0),
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const SizedBox(height: 15),
+                                  Text(
+                                    "${review.review}",
+                                    style: const TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      "${review.reviewerAccountUsername}",
-                                      style: const TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey,
-                                      ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    "${review.reviewerAccountUsername}",
+                                    style: const TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
                                     ),
-                                    const SizedBox(height: 5),
-                                  ],
-                                ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                ],
                               ),
                             ),
-                          );
-                        }
-                        rows.add(Row(children: reviewsInRow));
+                          ),
+                        );
                       }
-
-                      return Column(
-                        children: rows,
-                      );
+                      rows.add(Row(children: reviewsInRow));
                     }
-                  },
-                ),
-              ],
-            ),
+
+                    return Column(
+                      children: rows,
+                    );
+                  }
+                },
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
