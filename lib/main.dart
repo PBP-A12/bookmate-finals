@@ -2,7 +2,6 @@ import 'package:bookmate/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:bookmate/screens/match.dart';   // test aja
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'BOOKMATE',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFB6536B)),
           useMaterial3: true,
         ),
         home: const LoginPage(),

@@ -12,7 +12,7 @@ class RightDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-            color: Color(0xFFB6536B),
+            color: Color(0xFFB6536B), 
           ),
           child: Column(
             children: [
@@ -84,8 +84,8 @@ class RightDrawer extends StatelessWidget {
           ),
 
           ListTile(
-            leading: Icon(Icons.diversity_1_outlined),
-            title: Text('Match'),
+            leading: const Icon(Icons.diversity_1_outlined),
+            title: const Text('Match'),
             onTap: () {
               Navigator.pushReplacement(
                 context,
