@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:bookmate/ester/models/book.dart';
+import 'package:bookmate/globals.dart' as globals;
 
 
 class RecommendedBook extends StatefulWidget {
@@ -14,7 +15,7 @@ class RecommendedBook extends StatefulWidget {
 class _RecommendedBookState extends State<RecommendedBook> {
   Future<Book> fetchBook() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-    var url = Uri.parse("http://127.0.0.1:8000/api/books/random/");
+    var url = Uri.parse("${globals.domain}/api/books/random/");
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},

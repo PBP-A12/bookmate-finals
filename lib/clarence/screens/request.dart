@@ -106,7 +106,7 @@ class _RequestsPageState extends State<RequestPage> {
     }
     final response = await http.get(
       Uri.parse(
-          '${globals.domain}/request/get-request-json-user/?sortby=$sort'),
+          '${globals.domain}/request/get-request-json-user-flutter/?sortby=$sort'),
       // Uri.parse('http://10.0.2.2:8000/request/get-request-json-user-flutter/?sortby=$sort'),
       headers: request.headers,
     );
