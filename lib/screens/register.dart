@@ -4,6 +4,7 @@ import 'package:bookmate/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:bookmate/globals.dart' as globals;
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -76,7 +77,7 @@ class RegisterPageState extends State<RegisterPage> {
                   // Cek kredensial
                   // Untuk menyambungkan Android emulator dengan Django pada localhost,
                   // gunakan URL http://10.0.2.2/
-                  final response = await request.postJson("http://127.0.0.1:8000/auth/register-flutter/", jsonEncode({
+                  final response = await request.postJson("${globals.domain}/auth/register-flutter/", jsonEncode({
                     "username": username,
                     "password1": password1,
                     "password2":password2,
