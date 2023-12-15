@@ -2,8 +2,6 @@ import 'package:bookmate/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:bookmate/ester/widgets/primary_button.dart';
-import 'package:bookmate/ester/widgets/secondary_button.dart';
 import 'package:bookmate/ester/screens/layout.dart';
 
 class LoginPage extends StatefulWidget {
@@ -93,8 +91,8 @@ class _LoginPageState extends State<LoginPage> {
               child: const Text('Login'),
             ),
             const SizedBox(height: 12.0),
-            SecondaryButton(
-              text: 'Don\'t have an account? Register',
+            TextButton(
+              child: const Text('Don\'t have an account? Register'),
               onPressed: () {
                 Navigator.pushReplacement(
                   context,

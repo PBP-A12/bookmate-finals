@@ -68,8 +68,8 @@ class RegisterPageState extends State<RegisterPage> {
                 },
               ),
               const SizedBox(height: 24.0),
-              PrimaryButton(
-                text: 'Register',
+              FilledButton(
+                child: const Text('Register'),
                 onPressed: () async {
                   String username = _usernameController.text;
                   String password1 = _passwordController.text;
@@ -108,8 +108,9 @@ class RegisterPageState extends State<RegisterPage> {
                   }
                 },
               ),
-              SecondaryButton(
-                text: 'Already have an account? Log in', 
+              const SizedBox(height: 12.0),
+              TextButton(
+                child: const Text('Already have an account? Log in'), 
                 onPressed: () => {
                   Navigator.pushReplacement(
                     context,

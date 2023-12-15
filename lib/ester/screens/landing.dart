@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bookmate/screens/login.dart';
 import 'package:bookmate/screens/register.dart';
-import 'package:bookmate/ester/widgets/primary_button.dart';
-import 'package:bookmate/ester/widgets/secondary_button.dart';
-// import 'package:bookmate/theme.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
