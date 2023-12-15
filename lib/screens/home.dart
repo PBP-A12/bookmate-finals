@@ -1,4 +1,5 @@
-import 'package:bookmate/widgets/right_drawer.dart';
+import 'package:bookmate/widgets/app_bar.dart';
+import 'package:bookmate/widgets/nav_bar.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,15 +16,21 @@ class HomePage extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
         return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Game Inventory',
-        ),
-        backgroundColor: Colors.indigo,
-        foregroundColor: Colors.white,
+      appBar: 
+      PreferredSize(
+        preferredSize: const Size.fromHeight(60.0),
+        child: AppBarWidget(),
       ),
+      // AppBar(
+      //   title: const Text(
+      //     'Bookmate',
+      //   ),
+      //   backgroundColor: Colors.indigo,
+      //   foregroundColor: Colors.white,
+      // ),
       // Masukkan drawer sebagai parameter nilai drawer dari widget Scaffold
-      endDrawer: const RightDrawer(),
+      // endDrawer: const RightDrawer(),
+      bottomNavigationBar: NavBar(),
       body: SingleChildScrollView(
         // Widget wrapper yang dapat discroll
         child: Padding(
@@ -31,18 +38,18 @@ class HomePage extends StatelessWidget {
           child: Column(
             // Widget untuk menampilkan children secara vertikal
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                // Widget Text untuk menampilkan tulisan dengan alignment center dan style yang sesuai
-                child: Text(
-                  'Game Inventory', // Text yang menandakan toko
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              // const Padding(
+              //   padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+              //   // Widget Text untuk menampilkan tulisan dengan alignment center dan style yang sesuai
+              //   child: Text(
+              //     // 'Game Inventory', // Text yang menandakan toko
+              //     textAlign: TextAlign.center,
+              //     style: TextStyle(
+              //       fontSize: 30,
+              //       fontWeight: FontWeight.bold,
+              //     ),
+              //   ),
+              // ),
               // Grid layout
               GridView.count(
                 // Container pada card kita.

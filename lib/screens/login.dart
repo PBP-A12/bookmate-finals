@@ -4,10 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-    runApp(const LoginApp());
-}
-
 class LoginApp extends StatelessWidget {
 const LoginApp({super.key});
 
@@ -69,7 +65,10 @@ class LoginPageState extends State<LoginPage> {
                                 // Cek kredensial                                
                                 // Untuk menyambungkan Android emulator dengan Django pada localhost,
                                 // gunakan URL http://10.0.2.2/
-                                final response = await request.login("https://bookmate-a12-tk.pbp.cs.ui.ac.id/auth/login-flutter/", {
+                                // final response = await request.login("http://127.0.0.1:8000/auth/login-flutter/", 
+                                // TODO: ganti ke url deploy
+                                final response = await request.login("http://10.0.2.2:8000/auth/login-flutter/",
+                                {
                                 'username': username,
                                 'password': password,
                                 });
