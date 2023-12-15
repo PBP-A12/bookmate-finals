@@ -3,31 +3,17 @@ import 'package:bookmate/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:bookmate/globals.dart' as globals;
-
-class LoginApp extends StatelessWidget {
-  const LoginApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Login',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const LoginPage(),
-    );
-  }
-}
+import 'package:bookmate/ester/screens/layout.dart';
+import 'package:bookmate/globals.dart' as globals; 
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  LoginPageState createState() => LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -58,7 +44,7 @@ class LoginPageState extends State<LoginPage> {
               obscureText: true,
             ),
             const SizedBox(height: 24.0),
-            ElevatedButton(
+            FilledButton(
               onPressed: () async {
                 String username = _usernameController.text;
                 String password = _passwordController.text;
@@ -66,12 +52,11 @@ class LoginPageState extends State<LoginPage> {
                 // Cek kredensial
                 // Untuk menyambungkan Android emulator dengan Django pada localhost,
                 // gunakan URL http://10.0.2.2/
-                final response = await request.login(
-                    "${globals.domain}/auth/login-flutter/",                    
-                    {
-                      'username': username,
-                      'password': password,
-                    });
+                final response = await request
+                    .login("${globals.domain}/auth/login-flutter/", {
+                  'username': username,
+                  'password': password,
+                });
 
                 if (request.loggedIn) {
                   String message = response['message'];
@@ -107,14 +92,14 @@ class LoginPageState extends State<LoginPage> {
               child: const Text('Login'),
             ),
             const SizedBox(height: 12.0),
-            ElevatedButton(
+            TextButton(
+              child: const Text('Don\'t have an account? Register'),
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const RegisterPage()),
                 );
               },
-              child: const Text('Register'),
             ),
           ],
         ),

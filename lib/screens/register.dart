@@ -67,7 +67,7 @@ class RegisterPageState extends State<RegisterPage> {
                 },
               ),
               const SizedBox(height: 24.0),
-              ElevatedButton(
+              FilledButton(
                 child: const Text('Register'),
                 onPressed: () async {
                   String username = _usernameController.text;
@@ -77,30 +77,32 @@ class RegisterPageState extends State<RegisterPage> {
                   // Cek kredensial
                   // Untuk menyambungkan Android emulator dengan Django pada localhost,
                   // gunakan URL http://10.0.2.2/
-                  final response = await request.postJson("${globals.domain}/auth/register-flutter/", jsonEncode({
-                    "username": username,
-                    "password1": password1,
-                    "password2":password2,
-                  }));
-                  if (response['status']=='success'){
+                  final response = await request.postJson(
+                      "${globals.domain}/auth/register-flutter/",
+                      jsonEncode({
+                        "username": username,
+                        "password1": password1,
+                        "password2": password2,
+                      }));
+                  if (!context.mounted) return;
+                  if (response['status'] == 'success') {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Successfully registered!'),
                       ),
                     );
                     Navigator.pushReplacement(
-                      context, 
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                      );
-                  } else if (response['status']=='username_exists'){
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
+                    );
+                  } else if (response['status'] == 'username_exists') {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text('Username already exists!'),
                       ),
                     );
-                  }
-                  
-                  else {
+                  } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Failed to register!'),
@@ -109,6 +111,16 @@ class RegisterPageState extends State<RegisterPage> {
                   }
                 },
               ),
+              const SizedBox(height: 12.0),
+              TextButton(
+                  child: const Text('Already have an account? Log in'),
+                  onPressed: () => {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()),
+                        )
+                      })
             ],
           ),
         ),

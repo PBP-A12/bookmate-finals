@@ -22,24 +22,15 @@ class _NavBarState extends State<NavBar> {
     final NavigationProvider navigationProvider =
         Provider.of<NavigationProvider>(context);
     currentPageIndex = navigationProvider.getCurrentIndex();
-    // const fgColor = Colors.white;
-    // const bgColor = Color(0xFFC44B6A);
-    // const textStyle = TextStyle(
-    //   fontSize: 20,
-    //   fontWeight: FontWeight.bold,
-    //   color: fgColor,
-    // );
 
     return 
         NavigationBar(
           onDestinationSelected: (int index) {
-            setState(() {
-              print(index);
-              // currentPageIndex = index;
+            setState(() {              
               navigationProvider.setIndex(index);
               currentPageIndex = navigationProvider.getCurrentIndex();
               if (index == 0){
-              Navigator.pushReplacement(
+              Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => HomePage(),
@@ -60,10 +51,11 @@ class _NavBarState extends State<NavBar> {
               //     ));
               }
               else if (index == 3){
-              Navigator.pushReplacement(
+              Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => RequestPage(),
+                    
                   ));
               }
               else if (index == 4){
@@ -104,39 +96,7 @@ class _NavBarState extends State<NavBar> {
               selectedIcon: Icon(Icons.person, color: Colors.white,),
               label: 'Profile',
             ),
-          ],
-          
+          ],          
         );
-        // body: <Widget>[
-        //   // const HomePage(),
-        //   Container(
-        //     alignment: Alignment.center,
-        //     child: const Text(
-        //       'Match',
-        //       style: TextStyle(fontSize: 24),
-        //     ),
-        //   ),
-        //   Container(
-        //     alignment: Alignment.center,
-        //     child: const Text(
-        //       'Review',
-        //       style: TextStyle(fontSize: 24),
-        //     ),
-        //   ),
-        //   Container(
-        //     alignment: Alignment.center,
-        //     child: const Text(
-        //       'Request',
-        //       style: TextStyle(fontSize: 24),
-        //     ),
-        //   ),
-        //   Container(
-        //     alignment: Alignment.center,
-        //     child: const Text(
-        //       'Profile',
-        //       style: TextStyle(fontSize: 24),
-        //     ),
-        //   ),
-        // ][currentPageIndex]);
   }
 }
