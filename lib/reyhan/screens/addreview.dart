@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:bookmate/reyhan/models/books.dart';
+import 'package:bookmate/reyhan/models/book.dart';
 import 'package:bookmate/reyhan/models/book_review.dart';
 import 'package:bookmate/reyhan/screens/dashboardbuku.dart';
 import 'package:bookmate/ester/screens/home.dart';
@@ -10,9 +10,9 @@ import 'package:provider/provider.dart';
 import 'package:bookmate/globals.dart' as globals;
 
 class AddReview extends StatefulWidget {
-  final Books book;
-  final Future<List<Review>> review;
-  const AddReview({Key? key, required this.book, required this.review})
+  final Book book;
+  // final Future<List<Review>> review;
+  const AddReview({Key? key, required this.book})
       : super(key: key);
 
   @override
@@ -112,15 +112,8 @@ class _AddReview extends State<AddReview> {
                               content: Text("Produk baru berhasil disimpan!"),
                             ),
                           );
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailReviewPage(
-                                book: widget.book,
-                                review: widget.review,
-                              ),
-                            ),
-                          );
+                          Navigator.pop(context);
+                          
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
