@@ -1,10 +1,14 @@
+import 'package:bookmate/azmy/models/profile.dart';
+import 'package:bookmate/azmy/screens/profile.dart';
 import 'package:bookmate/clarence/widgets/app_bar.dart';
+import 'package:bookmate/provider.dart';
 import 'package:bookmate/vinka/screens/match.dart';
 // import 'package:bookmate/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:bookmate/ester/screens/home.dart';
 import 'package:bookmate/clarence/screens/request.dart';
-import 'package:bookmate/reyhan/screens/dashboardbuku.dart'; 
+import 'package:bookmate/reyhan/screens/dashboardbuku.dart';
+import 'package:provider/provider.dart'; 
 import 'package:bookmate/azmy/models/profile.dart';
 import 'package:bookmate/azmy/screens/profile.dart';
 //import 'package:bookmate/provider.dart'; 
@@ -22,7 +26,8 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
-    //LoginUser? user = Provider.of<UserProvider>(context).user;    
+    LoginUser? loggedInUser = Provider.of<UserProvider>(context).user;
+    int? loggedInUserId = loggedInUser?.id;
 
     return WillPopScope(
       onWillPop: () async {
@@ -93,13 +98,8 @@ class _LayoutState extends State<Layout> {
             const BookDashboard(),
             const RequestPage(),
             // TODO: Add other pages here
-            Container(
-              alignment: Alignment.center,
-              child: const Text(
-                'Profile',
-                style: TextStyle(fontSize: 24),
-              ),
-            ), 
+  
+            ProfileDashboard(id: loggedInUserId)
           ][currentPageIndex]),
     );
   }
