@@ -194,29 +194,17 @@ class _MatchPageState extends State<MatchPage> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title: const Text('Get Ready to Connect!', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                                            title: const Text('Exciting Match Awaits!', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                                             content: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                const Text(
-                                                  'Exciting Match Awaits!',
-                                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                                ),
                                                 const SizedBox(height: 10),
-                                                const Text(
-                                                  'Are you ready to make a connection with:',
+                                                Text(
+                                                  'Are you ready to make a match with ${cards[currentIndex]['name']}?',
                                                   style: TextStyle(fontSize: 14),
                                                 ),
                                                 const SizedBox(height: 5),
-                                                Text(
-                                                  '${cards[currentIndex]['name']}?',
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontStyle: FontStyle.italic,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
                                               ],
                                             ),
                                             actions: [
