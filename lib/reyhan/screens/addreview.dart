@@ -112,14 +112,8 @@ class _AddReview extends State<AddReview> {
                               content: Text("Produk baru berhasil disimpan!"),
                             ),
                           );
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailReviewPage(
-                                book: widget.book,                                
-                              ),
-                            ),
-                          );
+                          Navigator.pop(context);
+                          
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

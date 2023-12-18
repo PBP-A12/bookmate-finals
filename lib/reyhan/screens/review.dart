@@ -82,7 +82,9 @@ class _DetailReviewPage extends State<DetailReviewPage> {
                         book: widget.book,
                       ),
                     ),
-                  );
+                  ).then((value) => setState(() {
+                        _review = fetchReview(id);
+                      }));
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xFFC44B6A), // Pink background color
