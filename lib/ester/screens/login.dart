@@ -5,6 +5,8 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:bookmate/ester/screens/layout.dart';
 import 'package:bookmate/globals.dart' as globals; 
+import 'package:bookmate/azmy/models/profile.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -61,6 +63,11 @@ class _LoginPageState extends State<LoginPage> {
                 if (request.loggedIn) {
                   String message = response['message'];
                   String uname = response['username'];
+                  int id = response['id'];
+                 // LoginUser newUser = LoginUser(id: id, username: uname);
+
+                 // Provider.of<UserProvider>(context, listen: false).setUser(newUser);
+
                   if (!context.mounted) return;
                   Navigator.pushReplacement(
                     context,

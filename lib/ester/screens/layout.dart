@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:bookmate/ester/screens/home.dart';
 import 'package:bookmate/clarence/screens/request.dart';
 import 'package:bookmate/reyhan/screens/dashboardbuku.dart'; 
-
+import 'package:bookmate/azmy/models/profile.dart';
+import 'package:bookmate/azmy/screens/profile.dart';
+//import 'package:bookmate/provider.dart'; 
+import 'package:provider/provider.dart';
 
 class Layout extends StatefulWidget {
   const Layout({Key? key}) : super(key: key);
@@ -19,6 +22,8 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
+    //LoginUser? user = Provider.of<UserProvider>(context).user;    
+
     return WillPopScope(
       onWillPop: () async {
         setState(() {
@@ -94,7 +99,7 @@ class _LayoutState extends State<Layout> {
                 'Profile',
                 style: TextStyle(fontSize: 24),
               ),
-            ),
+            ), 
           ][currentPageIndex]),
     );
   }
