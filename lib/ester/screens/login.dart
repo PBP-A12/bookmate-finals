@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                 if (request.loggedIn) {
                   String message = response['message'];
                   String uname = response['username'];
-                  int id = response['id'];
+                  // int id = response['id'];
                  // LoginUser newUser = LoginUser(id: id, username: uname);
 
                  // Provider.of<UserProvider>(context, listen: false).setUser(newUser);

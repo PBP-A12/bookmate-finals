@@ -1,4 +1,8 @@
+import 'package:bookmate/ester/screens/login.dart';
 import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:bookmate/globals.dart' as globals;
 
 // import 'package:bookmate/ester/screens/home.dart';
 
@@ -25,6 +29,7 @@ class _AppBarWidgetState extends State<StatefulWidget> {
       fit: BoxFit.fitHeight,
       height: 70,
     );
+    final request = context.watch<CookieRequest>();
     return 
         AppBar(
           toolbarHeight: 100,
@@ -33,40 +38,27 @@ class _AppBarWidgetState extends State<StatefulWidget> {
             padding: EdgeInsets.only(top: 20 ),
             alignment: Alignment.centerLeft,
           ),
-          // backgroundColor: Colors.white,
-          // foregroundColor: Colors.black,
+          actions: [
+            IconButton(icon: Icon(Icons.logout,
+            color: Colors.black,),
+              onPressed: () async {
+                final response = await request.logout("${globals.domain}/auth/logout-flutter/");
+                if (response['status']) {
+                String username = response['username'];
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => LoginPage())
+                      );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Goodbye, ${username}! See you soon! 👋')));
+                }
+                else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Logout failed')));
+                }
+              },
+            ),
+          ],
           automaticallyImplyLeading: false, // remove back button
-          // actions: <Widget>[
-          //   IconButton(
-          //     icon: const Icon(Icons.add_alert),
-          //     tooltip: 'Show Snackbar',
-          //     onPressed: () {
-          //       ScaffoldMessenger.of(context).showSnackBar(
-          //           const SnackBar(content: Text('This is a snackbar')));
-          //     },
-          //   ),
-          //   IconButton(
-          //     icon: const Icon(Icons.navigate_next),
-          //     tooltip: 'Go to the next page',
-          //     onPressed: () {
-          //       Navigator.push(context, MaterialPageRoute<void>(
-          //         builder: (BuildContext context) {
-          //           return Scaffold(
-          //             appBar: AppBar(
-          //               title: const Text('Next page'),
-          //             ),
-          //             body: const Center(
-          //               child: Text(
-          //                 'This is the next page',
-          //                 style: TextStyle(fontSize: 24),
-          //               ),
-          //             ),
-          //           );
-          //         },
-          //       ));
-          //     },
-          //   ),
-          // ],
         );
   }
 }
