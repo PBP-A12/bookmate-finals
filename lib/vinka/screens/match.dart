@@ -9,16 +9,15 @@ import 'package:bookmate/azmy/screens/profile.dart';
 
 
 class MatchPage extends StatefulWidget {
-  MatchPage({Key? key}) : super(key: key);
+  const MatchPage({Key? key}) : super(key: key);
 
   @override
-  _MatchPageState createState() => _MatchPageState();
+  MatchPageState createState() => MatchPageState();
 }
 
-class _MatchPageState extends State<MatchPage> {
+class MatchPageState extends State<MatchPage> {
   int currentIndex = 0;
   bool _showGuide = false;
-  bool _pressed = false;
 
   List<Map<String, dynamic>> cards = [
     {
@@ -197,6 +196,7 @@ class _MatchPageState extends State<MatchPage> {
                                 ),
                                   ElevatedButton.icon(
                                     onPressed: () async {
+                                      final scaffoldMessenger = ScaffoldMessenger.of(context);
                                       showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
@@ -209,7 +209,7 @@ class _MatchPageState extends State<MatchPage> {
                                                 const SizedBox(height: 10),
                                                 Text(
                                                   'Are you ready to make a match with ${cards[currentIndex]['name']}?',
-                                                  style: TextStyle(fontSize: 14),
+                                                  style: const TextStyle(fontSize: 14),
                                                 ),
                                                 const SizedBox(height: 5),
                                               ],
@@ -237,7 +237,7 @@ class _MatchPageState extends State<MatchPage> {
                                                         'id': cards[currentIndex]['userId'],
                                                       }));
                                                   if (response['status'] == 'success') {
-                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                    scaffoldMessenger.showSnackBar(
                                                       const SnackBar(
                                                         content: Text("Explore Your Favorite Books Together!"),
                                                       ),

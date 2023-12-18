@@ -1,9 +1,5 @@
 import 'dart:convert';
 import 'package:bookmate/reyhan/models/book.dart';
-import 'package:bookmate/reyhan/models/book_review.dart';
-import 'package:bookmate/reyhan/screens/dashboardbuku.dart';
-import 'package:bookmate/ester/screens/home.dart';
-import 'package:bookmate/reyhan/screens/review.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +29,7 @@ class _AddReview extends State<AddReview> {
             'Add Your Review 💓',
           ),
         ),
-        backgroundColor: Color(0xFFC44B6A),
+        backgroundColor: const Color(0xFFC44B6A),
         foregroundColor: Colors.white,
       ),
      
@@ -91,11 +87,11 @@ class _AddReview extends State<AddReview> {
                       style: TextStyle(color: Color(0xFFC44B6A)),
                     ),
                   ),
-                  SizedBox(width: 16), // Adjust the distance between buttons
+                  const SizedBox(width: 16), // Adjust the distance between buttons
                   ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Color(0xFFC44B6A)),
+                          MaterialStateProperty.all(const Color(0xFFC44B6A)),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
