@@ -2,13 +2,13 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:bookmate/globals.dart' as globals;
 
 import 'package:bookmate/azmy/models/profile.dart';
 import 'package:bookmate/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:bookmate/globals.dart' as globals;
 
 class ProfileDashboard extends StatefulWidget {
   final int? id;
@@ -90,10 +90,6 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Profile'),
-          backgroundColor: bgColor,
-        ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -173,14 +169,14 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                       indicatorSize: TabBarIndicatorSize.tab, 
                       indicator: BoxDecoration(
                         color: bgColor,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(30),
                       ),
                       tabs: const [
                         Tab(
                           text: 'Matched',
                         ),
                         Tab(
-                          text: 'Review',
+                          text: 'Reviews',
                         ),
                       ],
                     ),
@@ -198,32 +194,43 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                                       return const CircularProgressIndicator();
                                     } else if (snapshot.hasError) {
                                       return Text('Error: ${snapshot.error}');
-                                    } else if (!snapshot.hasData) {
-                                      return Container();
+                                    } else if (snapshot.data.length == 0) {
+                                      return Container(
+                                              margin: const EdgeInsets.only(top: 16.0), // Adjust the values as needed
+                                              child: const Text("No matched user yet.")
+                                              );
                                     } else {
                                       var userData = snapshot.data!;
                                       return Expanded(
                                         child: ListView.builder(
                                           itemCount: snapshot.data!.length,
                                           itemBuilder: (context, index) {
-                                            return ListTile(
-                                              title: Text(userData[index].user.fields.username),
-                                              trailing: ElevatedButton(
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ProfileDashboard( id: userData[index].pk)),
-                                                  );
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      const Color(0xFFB6536B),
+                                            return Container(
+                                              margin: const EdgeInsets.only(top: 4.0, bottom: 4.0), // Adjust the values as needed
+                                              child: ListTile(
+                                                leading: Container(
+                                                  width: 40,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: bgColor,
+                                                  ),
                                                 ),
-                                                child: const Text('See Profile',
-                                                style: TextStyle(
-                                                    color: Colors.white)),
+                                                title: Text(userData[index].user.fields.username),
+                                                trailing: ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => ProfileDashboard(id: userData[index].pk),
+                                                      ),
+                                                    );
+                                                  },
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: const Color(0xFFB6536B),
+                                                  ),
+                                                  child: const Text('See Profile', style: TextStyle(color: Colors.white)),
+                                                ),
                                               ),
                                             );
                                           },
@@ -242,19 +249,24 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                                       return const CircularProgressIndicator();
                                     } else if (snapshot.hasError) {
                                       return Text('Error: ${snapshot.error}');
-                                    } else if (!snapshot.hasData) {
-                                      return Container();
+                                    } else if (snapshot.data.length == 0) {
+                                      return Container(
+                                              margin: const EdgeInsets.only(top: 16.0), // Adjust the values as needed
+                                              child: const Text("No Review Yet.")
+                                              );
                                     } else {
                                       var userData = snapshot.data!;
                                       return Expanded(
-                                          child: ListView.builder(
-                                        itemCount: snapshot.data!.length,
-                                        itemBuilder: (context, index) {
-                                          return ListTile(
-                                            title: Text(userData[index].book.fields.title),
-                                          );
-                                        },
-                                      ));
+                                        child: ListView.builder(
+                                          itemCount: snapshot.data!.length,
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                              title: Text(userData[index].book.fields.title),
+                                              subtitle: Text('Review: ${userData[index].fields.review}'), // Add the review here
+                                            );
+                                          },
+                                        ),
+                                      );
                                   }})
                             ],
                           )
@@ -372,7 +384,7 @@ class _EditModalState extends State<EditModal> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         final response = await request.postJson(
-                          "${globals.domain}/user/edit_profile_flutter/$loggedInUserId",
+                          "http://127.0.0.1:8000/user/edit_profile_flutter/$loggedInUserId",
                           jsonEncode(<String, String>{
                             'age': _age.toString(),
                             'bio': _bio,
@@ -410,4 +422,4 @@ class _EditModalState extends State<EditModal> {
       ),
     );
   }
-} 
+}
