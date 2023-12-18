@@ -10,8 +10,10 @@
 - Reyhan Wiyasa Puspanegara (2206081925)
 - Vinka Alrezky As (2206820200)
 
-
-# Nama Aplikasi: BookMate
+# BookMate
+[![Staging](https://github.com/PBP-A12/bookmate-finals/actions/workflows/staging.yml/badge.svg)](https://github.com/PBP-A12/bookmate-finals/actions/workflows/staging.yml)
+[![Pre-Release](https://github.com/PBP-A12/bookmate-finals/actions/workflows/pre-release.yml/badge.svg)](https://github.com/PBP-A12/bookmate-finals/actions/workflows/pre-release.yml)
+[![Release](https://github.com/PBP-A12/bookmate-finals/actions/workflows/release.yml/badge.svg)](https://github.com/PBP-A12/bookmate-finals/actions/workflows/release.yml)
 [![Build status](https://build.appcenter.ms/v0.1/apps/ad48a5ec-935e-42f4-8601-636deac35517/branches/main/badge)](https://appcenter.ms)
 
 ## 💡 Cerita dan Manfaat Aplikasi
