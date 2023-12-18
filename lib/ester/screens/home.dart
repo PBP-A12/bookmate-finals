@@ -1,8 +1,6 @@
-import 'package:bookmate/reyhan/models/book.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:bookmate/ester/widgets/recommended_book_card.dart';
-import 'package:bookmate/reyhan/screens/review.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

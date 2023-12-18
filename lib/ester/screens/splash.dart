@@ -12,7 +12,6 @@ class SplashScreen extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Container(
-          // TODO: Add your splash screen UI components here
           padding: const EdgeInsets.all(16.00),
           child: const Center(
               child: Image(image: AssetImage('assets/images/app-logo.png'))),

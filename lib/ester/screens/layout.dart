@@ -32,7 +32,7 @@ class _LayoutState extends State<Layout> {
         return false;
       },
       child: Scaffold(
-          appBar: PreferredSize(
+          appBar: const PreferredSize(
             preferredSize: Size.fromHeight(70),
             child: AppBarWidget(),
           ),
@@ -42,7 +42,7 @@ class _LayoutState extends State<Layout> {
                 currentPageIndex = index;
               });
             },
-            indicatorColor: Color(0xFFC44B6A),
+            indicatorColor: const Color(0xFFC44B6A),
             selectedIndex: currentPageIndex,
             destinations: const <Widget>[
               NavigationDestination(
