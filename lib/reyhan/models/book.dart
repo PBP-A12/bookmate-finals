@@ -1,23 +1,22 @@
 // To parse this JSON data, do
 //
-//     final books = booksFromJson(jsonString);
+//     final book = bookFromJson(jsonString);
 
 import 'dart:convert';
 
-List<Books> booksFromJson(String str) =>
-    List<Books>.from(json.decode(str).map((x) => Books.fromJson(x)));
+Book bookFromJson(String str) => Book.fromJson(json.decode(str));
 
-String booksToJson(List<Books> data) =>
+String bookToJson(List<Book> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Books {
+class Book {
   int id;
   List<String> subjects;
   String title;
   String author;
   int year;
 
-  Books({
+  Book({
     required this.id,
     required this.subjects,
     required this.title,
@@ -25,7 +24,7 @@ class Books {
     required this.year,
   });
 
-  factory Books.fromJson(Map<String, dynamic> json) => Books(
+  factory Book.fromJson(Map<String, dynamic> json) => Book(
         id: json["id"],
         subjects: List<String>.from(json["subjects"].map((x) => x)),
         title: json["title"],

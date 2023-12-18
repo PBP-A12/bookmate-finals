@@ -1,19 +1,8 @@
+import 'package:bookmate/reyhan/models/book.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:bookmate/ester/widgets/recommended_book.dart';
-
-class DummyBook extends StatelessWidget {
-  const DummyBook({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: AppBar(
-        title: const Text("Dummy Book Page"),
-      ),
-      body: const Text("This is the page for book review"),
-    );
-  }
-}
+import 'package:bookmate/ester/widgets/recommended_book_card.dart';
+import 'package:bookmate/reyhan/screens/review.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -37,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: Colors.blue,
+        // color: Colors.blue,
         padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
         child: CarouselSlider(
           options: CarouselOptions(
@@ -46,23 +35,7 @@ class _HomePageState extends State<HomePage> {
           items: [1, 2, 3, 4, 5].map((i) {
             return Builder(
               builder: (BuildContext context) {
-                return Card(
-                    elevation: 0,
-                    color: Theme.of(context).colorScheme.surfaceVariant,
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const DummyBook()));
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                          // decoration: BoxDecoration(color: Colors.amber),
-                          padding: const EdgeInsets.all(8.00),
-                          child: const Center(child: RecommendedBook()),
-                        )));
+                return const RecommendedBookCard();
               },
             );
           }).toList(),

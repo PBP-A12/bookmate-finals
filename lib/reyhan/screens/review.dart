@@ -3,18 +3,16 @@ import 'dart:convert';
 import 'package:bookmate/reyhan/models/book_review.dart';
 import 'package:bookmate/reyhan/screens/addreview.dart';
 import 'package:flutter/material.dart';
-import 'package:bookmate/reyhan/models/books.dart';
+import 'package:bookmate/reyhan/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'package:bookmate/globals.dart' as globals;
 
 class DetailReviewPage extends StatefulWidget {
-  final Books book;
-  final Future<List<Review>> review;
-  const DetailReviewPage({Key? key, required this.book, required this.review})
-      : super(key: key);
+  final Book book;
+  const DetailReviewPage({Key? key, required this.book}) : super(key: key);
 
   @override
-  _DetailReviewPage createState() => _DetailReviewPage();
+  State<DetailReviewPage> createState() => _DetailReviewPage();
 }
 
 class _DetailReviewPage extends State<DetailReviewPage> {
@@ -30,13 +28,13 @@ class _DetailReviewPage extends State<DetailReviewPage> {
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
     // melakukan konversi data json menjadi object Review
-    List<Review> list_review = [];
+    List<Review> listReview = [];
     for (var d in data) {
       if (d != null) {
-        list_review.add(Review.fromJson(d));
+        listReview.add(Review.fromJson(d));
       }
     }
-    return list_review;
+    return listReview;
   }
 
   Future<List<Review>>? _review;
@@ -48,6 +46,8 @@ class _DetailReviewPage extends State<DetailReviewPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Item Detail'),
+        backgroundColor: const Color(0xFFC44B6A),
+        foregroundColor: Colors.white,
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -80,10 +80,11 @@ class _DetailReviewPage extends State<DetailReviewPage> {
                     MaterialPageRoute(
                       builder: (context) => AddReview(
                         book: widget.book,
-                        review: widget.review,
                       ),
                     ),
-                  );
+                  ).then((value) => setState(() {
+                        _review = fetchReview(id);
+                      }));
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xFFC44B6A), // Pink background color
