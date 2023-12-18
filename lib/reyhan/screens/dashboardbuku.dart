@@ -1,7 +1,7 @@
 import 'package:bookmate/reyhan/models/book_review.dart';
 import 'package:bookmate/reyhan/screens/review.dart';
 import 'package:flutter/material.dart';
-import 'package:bookmate/reyhan/models/books.dart';
+import 'package:bookmate/reyhan/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:bookmate/globals.dart' as globals;
@@ -14,7 +14,7 @@ class BookDashboard extends StatefulWidget {
 }
 
 class _BookDashboardState extends State<BookDashboard> {
-  Future<List<Books>> fetchProduct(String judul) async {
+  Future<List<Book>> fetchProduct(String judul) async {
     var url;
     if (judul == "") {
       url = Uri.parse('${globals.domain}/api/books/');
@@ -28,10 +28,10 @@ class _BookDashboardState extends State<BookDashboard> {
     // print(response.body);
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
-    List<Books> listProduct = [];
+    List<Book> listProduct = [];
     for (var d in data) {
       if (d != null) {
-        listProduct.add(Books.fromJson(d));
+        listProduct.add(Book.fromJson(d));
       }
     }
     return listProduct;
@@ -160,8 +160,7 @@ class _BookDashboardState extends State<BookDashboard> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => DetailReviewPage(
-                                    book: snapshot.data![index],
-                                    review: listReview,
+                                    book: snapshot.data![index],                                  
                                   ),
                                 ),
                               );
