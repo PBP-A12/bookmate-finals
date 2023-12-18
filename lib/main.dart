@@ -1,3 +1,4 @@
+import 'package:bookmate/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -22,8 +23,10 @@ final ThemeData myTheme = ThemeData(
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => UserProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
       child: const MyApp(),
     ),
   );

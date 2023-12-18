@@ -1,14 +1,13 @@
+import 'package:bookmate/azmy/models/profile.dart';
+import 'package:bookmate/azmy/screens/profile.dart';
 import 'package:bookmate/clarence/widgets/app_bar.dart';
-// import 'package:bookmate/widgets/app_bar.dart';
+import 'package:bookmate/provider.dart';
+import 'package:bookmate/vinka/screens/match.dart';
 import 'package:flutter/material.dart';
 import 'package:bookmate/ester/screens/home.dart';
 import 'package:bookmate/clarence/screens/request.dart';
-import 'package:bookmate/reyhan/screens/dashboardbuku.dart'; 
-import 'package:bookmate/vinka/screens/match.dart';
-import 'package:bookmate/azmy/models/profile.dart';
-import 'package:bookmate/azmy/screens/profile.dart';
-import 'package:bookmate/provider.dart'; 
-import 'package:provider/provider.dart';
+import 'package:bookmate/reyhan/screens/dashboardbuku.dart';
+import 'package:provider/provider.dart'; 
 
 class Layout extends StatefulWidget {
   const Layout({Key? key}) : super(key: key);
@@ -22,7 +21,7 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
-    LoginUser? loggedInUser = Provider.of<UserProvider>(context).user;    
+    LoginUser? loggedInUser = Provider.of<UserProvider>(context).user;
     int? loggedInUserId = loggedInUser?.id;
 
     return WillPopScope(
@@ -33,54 +32,17 @@ class _LayoutState extends State<Layout> {
         return false;
       },
       child: Scaffold(
-          appBar: PreferredSize(
+          appBar: const PreferredSize(
             preferredSize: Size.fromHeight(70),
             child: AppBarWidget(),
           ),
-          // appBar: AppBar(
-          //   title: appLogo,
-          //   backgroundColor: Colors.white,
-          //   foregroundColor: Colors.black,
-          //   automaticallyImplyLeading: false, // remove back button
-          //   actions: <Widget>[
-          //     IconButton(
-          //       icon: const Icon(Icons.add_alert),
-          //       tooltip: 'Show Snackbar',
-          //       onPressed: () {
-          //         ScaffoldMessenger.of(context).showSnackBar(
-          //             const SnackBar(content: Text('This is a snackbar')));
-          //       },
-          //     ),
-          //     IconButton(
-          //       icon: const Icon(Icons.navigate_next),
-          //       tooltip: 'Go to the next page',
-          //       onPressed: () {
-          //         Navigator.push(context, MaterialPageRoute<void>(
-          //           builder: (BuildContext context) {
-          //             return Scaffold(
-          //               appBar: AppBar(
-          //                 title: const Text('Next page'),
-          //               ),
-          //               body: const Center(
-          //                 child: Text(
-          //                   'This is the next page',
-          //                   style: TextStyle(fontSize: 24),
-          //                 ),
-          //               ),
-          //             );
-          //           },
-          //         ));
-          //       },
-          //     ),
-          //   ],
-          // ),
           bottomNavigationBar: NavigationBar(
             onDestinationSelected: (int index) {
               setState(() {
                 currentPageIndex = index;
               });
             },
-            indicatorColor: Color(0xFFC44B6A),
+            indicatorColor: const Color(0xFFC44B6A),
             selectedIndex: currentPageIndex,
             destinations: const <Widget>[
               NavigationDestination(
@@ -127,19 +89,10 @@ class _LayoutState extends State<Layout> {
           ),
           body: <Widget>[
             const HomePage(),
-            // TODO: Add other pages here
             MatchPage(),
-            BookDashboard(),
-            RequestPage(),
-            ProfileDashboard(id : loggedInUserId),
-            /*
-            Container(
-              alignment: Alignment.center,
-              child: const Text(
-                'Profile',
-                style: TextStyle(fontSize: 24),
-              ),
-            ), */
+            const BookDashboard(),
+            const RequestPage(),
+            ProfileDashboard(id: loggedInUserId)
           ][currentPageIndex]),
     );
   }

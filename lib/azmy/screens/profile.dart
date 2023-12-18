@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bookmate/globals.dart' as globals;
@@ -98,7 +99,6 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
               FutureBuilder(
                 future: fetchUser(),
                 builder: (context, AsyncSnapshot<ChoosenUser> snapshot) {
-
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
@@ -134,28 +134,26 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                           ),
                         ),
                         if (loggedInUser?.id == userData.user[0].pk)
-                        ElevatedButton(
-                          onPressed: () async {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return EditModal(
-                                  refreshCallback: refreshData,
-                                );
-                              },
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: bgColor,
+                          ElevatedButton(
+                            onPressed: () async {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return EditModal(
+                                    refreshCallback: refreshData,
+                                  );
+                                },
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: bgColor,
+                            ),
+                            child: const Text('Edit Profile',
+                                style: TextStyle(color: Colors.white)),
                           ),
-                          child: const Text('Edit Profile',
-                            style: TextStyle(
-                              color: Colors.white)),
-                        ),
                       ],
                     );
                   }
-
                 },
               ),
               const SizedBox(height: 16),
@@ -166,7 +164,7 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                     TabBar(
                       labelColor: Colors.white,
                       unselectedLabelColor: bgColor,
-                      indicatorSize: TabBarIndicatorSize.tab, 
+                      indicatorSize: TabBarIndicatorSize.tab,
                       indicator: BoxDecoration(
                         color: bgColor,
                         borderRadius: BorderRadius.circular(30),
@@ -189,53 +187,69 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                               FutureBuilder(
                                   future: fetchMatched(),
                                   builder: (context, AsyncSnapshot snapshot) {
-
-                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
                                       return const CircularProgressIndicator();
                                     } else if (snapshot.hasError) {
                                       return Text('Error: ${snapshot.error}');
                                     } else if (snapshot.data.length == 0) {
                                       return Container(
-                                              margin: const EdgeInsets.only(top: 16.0), // Adjust the values as needed
-                                              child: const Text("No matched user yet.")
-                                              );
+                                          margin: const EdgeInsets.only(
+                                              top:
+                                                  16.0), // Adjust the values as needed
+                                          child: const Text(
+                                              "No matched user yet."));
                                     } else {
                                       var userData = snapshot.data!;
                                       return Expanded(
-                                        child: ListView.builder(
-                                          itemCount: snapshot.data!.length,
-                                          itemBuilder: (context, index) {
-                                            return Container(
-                                              margin: const EdgeInsets.only(top: 4.0, bottom: 4.0), // Adjust the values as needed
-                                              child: ListTile(
-                                                leading: Container(
-                                                  width: 40,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: bgColor,
-                                                  ),
-                                                ),
-                                                title: Text(userData[index].user.fields.username),
-                                                trailing: ElevatedButton(
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) => ProfileDashboard(id: userData[index].pk),
-                                                      ),
-                                                    );
-                                                  },
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: const Color(0xFFB6536B),
-                                                  ),
-                                                  child: const Text('See Profile', style: TextStyle(color: Colors.white)),
+                                          child: ListView.builder(
+                                        itemCount: snapshot.data!.length,
+                                        itemBuilder: (context, index) {
+                                          return Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 4.0,
+                                                bottom:
+                                                    4.0), // Adjust the values as needed
+                                            child: ListTile(
+                                              leading: Container(
+                                                width: 40,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: bgColor,
                                                 ),
                                               ),
-                                            );
-                                          },
-                                        ));
-                                  }})
+                                              title: Text(userData[index]
+                                                  .user
+                                                  .fields
+                                                  .username),
+                                              trailing: ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProfileDashboard(
+                                                              id: userData[
+                                                                      index]
+                                                                  .pk),
+                                                    ),
+                                                  );
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      const Color(0xFFB6536B),
+                                                ),
+                                                child: const Text('See Profile',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ));
+                                    }
+                                  })
                             ],
                           ),
                           Column(
@@ -244,16 +258,17 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                               FutureBuilder(
                                   future: fetchReviews(),
                                   builder: (context, AsyncSnapshot snapshot) {
-
-                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
                                       return const CircularProgressIndicator();
                                     } else if (snapshot.hasError) {
                                       return Text('Error: ${snapshot.error}');
                                     } else if (snapshot.data.length == 0) {
                                       return Container(
-                                              margin: const EdgeInsets.only(top: 16.0), // Adjust the values as needed
-                                              child: const Text("No Review Yet.")
-                                              );
+                                          margin: const EdgeInsets.only(
+                                              top:
+                                                  16.0), // Adjust the values as needed
+                                          child: const Text("No Review Yet."));
                                     } else {
                                       var userData = snapshot.data!;
                                       return Expanded(
@@ -261,13 +276,18 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                                           itemCount: snapshot.data!.length,
                                           itemBuilder: (context, index) {
                                             return ListTile(
-                                              title: Text(userData[index].book.fields.title),
-                                              subtitle: Text('Review: ${userData[index].fields.review}'), // Add the review here
+                                              title: Text(userData[index]
+                                                  .book
+                                                  .fields
+                                                  .title),
+                                              subtitle: Text(
+                                                  'Review: ${userData[index].fields.review}'), // Add the review here
                                             );
                                           },
                                         ),
                                       );
-                                  }})
+                                    }
+                                  })
                             ],
                           )
                         ],
@@ -314,10 +334,11 @@ class _EditModalState extends State<EditModal> {
             mainAxisSize: MainAxisSize.min, // Adjust the size of the column
             children: [
               const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Edit Profile", style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.bold),)
-              ),
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "Edit Profile",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  )),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -379,7 +400,8 @@ class _EditModalState extends State<EditModal> {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(const Color(0xFFB6536B)),
+                      backgroundColor:
+                          MaterialStateProperty.all(const Color(0xFFB6536B)),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
@@ -403,7 +425,8 @@ class _EditModalState extends State<EditModal> {
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text("There was an error, please try again."),
+                              content:
+                                  Text("There was an error, please try again."),
                             ),
                           );
                         }

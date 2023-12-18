@@ -1,3 +1,4 @@
+//我不懂这是什么
 import 'dart:convert';
 import 'package:bookmate/clarence/models/book_request.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:bookmate/globals.dart' as globals;
-
-// import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RequestPage extends StatefulWidget {
@@ -110,6 +109,7 @@ class _RequestsPageState extends State<RequestPage> {
       // Uri.parse('http://10.0.2.2:8000/request/get-request-json-user-flutter/?sortby=$sort'),
       headers: request.headers,
     );
+    print(response.statusCode);
     // Perform error handling for the response
     if (response.statusCode == 200) {
       // Decode the response body
@@ -194,6 +194,43 @@ class _RequestsPageState extends State<RequestPage> {
   }
 
   String sortBy = "title";
+  int selectedIndex = 0;
+  Widget mainButton(String text, int index, CookieRequest request){
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: selectedIndex == index ? Color(0xFFC44B6A) : Colors.grey,
+        onPrimary: Color(0xFFC44B6A),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(36.0),
+        ),
+        
+      ),
+      onPressed: (){
+        if (index == 0){
+          _future = fetchUserRequest(request, "title");
+          current = "user";
+        } else {
+          _future = fetchAllRequest(request, "title");
+          current = "all";
+        }
+        setState(() {
+          selectedIndex = index;
+        });
+      },
+      child:Text(text,
+      style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Poppins",
+                              ))
+                        // TextStyle(color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)
+                        ),
+      );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
@@ -219,53 +256,7 @@ class _RequestsPageState extends State<RequestPage> {
     ];
     String dropdownValue = sort.first;
     _future = fetchUserRequest(request, "title");
-    // PreferredSizeWidget appBar = AppBarWidget();
     return Scaffold(
-      //我不懂这是什么
-      // appBar: PreferredSize(
-      //   preferredSize: Size.fromHeight(kToolbarHeight),
-      //   child: AppBarWidget(),
-      // ),
-      //  AppBar(
-      //   title:
-      //   Text('Requests',
-      //    style: GoogleFonts.lato( textStyle: TextStyle(fontFamily: "Poppins", fontWeight: FontWeight.bold, fontSize: 30)),
-      //    ),
-      //   centerTitle: true,
-      //   backgroundColor: Color(0xFFC44B6A)),
-      // bottomNavigationBar: NavBar(),
-      // BottomAppBar(
-      //   // color: Color(0xFFC44B6A),
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //     children: [
-      //       IconButton(
-      //         icon: Icon(Icons.home, color: Colors.white),
-      //         onPressed: () {
-      //           Navigator.pushNamed(context, '/home');
-      //         },
-      //       ),
-      //       IconButton(
-      //         icon: Icon(Icons.search, color: Colors.white),
-      //         onPressed: () {
-      //           Navigator.pushNamed(context, '/search');
-      //         },
-      //       ),
-      //       IconButton(
-      //         icon: Icon(Icons.book, color: Colors.white),
-      //         onPressed: () {
-      //           Navigator.pushNamed(context, '/mybooks');
-      //         },
-      //       ),
-      //       IconButton(
-      //         icon: Icon(Icons.person, color: Colors.white),
-      //         onPressed: () {
-      //           Navigator.pushNamed(context, '/profile');
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      // ),
       floatingActionButton: Container(
         width: 70, // Increase the width to make it bigger
         height: 70, // Increase the height to make it bigger
@@ -277,7 +268,15 @@ class _RequestsPageState extends State<RequestPage> {
             await showDialog<void>(
                 context: context,
                 builder: (context) => AlertDialog(
-                      title: Text('Request new Book'),
+                      title: Text('Request new Book',
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              // fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "Poppins",
+                            ),
+                          )),
                       content: Stack(
                         clipBehavior: Clip.none,
                         children: <Widget>[
@@ -414,7 +413,8 @@ class _RequestsPageState extends State<RequestPage> {
                                       Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: ElevatedButton(
-                                          child: const Text('Submit'),
+                                          child: const Text('Submit',
+                                          ),
                                           onPressed: () async {
                                             if (_formKey.currentState!
                                                 .validate()) {
@@ -523,7 +523,6 @@ class _RequestsPageState extends State<RequestPage> {
           },
         ),
       ),
-      // drawer: RightDrawer(),
       body: RefreshIndicator(
         onRefresh: () async {
           if (current == "user") {
@@ -540,48 +539,59 @@ class _RequestsPageState extends State<RequestPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      _future = fetchUserRequest(request, "title");
-                      current = "user";
-                      setState(() {});
-                    },
-                    child: Text('My Requests',
-                        style: GoogleFonts.lato(
-                            textStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                                fontFamily: "Poppins"))),
-                  ),
-                  SizedBox(width: 30.0),
-                  GestureDetector(
-                    onTap: () {
-                      _future = fetchAllRequest(request, "title");
-                      current = "all";
-                      setState(() {});
-                    },
-                    child: Text('All Requests',
-                        style: GoogleFonts.lato(
-                            textStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Poppins",
-                                decoration: TextDecoration.underline))
-                        // TextStyle(color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)
-                        ),
-                  ),
+                  mainButton("My Request", 0, request),
+                  const SizedBox(width: 30.0),
+                  mainButton("All Request", 1, request),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     _future = fetchUserRequest(request, "title");
+                  //     current = "user";
+                  //     setState(() {});
+                  //   },
+                  //   child: Text('My Requests',
+                  //       style: GoogleFonts.lato(
+                  //           textStyle: TextStyle(
+                  //               color: Colors.black,
+                  //               fontSize: 28,
+                  //               fontWeight: FontWeight.bold,
+                  //               decoration: TextDecoration.underline,
+                  //               fontFamily: "Poppins"))),
+                  // ),
+                  // SizedBox(width: 30.0),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     _future = fetchAllRequest(request, "title");
+                  //     current = "all";
+                  //     setState(() {});
+                  //   },
+                  //   child: Text('All Requests',
+                  //       style: GoogleFonts.lato(
+                  //           textStyle: TextStyle(
+                  //               color: Colors.black,
+                  //               fontSize: 28,
+                  //               fontWeight: FontWeight.bold,
+                  //               fontFamily: "Poppins",
+                  //               decoration: TextDecoration.underline))
+                  //       // TextStyle(color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)
+                  //       ),
+                  // ),
                 ],
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 10.0),
               Align(
                 alignment: Alignment.topRight,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
+                child: 
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
                     DropdownMenu<String>(
+                      width: 170,
+                      inputDecorationTheme: InputDecorationTheme(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(100.0),
+                          borderSide: BorderSide(width: 1.0),
+                        ),
+                      ),
                       initialSelection: dropdownValue,
                       dropdownMenuEntries:
                           sort.map<DropdownMenuEntry<String>>((String value) {
@@ -601,21 +611,21 @@ class _RequestsPageState extends State<RequestPage> {
                         }
                         setState(() {
                           sortBy = value.toString().toLowerCase();
-                          print(sortBy);
+                          // print(sortBy);
                           dropdownValue = value!;
                         });
                       },
                     ),
-                  ],
+                  // ],
                 ),
-              ),
-              SizedBox(height: 20.0),
+              // ),
+              const SizedBox(height: 10.0),
               Expanded(
                 child: FutureBuilder<List<BookRequest>>(
                   future: _future,
                   builder: (context, snapshot) {
-                    print(current);
-                    print(sortBy);
+                    // print(current);
+                    // print(sortBy);
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
@@ -629,7 +639,7 @@ class _RequestsPageState extends State<RequestPage> {
                       } else if (sortBy == "author") {
                         snapshot.data!
                             .sort((a, b) => a.author.compareTo(b.author));
-                        print(snapshot.data![0].title);
+                        // print(snapshot.data![0].title);
                       } else if (sortBy == "year") {
                         snapshot.data!.sort((a, b) => a.year.compareTo(b.year));
                       } else if (sortBy == "subjects") {
@@ -642,7 +652,7 @@ class _RequestsPageState extends State<RequestPage> {
                       return ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          print(snapshot.data![index].id);
+                          // print(snapshot.data![index].id);
                           String test =
                               snapshot.data![index].dateRequested.toString();
                           test = test.substring(0, test.length - 17);
@@ -650,9 +660,12 @@ class _RequestsPageState extends State<RequestPage> {
                             // color: Color(0xFFc44b6a),
                             child: ListTile(
                               title: Text(snapshot.data![index].title,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold)),
+                                  style: GoogleFonts.lato(
+                                      textStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Poppins"))),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -1104,6 +1117,22 @@ class _RequestsPageState extends State<RequestPage> {
                     } else if (snapshot.hasData &&
                         current == "all" &&
                         snapshot.data![0].id != 0) {
+                          if (sortBy == "title") {
+                        snapshot.data!
+                            .sort((a, b) => a.title.compareTo(b.title));
+                      } else if (sortBy == "author") {
+                        snapshot.data!
+                            .sort((a, b) => a.author.compareTo(b.author));
+                        // print(snapshot.data![0].title);
+                      } else if (sortBy == "year") {
+                        snapshot.data!.sort((a, b) => a.year.compareTo(b.year));
+                      } else if (sortBy == "subjects") {
+                        snapshot.data!.sort((a, b) =>
+                            a.subjects.join().compareTo(b.subjects.join()));
+                      } else if (sortBy == "date requested") {
+                        snapshot.data!.sort((a, b) =>
+                            a.dateRequested.compareTo(b.dateRequested));
+                      }
                       return ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {

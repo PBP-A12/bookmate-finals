@@ -20,13 +20,20 @@ class MatchPageState extends State<MatchPage> {
   bool _showGuide = false;
 
   List<Map<String, dynamic>> cards = [
-    {'name': '', 'interest': [], 'bio': '', 'matchingId': '', 'userId': '', 'picture': ''},
+    {
+      'name': '',
+      'interest': [],
+      'bio': '',
+      'matchingId': '',
+      'userId': '',
+      'picture': ''
+    },
     // Add more cards as needed
   ];
 
   Future<void> fetchNextCard(CookieRequest request) async {
     final response = await http.get(
-      Uri.parse('${globals.domain}/match/get_match_flutter'),
+      Uri.parse('${globals.domain}/match/get_match_flutter/'),
       headers: request.headers,
     );
 
@@ -63,18 +70,18 @@ class MatchPageState extends State<MatchPage> {
         await fetchNextCard(request);
       });
     } else {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Dismissible(
-                key: UniqueKey(),
-                direction: DismissDirection.startToEnd, // Add this line
-                onDismissed: (direction) {
-                  if (direction == DismissDirection.startToEnd) {
-                    fetchNextCard(request);
-                  } /*else if (direction == DismissDirection.endToStart) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Dismissible(
+              key: UniqueKey(),
+              direction: DismissDirection.startToEnd, // Add this line
+              onDismissed: (direction) {
+                if (direction == DismissDirection.startToEnd) {
+                  fetchNextCard(request);
+                } /*else if (direction == DismissDirection.endToStart) {
                     fetchNextCard(request);
                   } */
                 },
