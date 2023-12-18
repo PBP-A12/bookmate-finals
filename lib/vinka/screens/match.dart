@@ -196,6 +196,7 @@ class MatchPageState extends State<MatchPage> {
                                 ),
                                   ElevatedButton.icon(
                                     onPressed: () async {
+                                      final scaffoldMessenger = ScaffoldMessenger.of(context);
                                       showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
@@ -236,7 +237,7 @@ class MatchPageState extends State<MatchPage> {
                                                         'id': cards[currentIndex]['userId'],
                                                       }));
                                                   if (response['status'] == 'success') {
-                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                    scaffoldMessenger.showSnackBar(
                                                       const SnackBar(
                                                         content: Text("Explore Your Favorite Books Together!"),
                                                       ),
