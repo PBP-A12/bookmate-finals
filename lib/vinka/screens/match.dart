@@ -207,7 +207,7 @@ class _MatchPageState extends State<MatchPage> {
                                                   '${cards[currentIndex]['name']}?',
                                                   style: TextStyle(
                                                     fontSize: 16,
-                                                    fontWeight: FontWeight.italic,
+                                                    fontStyle: FontStyle.italic,
                                                     color: Colors.black,
                                                   ),
                                                 ),
