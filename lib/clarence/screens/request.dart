@@ -1,4 +1,6 @@
 //我不懂这是什么
+// ignore_for_file: sized_box_for_whitespace, use_build_context_synchronously, library_private_types_in_public_api
+
 import 'dart:convert';
 import 'package:bookmate/clarence/models/book_request.dart';
 import 'package:flutter/material.dart';
@@ -109,7 +111,6 @@ class _RequestsPageState extends State<RequestPage> {
       // Uri.parse('http://10.0.2.2:8000/request/get-request-json-user-flutter/?sortby=$sort'),
       headers: request.headers,
     );
-    print(response.statusCode);
     // Perform error handling for the response
     if (response.statusCode == 200) {
       // Decode the response body
@@ -198,8 +199,7 @@ class _RequestsPageState extends State<RequestPage> {
   Widget mainButton(String text, int index, CookieRequest request){
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: selectedIndex == index ? Color(0xFFC44B6A) : Colors.grey,
-        onPrimary: Color(0xFFC44B6A),
+        backgroundColor: selectedIndex == index ? const Color(0xFFC44B6A) : Colors.grey,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(36.0),
         ),
@@ -219,33 +219,27 @@ class _RequestsPageState extends State<RequestPage> {
       },
       child:Text(text,
       style: GoogleFonts.lato(
-                            textStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Poppins",
-                              ))
-                        // TextStyle(color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)
-                        ),
-      );
+        textStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: 23,
+            fontWeight: FontWeight.bold,
+            fontFamily: "Poppins",
+          ))
+      ),
+    );
   }
 
 
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    final _formKey = GlobalKey<FormState>();
-    // final logo = SvgPicture.asset(
-    //   "assets/img/logo.svg",
-    //   width: 200,
-    //   height: 200,
-    // );
-    List<String> _selectedSubjects = [];
-    List<String> _title = [];
-    List<String> _author = [];
-    List<int> _year = [];
-    List<String> _language = [];
-    Future<List<String>> _subjects_list = fetchSubjects(request);
+    final formKey = GlobalKey<FormState>();
+    List<String> selectedSubjects = [];
+    List<String> title = [];
+    List<String> author = [];
+    List<int> year = [];
+    List<String> language = [];
+    Future<List<String>> subjectsList = fetchSubjects(request);
     const List<String> sort = <String>[
       "Sort By",
       "Title",
@@ -261,16 +255,15 @@ class _RequestsPageState extends State<RequestPage> {
         width: 70, // Increase the width to make it bigger
         height: 70, // Increase the height to make it bigger
         child: FloatingActionButton(
-          shape: CircleBorder(),
-          child: Icon(Icons.add, color: Colors.white, size: 40),
-          backgroundColor: Color(0xFFC44B6A),
+          shape: const CircleBorder(),
+          backgroundColor: const Color(0xFFC44B6A),
           onPressed: () async {
             await showDialog<void>(
                 context: context,
                 builder: (context) => AlertDialog(
                       title: Text('Request new Book',
                           style: GoogleFonts.lato(
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                               color: Colors.black,
                               // fontSize: 30,
                               fontWeight: FontWeight.bold,
@@ -284,7 +277,7 @@ class _RequestsPageState extends State<RequestPage> {
                               width: 500, // take up all available width
                               height: double.infinity,
                               child: Form(
-                                key: _formKey,
+                                key: formKey,
                                 child: SingleChildScrollView(
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -292,37 +285,39 @@ class _RequestsPageState extends State<RequestPage> {
                                       Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: TextFormField(
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                               labelText: 'Title'),
                                           validator: (value) {
                                             if (value == null ||
                                                 value.isEmpty) {
                                               return 'Please enter a title';
                                             } else {
-                                              _title.add(value);
+                                              title.add(value);
                                             }
+                                            return null;
                                           },
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: TextFormField(
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                               labelText: 'Author'),
                                           validator: (value) {
                                             if (value == null ||
                                                 value.isEmpty) {
                                               return 'Please enter an author';
                                             } else {
-                                              _author.add(value);
+                                              author.add(value);
                                             }
+                                            return null;
                                           },
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: TextFormField(
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                               labelText: 'Year'),
                                           validator: (value) {
                                             if (value == null ||
@@ -332,30 +327,32 @@ class _RequestsPageState extends State<RequestPage> {
                                                 null) {
                                               return 'Please enter a valid year';
                                             } else {
-                                              _year.add(int.parse(value));
+                                              year.add(int.parse(value));
                                             }
+                                            return null;
                                           },
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: TextFormField(
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                               labelText: 'Language'),
                                           validator: (value) {
                                             if (value == null ||
                                                 value.isEmpty) {
                                               return 'Please enter a language';
                                             } else {
-                                              _language.add(value);
+                                              language.add(value);
                                             }
+                                            return null;
                                           },
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: FutureBuilder<List<String>>(
-                                          future: _subjects_list,
+                                          future: subjectsList,
                                           builder: (BuildContext context,
                                               AsyncSnapshot<List<String>>
                                                   snapshot) {
@@ -386,14 +383,14 @@ class _RequestsPageState extends State<RequestPage> {
                                                 },
                                                 okButtonLabel: 'OK',
                                                 cancelButtonLabel: 'CANCEL',
-                                                initialValue: _selectedSubjects,
+                                                initialValue: selectedSubjects,
                                                 hintWidget: const Text(
                                                     'Please choose one or more'),
                                                 onSaved: (newValue) {
                                                   // print(newValue);
                                                   if (newValue == null) return;
                                                   setState(() {
-                                                    _selectedSubjects = newValue
+                                                    selectedSubjects = newValue
                                                         .cast<String>()
                                                         .toList();
                                                   });
@@ -416,19 +413,19 @@ class _RequestsPageState extends State<RequestPage> {
                                           child: const Text('Submit',
                                           ),
                                           onPressed: () async {
-                                            if (_formKey.currentState!
+                                            if (formKey.currentState!
                                                 .validate()) {
                                               // If the form is valid, display a Snackbar.
                                               final response = await request.postJson(
                                                   "${globals.domain}/request/requesting-flutter/",
                                                   //"http://10.0.2.2:8000/request/requesting-flutter/",
                                                   jsonEncode(<String, List>{
-                                                    'title': _title,
-                                                    'author': _author,
-                                                    'year': _year,
-                                                    'language': _language,
+                                                    'title': title,
+                                                    'author': author,
+                                                    'year': year,
+                                                    'language': language,
                                                     'subjects':
-                                                        _selectedSubjects,
+                                                        selectedSubjects,
                                                   }));
                                               if (response['status'] ==
                                                   'success') {
@@ -447,19 +444,7 @@ class _RequestsPageState extends State<RequestPage> {
                                                       title: const Text(
                                                           'Book has been requested!'),
                                                       content: Text(
-                                                          "You Requested: \n" +
-                                                              "Title = " +
-                                                              _title[0] +
-                                                              "\nAuthor = " +
-                                                              _author[0] +
-                                                              "\nYear = " +
-                                                              _year[0]
-                                                                  .toString() +
-                                                              "\nLanguage = " +
-                                                              _language[0] +
-                                                              "\nSubjects = " +
-                                                              _selectedSubjects
-                                                                  .toString()),
+                                                          "You Requested: \nTitle = ${title[0]}\nAuthor = ${author[0]}\nYear = ${year[0]}\nLanguage = ${language[0]}\nSubjects = $selectedSubjects"),
                                                       actions: [
                                                         TextButton(
                                                           child:
@@ -508,7 +493,7 @@ class _RequestsPageState extends State<RequestPage> {
                                                       "Request failed to be saved! Please try again."),
                                                 ));
                                               }
-                                              _formKey.currentState!.reset();
+                                              formKey.currentState!.reset();
                                             }
                                           },
                                         ),
@@ -521,6 +506,7 @@ class _RequestsPageState extends State<RequestPage> {
                       ),
                     ));
           },
+          child: const Icon(Icons.add, color: Colors.white, size: 40),
         ),
       ),
       body: RefreshIndicator(
@@ -542,39 +528,6 @@ class _RequestsPageState extends State<RequestPage> {
                   mainButton("My Request", 0, request),
                   const SizedBox(width: 30.0),
                   mainButton("All Request", 1, request),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     _future = fetchUserRequest(request, "title");
-                  //     current = "user";
-                  //     setState(() {});
-                  //   },
-                  //   child: Text('My Requests',
-                  //       style: GoogleFonts.lato(
-                  //           textStyle: TextStyle(
-                  //               color: Colors.black,
-                  //               fontSize: 28,
-                  //               fontWeight: FontWeight.bold,
-                  //               decoration: TextDecoration.underline,
-                  //               fontFamily: "Poppins"))),
-                  // ),
-                  // SizedBox(width: 30.0),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     _future = fetchAllRequest(request, "title");
-                  //     current = "all";
-                  //     setState(() {});
-                  //   },
-                  //   child: Text('All Requests',
-                  //       style: GoogleFonts.lato(
-                  //           textStyle: TextStyle(
-                  //               color: Colors.black,
-                  //               fontSize: 28,
-                  //               fontWeight: FontWeight.bold,
-                  //               fontFamily: "Poppins",
-                  //               decoration: TextDecoration.underline))
-                  //       // TextStyle(color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)
-                  //       ),
-                  // ),
                 ],
               ),
               const SizedBox(height: 10.0),
@@ -589,7 +542,7 @@ class _RequestsPageState extends State<RequestPage> {
                       inputDecorationTheme: InputDecorationTheme(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(100.0),
-                          borderSide: BorderSide(width: 1.0),
+                          borderSide: const BorderSide(width: 1.0),
                         ),
                       ),
                       initialSelection: dropdownValue,
@@ -627,7 +580,7 @@ class _RequestsPageState extends State<RequestPage> {
                     // print(current);
                     // print(sortBy);
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Text('${snapshot.error}');
                     } else if (snapshot.hasData &&
@@ -661,7 +614,7 @@ class _RequestsPageState extends State<RequestPage> {
                             child: ListTile(
                               title: Text(snapshot.data![index].title,
                                   style: GoogleFonts.lato(
-                                      textStyle: TextStyle(
+                                      textStyle: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -673,7 +626,7 @@ class _RequestsPageState extends State<RequestPage> {
                                       "Author: ${snapshot.data![index].author}",
                                       // , style: TextStyle(fontSize: 15, color: Colors.white)
                                       style: GoogleFonts.lato(
-                                          textStyle: TextStyle(
+                                          textStyle: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
@@ -681,7 +634,7 @@ class _RequestsPageState extends State<RequestPage> {
                                   Text("Year: ${snapshot.data![index].year}",
                                       // , style: TextStyle(fontSize: 15, color: Colors.white)
                                       style: GoogleFonts.lato(
-                                          textStyle: TextStyle(
+                                          textStyle: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
@@ -690,7 +643,7 @@ class _RequestsPageState extends State<RequestPage> {
                                       "Language: ${snapshot.data![index].language}",
                                       // , style: TextStyle(fontSize: 15, color: Colors.white)
                                       style: GoogleFonts.lato(
-                                          textStyle: TextStyle(
+                                          textStyle: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
@@ -707,405 +660,399 @@ class _RequestsPageState extends State<RequestPage> {
                                     style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all<Color>(
-                                                Color(0xFFC44B6A)),
+                                                const Color(0xFFC44B6A)),
                                         shape: MaterialStateProperty.all<
                                                 RoundedRectangleBorder>(
                                             RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(18.0),
-                                                side: BorderSide(
+                                                side: const BorderSide(
                                                     color:
                                                         Color(0xFFC44B6A))))),
                                     onPressed: () async {
                                       await showDialog<void>(
                                         context: context,
                                         builder: (context) => Dialog.fullscreen(
-                                          child: Container(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.topRight,
-                                                  child: IconButton(
-                                                    icon: Icon(Icons.close,
-                                                        color: Colors.black),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.topRight,
+                                                child: IconButton(
+                                                  icon: const Icon(Icons.close,
+                                                      color: Colors.black),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment:
+                                                    Alignment.topCenter,
+                                                child: Text(
+                                                  "Details",
+                                                  style: GoogleFonts.lato(
+                                                    textStyle: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 30,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily: "Poppins",
+                                                    ),
                                                   ),
                                                 ),
-                                                Align(
-                                                  alignment:
-                                                      Alignment.topCenter,
-                                                  child: Text(
-                                                    "Details",
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    "Title: ${snapshot.data![index].title}",
                                                     style: GoogleFonts.lato(
-                                                      textStyle: TextStyle(
+                                                      textStyle: const TextStyle(
                                                         color: Colors.black,
-                                                        fontSize: 30,
+                                                        fontSize: 20,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontFamily: "Poppins",
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "Title: ${snapshot.data![index].title}",
-                                                      style: GoogleFonts.lato(
-                                                        textStyle: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily: "Poppins",
-                                                        ),
+                                                  const SizedBox(width: 10.0),
+                                                  Text(
+                                                    "Author: ${snapshot.data![index].author}",
+                                                    style: GoogleFonts.lato(
+                                                      textStyle: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: "Poppins",
                                                       ),
                                                     ),
-                                                    SizedBox(width: 10.0),
-                                                    Text(
-                                                      "Author: ${snapshot.data![index].author}",
-                                                      style: GoogleFonts.lato(
-                                                        textStyle: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily: "Poppins",
-                                                        ),
+                                                  ),
+                                                  const SizedBox(width: 10.0),
+                                                  Text(
+                                                    "Year: ${snapshot.data![index].year}",
+                                                    style: GoogleFonts.lato(
+                                                      textStyle: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: "Poppins",
                                                       ),
                                                     ),
-                                                    SizedBox(width: 10.0),
-                                                    Text(
-                                                      "Year: ${snapshot.data![index].year}",
-                                                      style: GoogleFonts.lato(
-                                                        textStyle: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily: "Poppins",
-                                                        ),
+                                                  ),
+                                                  const SizedBox(width: 10.0),
+                                                  Text(
+                                                    "Language: ${snapshot.data![index].language}",
+                                                    style: GoogleFonts.lato(
+                                                      textStyle: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: "Poppins",
                                                       ),
                                                     ),
-                                                    SizedBox(width: 10.0),
-                                                    Text(
-                                                      "Language: ${snapshot.data![index].language}",
-                                                      style: GoogleFonts.lato(
-                                                        textStyle: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily: "Poppins",
-                                                        ),
+                                                  ),
+                                                  const SizedBox(width: 10.0),
+                                                  Text(
+                                                    "Subjects: ",
+                                                    style: GoogleFonts.lato(
+                                                      textStyle: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: "Poppins",
                                                       ),
                                                     ),
-                                                    SizedBox(width: 10.0),
-                                                    Text(
-                                                      "Subjects: ",
-                                                      style: GoogleFonts.lato(
-                                                        textStyle: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily: "Poppins",
-                                                        ),
+                                                  ),
+                                                  const SizedBox(width: 10.0),
+                                                  Text(
+                                                    "            -  ${snapshot.data![index].subjects.join("\n            -  ")}",
+                                                    style: GoogleFonts.lato(
+                                                      textStyle: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: "Poppins",
                                                       ),
                                                     ),
-                                                    SizedBox(width: 10.0),
-                                                    Text(
-                                                      "            -  ${snapshot.data![index].subjects.join("\n            -  ")}",
-                                                      style: GoogleFonts.lato(
-                                                        textStyle: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily: "Poppins",
-                                                        ),
+                                                  ),
+                                                  const SizedBox(width: 10.0),
+                                                  Text(
+                                                    "Date Requested: $test",
+                                                    style: GoogleFonts.lato(
+                                                      textStyle: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: "Poppins",
                                                       ),
                                                     ),
-                                                    SizedBox(width: 10.0),
-                                                    Text(
-                                                      "Date Requested: ${test}",
-                                                      style: GoogleFonts.lato(
-                                                        textStyle: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily: "Poppins",
-                                                        ),
-                                                      ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: 70,
+                                                    height: 70,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      border: Border.all(
+                                                          color: Colors.white,
+                                                          width: 2),
                                                     ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      width: 70,
-                                                      height: 70,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        border: Border.all(
-                                                            color: Colors.white,
-                                                            width: 2),
-                                                      ),
-                                                      child: CircleAvatar(
-                                                        backgroundColor:
-                                                            Color(0xffC44B6A),
-                                                        child: IconButton(
-                                                          iconSize: 30,
-                                                          icon: Icon(Icons.edit,
-                                                              color:
-                                                                  Colors.white),
-                                                          onPressed: () async {
-                                                            // TODO: Implement edit functionality
-                                                            await showDialog<
-                                                                    void>(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (context) =>
-                                                                        AlertDialog(
-                                                                          title:
-                                                                              Text('Edit Requested Book'),
-                                                                          content:
-                                                                              Stack(
-                                                                            clipBehavior:
-                                                                                Clip.none,
-                                                                            children: <Widget>[
-                                                                              Container(
-                                                                                  width: 500, // take up all available width
-                                                                                  height: double.infinity,
-                                                                                  child: Form(
-                                                                                    key: _formKey,
-                                                                                    child: SingleChildScrollView(
-                                                                                      child: Column(
-                                                                                        mainAxisSize: MainAxisSize.min,
-                                                                                        children: <Widget>[
-                                                                                          Padding(
-                                                                                            padding: const EdgeInsets.all(8),
-                                                                                            child: TextFormField(
-                                                                                              decoration: InputDecoration(labelText: 'Title'),
-                                                                                              validator: (value) {
-                                                                                                if (value == null || value.isEmpty) {
-                                                                                                  return 'Please enter a title';
-                                                                                                } else {
-                                                                                                  _title.add(value);
-                                                                                                }
-                                                                                              },
-                                                                                            ),
+                                                    child: CircleAvatar(
+                                                      backgroundColor:
+                                                          const Color(0xffC44B6A),
+                                                      child: IconButton(
+                                                        iconSize: 30,
+                                                        icon: const Icon(Icons.edit,
+                                                            color:
+                                                                Colors.white),
+                                                        onPressed: () async {
+                                                          await showDialog<
+                                                                  void>(
+                                                              context:
+                                                                  context,
+                                                              builder:
+                                                                  (context) =>
+                                                                      AlertDialog(
+                                                                        title:
+                                                                            const Text('Edit Requested Book'),
+                                                                        content:
+                                                                            Stack(
+                                                                          clipBehavior:
+                                                                              Clip.none,
+                                                                          children: <Widget>[
+                                                                            Container(
+                                                                                width: 500, // take up all available width
+                                                                                height: double.infinity,
+                                                                                child: Form(
+                                                                                  key: formKey,
+                                                                                  child: SingleChildScrollView(
+                                                                                    child: Column(
+                                                                                      mainAxisSize: MainAxisSize.min,
+                                                                                      children: <Widget>[
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsets.all(8),
+                                                                                          child: TextFormField(
+                                                                                            decoration: const InputDecoration(labelText: 'Title'),
+                                                                                            validator: (value) {
+                                                                                              if (value == null || value.isEmpty) {
+                                                                                                return 'Please enter a title';
+                                                                                              } else {
+                                                                                                title.add(value);
+                                                                                              }
+                                                                                              return null;
+                                                                                            },
                                                                                           ),
-                                                                                          Padding(
-                                                                                            padding: const EdgeInsets.all(8),
-                                                                                            child: TextFormField(
-                                                                                              decoration: InputDecoration(labelText: 'Author'),
-                                                                                              validator: (value) {
-                                                                                                if (value == null || value.isEmpty) {
-                                                                                                  return 'Please enter an author';
-                                                                                                } else {
-                                                                                                  _author.add(value);
-                                                                                                }
-                                                                                              },
-                                                                                            ),
+                                                                                        ),
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsets.all(8),
+                                                                                          child: TextFormField(
+                                                                                            decoration: const InputDecoration(labelText: 'Author'),
+                                                                                            validator: (value) {
+                                                                                              if (value == null || value.isEmpty) {
+                                                                                                return 'Please enter an author';
+                                                                                              } else {
+                                                                                                author.add(value);
+                                                                                              }
+                                                                                              return null;
+                                                                                            },
                                                                                           ),
-                                                                                          Padding(
-                                                                                            padding: const EdgeInsets.all(8),
-                                                                                            child: TextFormField(
-                                                                                              decoration: InputDecoration(labelText: 'Year'),
-                                                                                              validator: (value) {
-                                                                                                if (value == null || value.isEmpty) {
-                                                                                                  return 'Please enter a year';
-                                                                                                } else if (int.tryParse(value) == null) {
-                                                                                                  return 'Please enter a valid year';
-                                                                                                } else {
-                                                                                                  _year.add(int.parse(value));
-                                                                                                }
-                                                                                              },
-                                                                                            ),
+                                                                                        ),
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsets.all(8),
+                                                                                          child: TextFormField(
+                                                                                            decoration: const InputDecoration(labelText: 'Year'),
+                                                                                            validator: (value) {
+                                                                                              if (value == null || value.isEmpty) {
+                                                                                                return 'Please enter a year';
+                                                                                              } else if (int.tryParse(value) == null) {
+                                                                                                return 'Please enter a valid year';
+                                                                                              } else {
+                                                                                                year.add(int.parse(value));
+                                                                                              }
+                                                                                              return null;
+                                                                                            },
                                                                                           ),
-                                                                                          Padding(
-                                                                                            padding: const EdgeInsets.all(8),
-                                                                                            child: TextFormField(
-                                                                                              decoration: InputDecoration(labelText: 'Language'),
-                                                                                              validator: (value) {
-                                                                                                if (value == null || value.isEmpty) {
-                                                                                                  return 'Please enter a language';
-                                                                                                } else {
-                                                                                                  _language.add(value);
-                                                                                                }
-                                                                                              },
-                                                                                            ),
+                                                                                        ),
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsets.all(8),
+                                                                                          child: TextFormField(
+                                                                                            decoration: const InputDecoration(labelText: 'Language'),
+                                                                                            validator: (value) {
+                                                                                              if (value == null || value.isEmpty) {
+                                                                                                return 'Please enter a language';
+                                                                                              } else {
+                                                                                                language.add(value);
+                                                                                              }
+                                                                                              return null;
+                                                                                            },
                                                                                           ),
-                                                                                          Padding(
-                                                                                            padding: const EdgeInsets.all(8),
-                                                                                            child: FutureBuilder<List<String>>(
-                                                                                              future: _subjects_list,
-                                                                                              builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-                                                                                                if (snapshot.hasData) {
-                                                                                                  List<dynamic> dataSource = snapshot.data!.map((e) => {'display': e, 'value': e}).toList().cast<dynamic>();
-                                                                                                  return MultiSelectFormField(
-                                                                                                    autovalidate: AutovalidateMode.onUserInteraction,
-                                                                                                    chipLabelStyle: const TextStyle(), // Add an identifier and provide a valid TextStyle
-                                                                                                    dataSource: dataSource,
-                                                                                                    textField: 'display',
-                                                                                                    valueField: 'value',
-                                                                                                    title: const Text('Subjects'),
-                                                                                                    validator: (value) {
-                                                                                                      if (value == null || value.isEmpty) {
-                                                                                                        return 'Please select one or more subject(s)';
-                                                                                                      }
-                                                                                                      return null;
+                                                                                        ),
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsets.all(8),
+                                                                                          child: FutureBuilder<List<String>>(
+                                                                                            future: subjectsList,
+                                                                                            builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                                                                                              if (snapshot.hasData) {
+                                                                                                List<dynamic> dataSource = snapshot.data!.map((e) => {'display': e, 'value': e}).toList().cast<dynamic>();
+                                                                                                return MultiSelectFormField(
+                                                                                                  autovalidate: AutovalidateMode.onUserInteraction,
+                                                                                                  chipLabelStyle: const TextStyle(), // Add an identifier and provide a valid TextStyle
+                                                                                                  dataSource: dataSource,
+                                                                                                  textField: 'display',
+                                                                                                  valueField: 'value',
+                                                                                                  title: const Text('Subjects'),
+                                                                                                  validator: (value) {
+                                                                                                    if (value == null || value.isEmpty) {
+                                                                                                      return 'Please select one or more subject(s)';
+                                                                                                    }
+                                                                                                    return null;
+                                                                                                  },
+                                                                                                  okButtonLabel: 'OK',
+                                                                                                  cancelButtonLabel: 'CANCEL',
+                                                                                                  initialValue: selectedSubjects,
+                                                                                                  hintWidget: const Text('Please choose one or more'),
+                                                                                                  onSaved: (newValue) {
+                                                                                                    // print(newValue);
+                                                                                                    if (newValue == null) return;
+                                                                                                    setState(() {
+                                                                                                      selectedSubjects = newValue.cast<String>().toList();
+                                                                                                    });
+                                                                                                    // print(_selectedSubjects);
+                                                                                                  },
+                                                                                                  // ...
+                                                                                                );
+                                                                                              } else if (snapshot.hasError) {
+                                                                                                return Text('Error: ${snapshot.error}');
+                                                                                              } else {
+                                                                                                return const CircularProgressIndicator();
+                                                                                              }
+                                                                                            },
+                                                                                          ),
+                                                                                        ),
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsets.all(8),
+                                                                                          child: ElevatedButton(
+                                                                                            child: const Text('Submit'),
+                                                                                            onPressed: () async {
+                                                                                              if (formKey.currentState!.validate()) {
+                                                                                                // If the form is valid, display a Snackbar.
+                                                                                                final response = await request.postJson(
+                                                                                                    "${globals.domain}/request/edit-request/",
+                                                                                                    // "http://10.0.2.2:8000/request/edit-request/",
+                                                                                                    jsonEncode(<String, List>{
+                                                                                                      'title': title,
+                                                                                                      'author': author,
+                                                                                                      'year': year,
+                                                                                                      'language': language,
+                                                                                                      'subjects': selectedSubjects,
+                                                                                                    }));
+                                                                                                if (response['status'] == 'success') {
+                                                                                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                                                                    content: Text("Request has been saved!"),
+                                                                                                  ));
+                                                                                                  Navigator.pop(context);
+                                                                                                  showDialog(
+                                                                                                    context: context,
+                                                                                                    builder: (BuildContext context) {
+                                                                                                      return AlertDialog(
+                                                                                                        title: const Text('Book has been requested!'),
+                                                                                                        content: Text("You Requested: \nTitle = ${title[0]}\nAuthor = ${author[0]}\nYear = ${year[0]}\nLanguage = ${language[0]}\nSubjects = $selectedSubjects"),
+                                                                                                        actions: [
+                                                                                                          TextButton(
+                                                                                                            child: const Text('OK'),
+                                                                                                            onPressed: () {
+                                                                                                              // Perform action
+                                                                                                              Navigator.of(context).pop();
+                                                                                                              if (current == "user") {
+                                                                                                                _future = fetchUserRequest(request, "title");
+                                                                                                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => super.widget));
+                                                                                                              } else {
+                                                                                                                _future = fetchAllRequest(request, "title");
+                                                                                                              }
+                                                                                                            },
+                                                                                                          ),
+                                                                                                        ],
+                                                                                                      );
                                                                                                     },
-                                                                                                    okButtonLabel: 'OK',
-                                                                                                    cancelButtonLabel: 'CANCEL',
-                                                                                                    initialValue: _selectedSubjects,
-                                                                                                    hintWidget: const Text('Please choose one or more'),
-                                                                                                    onSaved: (newValue) {
-                                                                                                      // print(newValue);
-                                                                                                      if (newValue == null) return;
-                                                                                                      setState(() {
-                                                                                                        _selectedSubjects = newValue.cast<String>().toList();
-                                                                                                      });
-                                                                                                      // print(_selectedSubjects);
-                                                                                                    },
-                                                                                                    // ...
                                                                                                   );
-                                                                                                } else if (snapshot.hasError) {
-                                                                                                  return Text('Error: ${snapshot.error}');
+                                                                                                } else if (response['status'] == 'failed') {
+                                                                                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Request failed to be saved! Please try again.")));
                                                                                                 } else {
-                                                                                                  return const CircularProgressIndicator();
+                                                                                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                                                                    content: Text("Request failed to be saved! Please try again."),
+                                                                                                  ));
                                                                                                 }
-                                                                                              },
-                                                                                            ),
+                                                                                                formKey.currentState!.reset();
+                                                                                              }
+                                                                                            },
                                                                                           ),
-                                                                                          Padding(
-                                                                                            padding: const EdgeInsets.all(8),
-                                                                                            child: ElevatedButton(
-                                                                                              child: const Text('Submit'),
-                                                                                              onPressed: () async {
-                                                                                                if (_formKey.currentState!.validate()) {
-                                                                                                  // If the form is valid, display a Snackbar.
-                                                                                                  final response = await request.postJson(
-                                                                                                      "${globals.domain}/request/edit-request/",
-                                                                                                      // "http://10.0.2.2:8000/request/edit-request/",
-                                                                                                      jsonEncode(<String, List>{
-                                                                                                        'title': _title,
-                                                                                                        'author': _author,
-                                                                                                        'year': _year,
-                                                                                                        'language': _language,
-                                                                                                        'subjects': _selectedSubjects,
-                                                                                                      }));
-                                                                                                  if (response['status'] == 'success') {
-                                                                                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                                                                                      content: Text("Request has been saved!"),
-                                                                                                    ));
-                                                                                                    Navigator.pop(context);
-                                                                                                    showDialog(
-                                                                                                      context: context,
-                                                                                                      builder: (BuildContext context) {
-                                                                                                        return AlertDialog(
-                                                                                                          title: const Text('Book has been requested!'),
-                                                                                                          content: Text("You Requested: \n" + "Title = " + _title[0] + "\nAuthor = " + _author[0] + "\nYear = " + _year[0].toString() + "\nLanguage = " + _language[0] + "\nSubjects = " + _selectedSubjects.toString()),
-                                                                                                          actions: [
-                                                                                                            TextButton(
-                                                                                                              child: const Text('OK'),
-                                                                                                              onPressed: () {
-                                                                                                                // Perform action
-                                                                                                                Navigator.of(context).pop();
-                                                                                                                if (current == "user") {
-                                                                                                                  _future = fetchUserRequest(request, "title");
-                                                                                                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => super.widget));
-                                                                                                                } else {
-                                                                                                                  _future = fetchAllRequest(request, "title");
-                                                                                                                }
-                                                                                                              },
-                                                                                                            ),
-                                                                                                          ],
-                                                                                                        );
-                                                                                                      },
-                                                                                                    );
-                                                                                                  } else if (response['status'] == 'failed') {
-                                                                                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Request failed to be saved! Please try again.")));
-                                                                                                  } else {
-                                                                                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                                                                                      content: Text("Request failed to be saved! Please try again."),
-                                                                                                    ));
-                                                                                                  }
-                                                                                                  _formKey.currentState!.reset();
-                                                                                                }
-                                                                                              },
-                                                                                            ),
-                                                                                          )
-                                                                                        ],
-                                                                                      ),
+                                                                                        )
+                                                                                      ],
                                                                                     ),
-                                                                                  ))
-                                                                            ],
-                                                                          ),
-                                                                        ));
-                                                          },
-                                                        ),
+                                                                                  ),
+                                                                                ))
+                                                                          ],
+                                                                        ),
+                                                                      ));
+                                                        },
                                                       ),
                                                     ),
-                                                    SizedBox(width: 30.0),
-                                                    Container(
-                                                      width: 70,
-                                                      height: 70,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        border: Border.all(
-                                                            color: Colors.white,
-                                                            width: 2),
-                                                      ),
-                                                      child: CircleAvatar(
-                                                        backgroundColor:
-                                                            Color(0xffC44B6A),
-                                                        child: IconButton(
-                                                          icon: Icon(
-                                                              Icons.delete,
-                                                              color:
-                                                                  Colors.white),
-                                                          iconSize: 30,
-                                                          onPressed: () {
-                                                            // TODO: Implement edit functionality
-                                                            final response = request
-                                                                .postJson(
-                                                                    "${globals.domain}/request/delete-request/",
-                                                                    // "http://10.0.2.2:8000/request/delete-request/",
-                                                                    jsonEncode(<String,
-                                                                        String>{
-                                                                      'id': snapshot
-                                                                          .data![
-                                                                              index]
-                                                                          .id
-                                                                          .toString(),
-                                                                    }));
-                                                            _future =
-                                                                fetchUserRequest(
-                                                                    request,
-                                                                    "title");
-                                                          },
-                                                        ),
+                                                  ),
+                                                  const SizedBox(width: 30.0),
+                                                  Container(
+                                                    width: 70,
+                                                    height: 70,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      border: Border.all(
+                                                          color: Colors.white,
+                                                          width: 2),
+                                                    ),
+                                                    child: CircleAvatar(
+                                                      backgroundColor:
+                                                          const Color(0xffC44B6A),
+                                                      child: IconButton(
+                                                        icon: const Icon(
+                                                            Icons.delete,
+                                                            color:
+                                                                Colors.white),
+                                                        iconSize: 30,
+                                                        onPressed: () async {
+                                                          final response = await request.postJson("${globals.domain}/request/delete-request/",jsonEncode(<String,String>{
+                                                            'id': snapshot.data![index].id.toString(),
+                                                            }));
+                                                          if (response["status"] == 'success'){
+                                                            _future = fetchUserRequest(request,"title");
+                                                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Request has been deleted!")));
+                                                          }
+                                                          else{
+                                                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Request failed to be deleted! Please try again.")));
+                                                          }
+                                                        },
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       );
                                     },
-                                    child: Text("View Details",
+                                    child: const Text("View Details",
                                         style: TextStyle(color: Colors.white)),
                                   ),
                                 ],
@@ -1143,7 +1090,7 @@ class _RequestsPageState extends State<RequestPage> {
                             // color: Color(0xFFc44b6a),
                             child: ListTile(
                               title: Text(snapshot.data![index].title,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold)),
                               subtitle: Column(
@@ -1165,7 +1112,7 @@ class _RequestsPageState extends State<RequestPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    "Date Requested:\n ${test}",
+                                    "Date Requested:\n $test",
                                     //  style: TextStyle(color: Colors.white)
                                   ),
                                 ],
@@ -1175,21 +1122,11 @@ class _RequestsPageState extends State<RequestPage> {
                         },
                       );
                     } else {
-                      return Text('No Requests Found');
+                      return const Text('No Requests Found');
                     }
                   },
                 ),
               ),
-              // Container(
-              //   alignment: Alignment.bottomRight,
-              //   padding: EdgeInsets.all(20.0),
-              //   color: Colors.transparent,
-              //   // child: Container(),
-              //   child:
-              // RawMaterialButton(
-              //   onPressed: () {},
-
-              // ),
             ],
           ),
         ),
