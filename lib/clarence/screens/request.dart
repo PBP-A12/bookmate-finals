@@ -19,8 +19,8 @@ class RequestPage extends StatefulWidget {
 }
 
 class _RequestsPageState extends State<RequestPage> {
-  var current = "user";
   Future<List<BookRequest>>? _future;
+  Future<List<BookRequest>>? _futureAll;
   Future<List<BookRequest>> fetchAllRequest(
       CookieRequest request, String sort) async {
     if (sort == "date requested") {
@@ -51,19 +51,6 @@ class _RequestsPageState extends State<RequestPage> {
         // Convert the JSON data to a list of Product objects
         List<BookRequest> allRequestList = [];
         for (var d in data) {
-          if (allRequestList.isEmpty) {
-            return [
-              BookRequest(
-                  id: 0,
-                  subjects: ["N/A"],
-                  member: "N/A",
-                  title: "N/A",
-                  author: "N/A",
-                  year: 0,
-                  language: "N/A",
-                  dateRequested: DateTime.now())
-            ]; // Return an empty list when no requests have been made
-          }
           if (d != null) {
             allRequestList.add(BookRequest.fromJson(d));
           }
@@ -114,7 +101,6 @@ class _RequestsPageState extends State<RequestPage> {
     // Perform error handling for the response
     if (response.statusCode == 200) {
       // Decode the response body
-      // print(response.body);
       var data = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (data.length == 0) {
@@ -131,29 +117,26 @@ class _RequestsPageState extends State<RequestPage> {
         ]; // Return an empty list when no requests have been made
       } else {
         // Convert the JSON data to a list of Product objects
-        List<BookRequest> userRequestList = [];
+        List<BookRequest> _userRequestList = [];
         for (var d in data) {
           if (d != null) {
-            userRequestList.add(BookRequest.fromJson(d));
+            _userRequestList.add(BookRequest.fromJson(d));
           }
         }
-        // print(user_request_list);
         if (sort == "title") {
-          userRequestList.sort((a, b) => a.title.compareTo(b.title));
-          // print(userRequestList.toString());
+          _userRequestList.sort((a, b) => a.title.compareTo(b.title));
         } else if (sort == "author") {
-          userRequestList.sort((a, b) => a.author.compareTo(b.author));
-          // print(userRequestList[0].id);
+          _userRequestList.sort((a, b) => a.author.compareTo(b.author));
         } else if (sort == "year") {
-          userRequestList.sort((a, b) => a.year.compareTo(b.year));
+          _userRequestList.sort((a, b) => a.year.compareTo(b.year));
         } else if (sort == "subjects") {
-          userRequestList
+          _userRequestList
               .sort((a, b) => a.subjects.join().compareTo(b.subjects.join()));
         } else if (sort == "date requested") {
-          userRequestList
+          _userRequestList
               .sort((a, b) => a.dateRequested.compareTo(b.dateRequested));
         }
-        return userRequestList;
+        return _userRequestList;
       }
     } else {
       return [
@@ -180,7 +163,6 @@ class _RequestsPageState extends State<RequestPage> {
     if (response.statusCode == 200) {
       // Decode the response body
       var data = jsonDecode(utf8.decode(response.bodyBytes));
-      // print(data);r
       List<String> subjectsList = [];
       for (var d in data) {
         if (d != null) {
@@ -195,40 +177,6 @@ class _RequestsPageState extends State<RequestPage> {
   }
 
   String sortBy = "title";
-  int selectedIndex = 0;
-  Widget mainButton(String text, int index, CookieRequest request){
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: selectedIndex == index ? const Color(0xFFC44B6A) : Colors.grey,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(36.0),
-        ),
-        
-      ),
-      onPressed: (){
-        if (index == 0){
-          _future = fetchUserRequest(request, "title");
-          current = "user";
-        } else {
-          _future = fetchAllRequest(request, "title");
-          current = "all";
-        }
-        setState(() {
-          selectedIndex = index;
-        });
-      },
-      child:Text(text,
-      style: GoogleFonts.lato(
-        textStyle: const TextStyle(
-            color: Colors.white,
-            fontSize: 23,
-            fontWeight: FontWeight.bold,
-            fontFamily: "Poppins",
-          ))
-      ),
-    );
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -250,6 +198,7 @@ class _RequestsPageState extends State<RequestPage> {
     ];
     String dropdownValue = sort.first;
     _future = fetchUserRequest(request, "title");
+    _futureAll = fetchAllRequest(request, "title");
     return Scaffold(
       floatingActionButton: Container(
         width: 70, // Increase the width to make it bigger
@@ -265,7 +214,6 @@ class _RequestsPageState extends State<RequestPage> {
                           style: GoogleFonts.lato(
                             textStyle: const TextStyle(
                               color: Colors.black,
-                              // fontSize: 30,
                               fontWeight: FontWeight.bold,
                               fontFamily: "Poppins",
                             ),
@@ -387,16 +335,13 @@ class _RequestsPageState extends State<RequestPage> {
                                                 hintWidget: const Text(
                                                     'Please choose one or more'),
                                                 onSaved: (newValue) {
-                                                  // print(newValue);
                                                   if (newValue == null) return;
                                                   setState(() {
                                                     selectedSubjects = newValue
                                                         .cast<String>()
                                                         .toList();
                                                   });
-                                                  // print(_selectedSubjects);
                                                 },
-                                                // ...
                                               );
                                             } else if (snapshot.hasError) {
                                               return Text(
@@ -454,8 +399,6 @@ class _RequestsPageState extends State<RequestPage> {
                                                             Navigator.of(
                                                                     context)
                                                                 .pop();
-                                                            if (current ==
-                                                                "user") {
                                                               _future =
                                                                   fetchUserRequest(
                                                                       request,
@@ -464,15 +407,12 @@ class _RequestsPageState extends State<RequestPage> {
                                                                   context,
                                                                   MaterialPageRoute(
                                                                       builder: (BuildContext
-                                                                              context) =>
-                                                                          super
-                                                                              .widget));
-                                                            } else {
+                                                                              context) => const RequestPage()
+                                                                        ));
                                                               _future =
                                                                   fetchAllRequest(
                                                                       request,
                                                                       "title");
-                                                            }
                                                           },
                                                         ),
                                                       ],
@@ -509,303 +449,313 @@ class _RequestsPageState extends State<RequestPage> {
           child: const Icon(Icons.add, color: Colors.white, size: 40),
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          if (current == "user") {
-            _future = fetchUserRequest(request, "title");
-          } else {
-            _future = fetchAllRequest(request, "title");
-          }
-          setState(() {});
-        },
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  mainButton("My Request", 0, request),
-                  const SizedBox(width: 30.0),
-                  mainButton("All Request", 1, request),
-                ],
-              ),
-              const SizedBox(height: 10.0),
-              Align(
-                alignment: Alignment.topRight,
-                child: 
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: [
-                    DropdownMenu<String>(
-                      width: 170,
-                      inputDecorationTheme: InputDecorationTheme(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(100.0),
-                          borderSide: const BorderSide(width: 1.0),
-                        ),
+      body: 
+        DefaultTabController(
+          length: 2,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              children: [
+                TabBar(
+                  labelColor: Colors.white,
+                  unselectedLabelColor: Colors.grey,
+                  indicatorSize: TabBarIndicatorSize.values[0],
+                  indicator: BoxDecoration(
+                    color: const Color(0xFFC44B6A),
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
                       ),
-                      initialSelection: dropdownValue,
-                      dropdownMenuEntries:
-                          sort.map<DropdownMenuEntry<String>>((String value) {
-                        return DropdownMenuEntry<String>(
-                            value: value, label: value);
-                      }).toList(),
-                      onSelected: (value) {
-                        if (value == "Sort By") {
-                          return;
-                        }
-                        if (current == "user") {
-                          _future = fetchUserRequest(
-                              request, value.toString().toLowerCase());
-                        } else {
-                          _future = fetchAllRequest(
-                              request, value.toString().toLowerCase());
-                        }
-                        setState(() {
-                          sortBy = value.toString().toLowerCase();
-                          // print(sortBy);
-                          dropdownValue = value!;
-                        });
-                      },
+                    ]
+                  ),
+                  tabs: const [
+                    Tab(
+                      text: 'My Requests',
                     ),
-                  // ],
+                    Tab(
+                      text: 'All Requests',
+                    ),
+                  ],
                 ),
-              // ),
-              const SizedBox(height: 10.0),
-              Expanded(
-                child: FutureBuilder<List<BookRequest>>(
-                  future: _future,
-                  builder: (context, snapshot) {
-                    // print(current);
-                    // print(sortBy);
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    } else if (snapshot.hasData &&
-                        current == "user" &&
-                        snapshot.data![0].id != 0) {
-                      if (sortBy == "title") {
-                        snapshot.data!
-                            .sort((a, b) => a.title.compareTo(b.title));
-                      } else if (sortBy == "author") {
-                        snapshot.data!
-                            .sort((a, b) => a.author.compareTo(b.author));
-                        // print(snapshot.data![0].title);
-                      } else if (sortBy == "year") {
-                        snapshot.data!.sort((a, b) => a.year.compareTo(b.year));
-                      } else if (sortBy == "subjects") {
-                        snapshot.data!.sort((a, b) =>
-                            a.subjects.join().compareTo(b.subjects.join()));
-                      } else if (sortBy == "date requested") {
-                        snapshot.data!.sort((a, b) =>
-                            a.dateRequested.compareTo(b.dateRequested));
-                      }
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          // print(snapshot.data![index].id);
-                          String test =
-                              snapshot.data![index].dateRequested.toString();
-                          test = test.substring(0, test.length - 17);
-                          return Card(
-                            // color: Color(0xFFc44b6a),
-                            child: ListTile(
-                              title: Text(snapshot.data![index].title,
-                                  style: GoogleFonts.lato(
-                                      textStyle: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Poppins"))),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                      "Author: ${snapshot.data![index].author}",
-                                      // , style: TextStyle(fontSize: 15, color: Colors.white)
-                                      style: GoogleFonts.lato(
-                                          textStyle: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: "Poppins"))),
-                                  Text("Year: ${snapshot.data![index].year}",
-                                      // , style: TextStyle(fontSize: 15, color: Colors.white)
-                                      style: GoogleFonts.lato(
-                                          textStyle: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: "Poppins"))),
-                                  Text(
-                                      "Language: ${snapshot.data![index].language}",
-                                      // , style: TextStyle(fontSize: 15, color: Colors.white)
-                                      style: GoogleFonts.lato(
-                                          textStyle: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: "Poppins"))),
-                                  // Text("Subjects: ${snapshot.data![index].subjects.join(", ")}",
-                                  // style: GoogleFonts.lato(textStyle: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: "Poppins"))
-                                  // ),
-                                ],
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                const Color(0xFFC44B6A)),
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(18.0),
-                                                side: const BorderSide(
-                                                    color:
-                                                        Color(0xFFC44B6A))))),
-                                    onPressed: () async {
-                                      await showDialog<void>(
-                                        context: context,
-                                        builder: (context) => Dialog.fullscreen(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.topRight,
-                                                child: IconButton(
-                                                  icon: const Icon(Icons.close,
-                                                      color: Colors.black),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ),
-                                              Align(
-                                                alignment:
-                                                    Alignment.topCenter,
-                                                child: Text(
-                                                  "Details",
-                                                  style: GoogleFonts.lato(
-                                                    textStyle: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 30,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontFamily: "Poppins",
-                                                    ),
+                
+                const SizedBox(height: 10.0),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: 
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.end,
+                  //   children: [
+                      DropdownMenu<String>(
+                        width: 170,
+                        inputDecorationTheme: InputDecorationTheme(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(100.0),
+                            borderSide: const BorderSide(width: 1.0),
+                          ),
+                        ),
+                        initialSelection: dropdownValue,
+                        dropdownMenuEntries:
+                            sort.map<DropdownMenuEntry<String>>((String value) {
+                          return DropdownMenuEntry<String>(
+                              value: value, label: value);
+                        }).toList(),
+                        onSelected: (value) {
+                          if (value == "Sort By") {
+                            return;
+                          }
+                            _future = fetchUserRequest(
+                                request, value.toString().toLowerCase());
+                            _future = fetchAllRequest(
+                                request, value.toString().toLowerCase());
+                          setState(() {
+                            sortBy = value.toString().toLowerCase();
+                            dropdownValue = value!;
+                          });
+                        },
+                      ),
+                    // ],
+                  ),
+                // ),
+                const SizedBox(height: 10.0),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                    RefreshIndicator(
+                      onRefresh: () async {
+                          _future = fetchUserRequest(request, "title");
+                      },
+                      child:
+                  FutureBuilder<List<BookRequest>>(
+                    future: _future,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else if (snapshot.hasData &&
+                          snapshot.data![0].id != 0) {
+                        if (sortBy == "title") {
+                          snapshot.data!
+                              .sort((a, b) => a.title.compareTo(b.title));
+                        } else if (sortBy == "author") {
+                          snapshot.data!
+                              .sort((a, b) => a.author.compareTo(b.author));
+                        } else if (sortBy == "year") {
+                          snapshot.data!.sort((a, b) => a.year.compareTo(b.year));
+                        } else if (sortBy == "subjects") {
+                          snapshot.data!.sort((a, b) =>
+                              a.subjects.join().compareTo(b.subjects.join()));
+                        } else if (sortBy == "date requested") {
+                          snapshot.data!.sort((a, b) =>
+                              a.dateRequested.compareTo(b.dateRequested));
+                        }
+                        return 
+                        ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            String test =
+                                snapshot.data![index].dateRequested.toString();
+                            test = test.substring(0, test.length - 17);
+                            return Card(
+                              // color: Color(0xFFc44b6a),
+                              child: ListTile(
+                                title: Text(snapshot.data![index].title,
+                                    style: GoogleFonts.lato(
+                                        textStyle: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Poppins"))),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                        "Author: ${snapshot.data![index].author}",
+                                        // , style: TextStyle(fontSize: 15, color: Colors.white)
+                                        style: GoogleFonts.lato(
+                                            textStyle: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: "Poppins"))),
+                                    Text("Year: ${snapshot.data![index].year}",
+                                        // , style: TextStyle(fontSize: 15, color: Colors.white)
+                                        style: GoogleFonts.lato(
+                                            textStyle: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: "Poppins"))),
+                                    Text(
+                                        "Language: ${snapshot.data![index].language}",
+                                        // , style: TextStyle(fontSize: 15, color: Colors.white)
+                                        style: GoogleFonts.lato(
+                                            textStyle: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: "Poppins"))),
+                                    // Text("Subjects: ${snapshot.data![index].subjects.join(", ")}",
+                                    // style: GoogleFonts.lato(textStyle: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: "Poppins"))
+                                    // ),
+                                  ],
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  const Color(0xFFC44B6A)),
+                                          shape: MaterialStateProperty.all<
+                                                  RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(18.0),
+                                                  side: const BorderSide(
+                                                      color:
+                                                          Color(0xFFC44B6A))))),
+                                      onPressed: () async {
+                                        await showDialog<void>(
+                                          context: context,
+                                          builder: (context) => Dialog.fullscreen(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: IconButton(
+                                                    icon: const Icon(Icons.close,
+                                                        color: Colors.black),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
                                                   ),
                                                 ),
-                                              ),
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    "Title: ${snapshot.data![index].title}",
+                                                Align(
+                                                  alignment:
+                                                      Alignment.topCenter,
+                                                  child: Text(
+                                                    "Details",
                                                     style: GoogleFonts.lato(
                                                       textStyle: const TextStyle(
                                                         color: Colors.black,
-                                                        fontSize: 20,
+                                                        fontSize: 30,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontFamily: "Poppins",
                                                       ),
                                                     ),
                                                   ),
-                                                  const SizedBox(width: 10.0),
-                                                  Text(
-                                                    "Author: ${snapshot.data![index].author}",
-                                                    style: GoogleFonts.lato(
-                                                      textStyle: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily: "Poppins",
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                      "Title: ${snapshot.data![index].title}",
+                                                      style: GoogleFonts.lato(
+                                                        textStyle: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily: "Poppins",
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(width: 10.0),
-                                                  Text(
-                                                    "Year: ${snapshot.data![index].year}",
-                                                    style: GoogleFonts.lato(
-                                                      textStyle: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily: "Poppins",
+                                                    const SizedBox(width: 10.0),
+                                                    Text(
+                                                      "Author: ${snapshot.data![index].author}",
+                                                      style: GoogleFonts.lato(
+                                                        textStyle: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily: "Poppins",
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(width: 10.0),
-                                                  Text(
-                                                    "Language: ${snapshot.data![index].language}",
-                                                    style: GoogleFonts.lato(
-                                                      textStyle: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily: "Poppins",
+                                                    const SizedBox(width: 10.0),
+                                                    Text(
+                                                      "Year: ${snapshot.data![index].year}",
+                                                      style: GoogleFonts.lato(
+                                                        textStyle: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily: "Poppins",
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(width: 10.0),
-                                                  Text(
-                                                    "Subjects: ",
-                                                    style: GoogleFonts.lato(
-                                                      textStyle: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily: "Poppins",
+                                                    const SizedBox(width: 10.0),
+                                                    Text(
+                                                      "Language: ${snapshot.data![index].language}",
+                                                      style: GoogleFonts.lato(
+                                                        textStyle: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily: "Poppins",
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(width: 10.0),
-                                                  Text(
-                                                    "            -  ${snapshot.data![index].subjects.join("\n            -  ")}",
-                                                    style: GoogleFonts.lato(
-                                                      textStyle: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily: "Poppins",
+                                                    const SizedBox(width: 10.0),
+                                                    Text(
+                                                      "Subjects: ",
+                                                      style: GoogleFonts.lato(
+                                                        textStyle: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily: "Poppins",
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(width: 10.0),
-                                                  Text(
-                                                    "Date Requested: $test",
-                                                    style: GoogleFonts.lato(
-                                                      textStyle: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily: "Poppins",
+                                                    const SizedBox(width: 10.0),
+                                                    Text(
+                                                      "            -  ${snapshot.data![index].subjects.join("\n            -  ")}",
+                                                      style: GoogleFonts.lato(
+                                                        textStyle: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily: "Poppins",
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    width: 70,
-                                                    height: 70,
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
+                                                    const SizedBox(width: 10.0),
+                                                    Text(
+                                                      "Date Requested: $test",
+                                                      style: GoogleFonts.lato(
+                                                        textStyle: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily: "Poppins",
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width: 70,
+                                                      height: 70,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
                                                       border: Border.all(
                                                           color: Colors.white,
                                                           width: 2),
@@ -925,12 +875,10 @@ class _RequestsPageState extends State<RequestPage> {
                                                                                                   initialValue: selectedSubjects,
                                                                                                   hintWidget: const Text('Please choose one or more'),
                                                                                                   onSaved: (newValue) {
-                                                                                                    // print(newValue);
                                                                                                     if (newValue == null) return;
                                                                                                     setState(() {
                                                                                                       selectedSubjects = newValue.cast<String>().toList();
                                                                                                     });
-                                                                                                    // print(_selectedSubjects);
                                                                                                   },
                                                                                                   // ...
                                                                                                 );
@@ -976,12 +924,9 @@ class _RequestsPageState extends State<RequestPage> {
                                                                                                             onPressed: () {
                                                                                                               // Perform action
                                                                                                               Navigator.of(context).pop();
-                                                                                                              if (current == "user") {
                                                                                                                 _future = fetchUserRequest(request, "title");
-                                                                                                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => super.widget));
-                                                                                                              } else {
                                                                                                                 _future = fetchAllRequest(request, "title");
-                                                                                                              }
+                                                                                                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const RequestPage()));
                                                                                                             },
                                                                                                           ),
                                                                                                         ],
@@ -1007,130 +952,150 @@ class _RequestsPageState extends State<RequestPage> {
                                                                           ],
                                                                         ),
                                                                       ));
-                                                        },
+                                                          },
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(width: 30.0),
-                                                  Container(
-                                                    width: 70,
-                                                    height: 70,
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(
-                                                          color: Colors.white,
-                                                          width: 2),
-                                                    ),
-                                                    child: CircleAvatar(
-                                                      backgroundColor:
-                                                          const Color(0xffC44B6A),
-                                                      child: IconButton(
-                                                        icon: const Icon(
-                                                            Icons.delete,
-                                                            color:
-                                                                Colors.white),
-                                                        iconSize: 30,
-                                                        onPressed: () async {
-                                                          final response = await request.postJson("${globals.domain}/request/delete-request/",jsonEncode(<String,String>{
-                                                            'id': snapshot.data![index].id.toString(),
-                                                            }));
-                                                          if (response["status"] == 'success'){
-                                                            _future = fetchUserRequest(request,"title");
-                                                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Request has been deleted!")));
-                                                          }
-                                                          else{
-                                                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Request failed to be deleted! Please try again.")));
-                                                          }
-                                                        },
+                                                    const SizedBox(width: 30.0),
+                                                    Container(
+                                                      width: 70,
+                                                      height: 70,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                            color: Colors.white,
+                                                            width: 2),
+                                                      ),
+                                                      child: CircleAvatar(
+                                                        backgroundColor:
+                                                            const Color(0xffC44B6A),
+                                                        child: IconButton(
+                                                          icon: const Icon(
+                                                              Icons.delete,
+                                                              color:
+                                                                  Colors.white),
+                                                          iconSize: 30,
+                                                          onPressed: () async {
+                                                            final response = await request.postJson("${globals.domain}/request/delete-request/",jsonEncode(<String,String>{
+                                                              'id': snapshot.data![index].id.toString(),
+                                                              }));
+                                                            if (response["status"] == 'success'){
+                                                              _future = fetchUserRequest(request,"title");
+                                                              _futureAll = fetchAllRequest(request,"title");
+                                                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Request has been deleted!")));
+                                                            }
+                                                            else{
+                                                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Request failed to be deleted! Please try again.")));
+                                                            }
+                                                          },
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    child: const Text("View Details",
-                                        style: TextStyle(color: Colors.white)),
-                                  ),
-                                ],
+                                        );
+                                      },
+                                      child: const Text("View Details",
+                                          style: TextStyle(color: Colors.white)),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    } else if (snapshot.hasData &&
-                        current == "all" &&
-                        snapshot.data![0].id != 0) {
-                          if (sortBy == "title") {
-                        snapshot.data!
-                            .sort((a, b) => a.title.compareTo(b.title));
-                      } else if (sortBy == "author") {
-                        snapshot.data!
-                            .sort((a, b) => a.author.compareTo(b.author));
-                        // print(snapshot.data![0].title);
-                      } else if (sortBy == "year") {
-                        snapshot.data!.sort((a, b) => a.year.compareTo(b.year));
-                      } else if (sortBy == "subjects") {
-                        snapshot.data!.sort((a, b) =>
-                            a.subjects.join().compareTo(b.subjects.join()));
-                      } else if (sortBy == "date requested") {
-                        snapshot.data!.sort((a, b) =>
-                            a.dateRequested.compareTo(b.dateRequested));
+                            );
+                          },
+                        );
+                      
+                      } else {
+                        return const Text('No Requests Found');
                       }
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          String test =
-                              snapshot.data![index].dateRequested.toString();
-                          test = test.substring(0, test.length - 17);
-                          return Card(
-                            // color: Color(0xFFc44b6a),
-                            child: ListTile(
-                              title: Text(snapshot.data![index].title,
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold)),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Author: ${snapshot.data![index].author}"
-                                      // , style: TextStyle(fontSize: 15, color: Colors.white)
-                                      ),
-                                  Text("Year: ${snapshot.data![index].year}"
-                                      // , style: TextStyle(fontSize: 15, color: Colors.white)
-                                      ),
-                                  Text(
-                                      "Language: ${snapshot.data![index].language}"
-                                      // , style: TextStyle(fontSize: 15, color: Colors.white)
-                                      ),
-                                ],
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    "Date Requested:\n $test",
-                                    //  style: TextStyle(color: Colors.white)
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    } else {
-                      return const Text('No Requests Found');
-                    }
-                  },
+                    },
+                  ),
                 ),
-              ),
-            ],
+                  RefreshIndicator(
+                    onRefresh: () async {
+                     _futureAll = fetchAllRequest(request, "title");
+                    },
+                    child: FutureBuilder<List<BookRequest>>(
+                    future: _futureAll,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else if (snapshot.hasData &&
+                          snapshot.data![0].id != 0) {
+                            if (sortBy == "title") {
+                          snapshot.data!
+                              .sort((a, b) => a.title.compareTo(b.title));
+                        } else if (sortBy == "author") {
+                          snapshot.data!
+                              .sort((a, b) => a.author.compareTo(b.author));
+                        } else if (sortBy == "year") {
+                          snapshot.data!.sort((a, b) => a.year.compareTo(b.year));
+                        } else if (sortBy == "subjects") {
+                          snapshot.data!.sort((a, b) =>
+                              a.subjects.join().compareTo(b.subjects.join()));
+                        } else if (sortBy == "date requested") {
+                          snapshot.data!.sort((a, b) =>
+                              a.dateRequested.compareTo(b.dateRequested));
+                        }
+                        return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            String test =
+                                snapshot.data![index].dateRequested.toString();
+                            test = test.substring(0, test.length - 17);
+                            return Card(
+                              // color: Color(0xFFc44b6a),
+                              child: ListTile(
+                                title: Text(snapshot.data![index].title,
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold)),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Author: ${snapshot.data![index].author}"
+                                        // , style: TextStyle(fontSize: 15, color: Colors.white)
+                                        ),
+                                    Text("Year: ${snapshot.data![index].year}"
+                                        // , style: TextStyle(fontSize: 15, color: Colors.white)
+                                        ),
+                                    Text(
+                                        "Language: ${snapshot.data![index].language}"
+                                        // , style: TextStyle(fontSize: 15, color: Colors.white)
+                                        ),
+                                  ],
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      "Date Requested:\n $test",
+                                      //  style: TextStyle(color: Colors.white)
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                          } else {
+                        return const Text('No Requests Found');
+                      }
+                    },
+                  ),
+                  ),
+                    ],
+                    ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        )
     );
   }
 }
