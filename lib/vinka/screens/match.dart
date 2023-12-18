@@ -5,6 +5,7 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:bookmate/globals.dart' as globals;
 import 'package:bookmate/vinka/screens/match_guide.dart';
+import 'package:bookmate/azmy/screens/profile.dart';
 
 
 class MatchPage extends StatefulWidget {
@@ -161,7 +162,12 @@ class _MatchPageState extends State<MatchPage> {
                                 children: [
                                 ElevatedButton.icon(
                                   onPressed: () {
-                                    // Handle button press
+                                      Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProfileDashboard(id: int.parse(cards[currentIndex]['userId'])),
+                                      ),
+                                    );
                                   },
                                   icon: const Icon(
                                     Icons.person,
@@ -188,7 +194,7 @@ class _MatchPageState extends State<MatchPage> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title: const Text('Get Ready to Connect!', style: TextStyle(color: Color(0xFFB6536B),fontWeight: FontWeight.bold)),
+                                            title: const Text('Get Ready to Connect!', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                                             content: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               mainAxisSize: MainAxisSize.min,
@@ -218,7 +224,12 @@ class _MatchPageState extends State<MatchPage> {
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                 },
-                                                child: const Text('Cancel'),
+                                                child: const Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                    color: Colors.black, // Change the color to gray black
+                                                  ),
+                                                ),
                                               ),
                                               TextButton(
                                                 onPressed: () async {

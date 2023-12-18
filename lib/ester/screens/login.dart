@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:bookmate/ester/screens/layout.dart';
 import 'package:bookmate/globals.dart' as globals; 
 import 'package:bookmate/azmy/models/profile.dart';
+import 'package:bookmate/provider.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -64,9 +65,9 @@ class _LoginPageState extends State<LoginPage> {
                   String message = response['message'];
                   String uname = response['username'];
                   int id = response['id'];
-                 // LoginUser newUser = LoginUser(id: id, username: uname);
+                  LoginUser newUser = LoginUser(id: id, username: uname);
 
-                 // Provider.of<UserProvider>(context, listen: false).setUser(newUser);
+                  Provider.of<UserProvider>(context, listen: false).setUser(newUser);
 
                   if (!context.mounted) return;
                   Navigator.pushReplacement(

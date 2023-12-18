@@ -3,6 +3,7 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:bookmate/ester/screens/splash.dart';
 import 'package:bookmate/ester/screens/login.dart';
+import 'package:bookmate/provider.dart';
 
 final ThemeData myTheme = ThemeData(
     // primaryColor: const Color(0xFFC44B6A), // Replace with your hex code
@@ -22,7 +23,7 @@ final ThemeData myTheme = ThemeData(
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => NavigationProvider(),
+      create: (context) => UserProvider(),
       child: const MyApp(),
     ),
   );

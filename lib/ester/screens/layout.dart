@@ -7,7 +7,7 @@ import 'package:bookmate/reyhan/screens/dashboardbuku.dart';
 import 'package:bookmate/vinka/screens/match.dart';
 import 'package:bookmate/azmy/models/profile.dart';
 import 'package:bookmate/azmy/screens/profile.dart';
-//import 'package:bookmate/provider.dart'; 
+import 'package:bookmate/provider.dart'; 
 import 'package:provider/provider.dart';
 
 class Layout extends StatefulWidget {
@@ -22,7 +22,8 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
-    //LoginUser? user = Provider.of<UserProvider>(context).user;    
+    LoginUser? loggedInUser = Provider.of<UserProvider>(context).user;    
+    int? loggedInUserId = loggedInUser?.id;
 
     return WillPopScope(
       onWillPop: () async {
@@ -130,14 +131,15 @@ class _LayoutState extends State<Layout> {
             MatchPage(),
             BookDashboard(),
             RequestPage(),
-            //ProfileDashboard(id : user?.id),
+            ProfileDashboard(id : loggedInUserId),
+            /*
             Container(
               alignment: Alignment.center,
               child: const Text(
                 'Profile',
                 style: TextStyle(fontSize: 24),
               ),
-            ), 
+            ), */
           ][currentPageIndex]),
     );
   }
