@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:bookmate/ester/screens/layout.dart';
 import 'package:bookmate/globals.dart' as globals; 
 import 'package:bookmate/azmy/models/profile.dart';
+import 'package:bookmate/provider.dart';
 
 
 class LoginPage extends StatefulWidget {

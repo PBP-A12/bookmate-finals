@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bookmate/globals.dart' as globals;
@@ -405,7 +406,7 @@ class _EditModalState extends State<EditModal> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         final response = await request.postJson(
-                          "${globals.domain}/user/edit_profile_flutter/$loggedInUserId",
+                          "http://127.0.0.1:8000/user/edit_profile_flutter/$loggedInUserId",
                           jsonEncode(<String, String>{
                             'age': _age.toString(),
                             'bio': _bio,
