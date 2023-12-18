@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:bookmate/globals.dart' as globals;
 
 class GuidePage extends StatelessWidget {
   final VoidCallback onStart;
 
-  GuidePage({required this.onStart});
+  const GuidePage({super.key, required this.onStart});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class GuidePage extends StatelessWidget {
             'Discover your perfect match and make connections with BookMate! Swipe left if they aren\'t your preference, or tap the "Match" button if you find someone interesting.',
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontSize: 16.0,
-                  color: Color(0x8A000000), // Adjust the color
+                  color: const Color(0x8A000000), // Adjust the color
                 ),
             textAlign: TextAlign.center,
           ),
@@ -34,17 +33,17 @@ class GuidePage extends StatelessWidget {
           const SizedBox(height: 24.0),
           ElevatedButton(
             onPressed: onStart,
-            child: Text(
-              'Let\'s Start Matching!',
-              style: TextStyle(fontSize: 18.0),
-            ),
             style: ElevatedButton.styleFrom(
-              backgroundColor:  Color(0xFFB6536B), // Change the button color
+              backgroundColor:  const Color(0xFFB6536B), // Change the button color
               foregroundColor: Colors.white, // Change the text color
               minimumSize: const Size(200, 50), // Set the button size
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
+            ),
+            child: const Text(
+              'Let\'s Start Matching!',
+              style: TextStyle(fontSize: 18.0),
             ),
           ),
         ],
