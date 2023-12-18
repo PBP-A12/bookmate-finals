@@ -3,16 +3,11 @@ import 'package:bookmate/azmy/screens/profile.dart';
 import 'package:bookmate/clarence/widgets/app_bar.dart';
 import 'package:bookmate/provider.dart';
 import 'package:bookmate/vinka/screens/match.dart';
-// import 'package:bookmate/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:bookmate/ester/screens/home.dart';
 import 'package:bookmate/clarence/screens/request.dart';
 import 'package:bookmate/reyhan/screens/dashboardbuku.dart';
 import 'package:provider/provider.dart'; 
-import 'package:bookmate/azmy/models/profile.dart';
-import 'package:bookmate/azmy/screens/profile.dart';
-//import 'package:bookmate/provider.dart'; 
-import 'package:provider/provider.dart';
 
 class Layout extends StatefulWidget {
   const Layout({Key? key}) : super(key: key);
@@ -97,8 +92,6 @@ class _LayoutState extends State<Layout> {
             MatchPage(),
             const BookDashboard(),
             const RequestPage(),
-            // TODO: Add other pages here
-  
             ProfileDashboard(id: loggedInUserId)
           ][currentPageIndex]),
     );
