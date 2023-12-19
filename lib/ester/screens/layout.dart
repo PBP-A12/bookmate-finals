@@ -24,12 +24,12 @@ class _LayoutState extends State<Layout> {
     LoginUser? loggedInUser = Provider.of<UserProvider>(context).user;
     int? loggedInUserId = loggedInUser?.id;
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) async {
         setState(() {
           currentPageIndex = 0;
         });
-        return false;
       },
       child: Scaffold(
           appBar: const PreferredSize(
@@ -87,7 +87,7 @@ class _LayoutState extends State<Layout> {
               ),
             ],
           ),
-          body: <Widget>[
+          body: <Widget>[            
             const HomePage(),
             const MatchPage(),
             const BookDashboard(),
