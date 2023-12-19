@@ -4,15 +4,13 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:bookmate/globals.dart' as globals;
 
-// import 'package:bookmate/ester/screens/home.dart';
-
 class AppBarWidget extends StatefulWidget {
   const AppBarWidget({Key? key}) : super(key: key);
 
   @override
-  State<AppBar> createState() => _AppBarWidgetState();
+  State<AppBarWidget> createState() => _AppBarWidgetState();
 }
-class _AppBarWidgetState extends State<AppBar> {
+class _AppBarWidgetState extends State<AppBarWidget> {
   int currentPageIndex = 0;
 
   @override
