@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:bookmate/screens/login.dart';
+import 'package:bookmate/ester/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:bookmate/globals.dart' as globals;
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -66,7 +67,7 @@ class RegisterPageState extends State<RegisterPage> {
                 },
               ),
               const SizedBox(height: 24.0),
-              ElevatedButton(
+              FilledButton(
                 child: const Text('Register'),
                 onPressed: () async {
                   String username = _usernameController.text;
@@ -77,15 +78,13 @@ class RegisterPageState extends State<RegisterPage> {
                   // Untuk menyambungkan Android emulator dengan Django pada localhost,
                   // gunakan URL http://10.0.2.2/
                   final response = await request.postJson(
-                      "https://bookmate-a12-tk.pbp.cs.ui.ac.id/auth/register-flutter/",
+                      "${globals.domain}/auth/register-flutter/",
                       jsonEncode({
                         "username": username,
                         "password1": password1,
                         "password2": password2,
                       }));
-
-                  if (!context.mounted) return; 
-
+                  if (!context.mounted) return;
                   if (response['status'] == 'success') {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -94,7 +93,14 @@ class RegisterPageState extends State<RegisterPage> {
                     );
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const LoginPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
+                    );
+                  } else if (response['status'] == 'username_exists') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Username already exists!'),
+                      ),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -105,6 +111,16 @@ class RegisterPageState extends State<RegisterPage> {
                   }
                 },
               ),
+              const SizedBox(height: 12.0),
+              TextButton(
+                  child: const Text('Already have an account? Log in'),
+                  onPressed: () => {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()),
+                        )
+                      })
             ],
           ),
         ),

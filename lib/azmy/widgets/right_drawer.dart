@@ -1,11 +1,17 @@
-import 'package:bookmate/screens/home.dart';
+import 'package:bookmate/azmy/models/profile.dart';
+import 'package:bookmate/provider.dart';
+import 'package:bookmate/azmy/screens/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RightDrawer extends StatelessWidget {
   const RightDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    LoginUser? user = Provider.of<UserProvider>(context).user;
+
     return Drawer(
       child: ListView(
         children: [
@@ -41,11 +47,7 @@ class RightDrawer extends StatelessWidget {
             title: const Text('Home'),
             // Bagian redirection ke HOME
             onTap: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomePage(),
-                  ));
+              
             },
           ),
           const ListTile(
@@ -82,16 +84,15 @@ class RightDrawer extends StatelessWidget {
             // );
             // },
           ),
-          const ListTile(
-            leading: Icon(Icons.person_outline),
-            title: Text('Profile'),
-            // Bagian redirection ke PROFILE
-            // onTap: () {
-            //   Navigator.pushReplacement(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const ShopFormPage()),
-            // );
-            // },
+          ListTile(
+            leading: const Icon(Icons.person_outline),
+            title: const Text('Profile'),
+            onTap: () {
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfileDashboard(id : user?.id)),
+            );
+            },
           ),
           const ListTile(
             leading: Icon(Icons.logout),
