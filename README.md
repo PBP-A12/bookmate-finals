@@ -56,8 +56,8 @@ Tautan berita acara dapat diakses [di sini](https://1drv.ms/x/s!AjrL352WxT7K00bP
 
 ## 🚀 Deployment Aplikasi
 - Deployment Web-App dapat diakses [di sini](https://bookmate-a12-tk.pbp.cs.ui.ac.id/)
-- GitHub Release: APK BookMate akan tersedia [di sini](https://install.appcenter.ms/orgs/pebepe/apps/bookmate/distribution_groups/public/releases/1)
-- Platform Cloud: Kami akan menggunakan [Microsoft App Center]() untuk distribusi dan pengujian
+- GitHub Release: APK BookMate akan tersedia [di sini](https://github.com/PBP-A12/bookmate-finals/releases)
+- Platform Cloud: Kami akan menggunakan [Microsoft App Center](https://install.appcenter.ms/orgs/pebepe/apps/bookmate/distribution_groups/public) untuk distribusi dan pengujian
 
 
 # Panduan Penggunaan (Dev Only)
