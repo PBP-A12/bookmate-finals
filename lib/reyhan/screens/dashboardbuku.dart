@@ -15,7 +15,7 @@ class BookDashboard extends StatefulWidget {
 
 class _BookDashboardState extends State<BookDashboard> {
   Future<List<Book>> fetchProduct(String judul) async {
-    var url;
+    Uri url;
     if (judul == "") {
       url = Uri.parse('${globals.domain}/api/books/');
     } else {
@@ -59,17 +59,18 @@ class _BookDashboardState extends State<BookDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<Review>> listReview;
+    // Remove the unused variable
+    // Future<List<Review>> listReview;
     return ListView(children: [
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width *
               0.7, // Adjust the width as needed
           child: TextField(
             decoration: InputDecoration(
               hintText: 'Search...',
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -102,7 +103,7 @@ class _BookDashboardState extends State<BookDashboard> {
                 );
               } else {
                 return GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount:
@@ -118,7 +119,7 @@ class _BookDashboardState extends State<BookDashboard> {
                       padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
                         color:
-                            Color.fromARGB(255, 255, 255, 255).withOpacity(0.7),
+                            const Color.fromARGB(255, 255, 255, 255).withOpacity(0.7),
                         borderRadius: BorderRadius.circular(8.0),
                         border: Border.all(
                           color: Colors.grey.shade900, // Darker border
@@ -149,13 +150,13 @@ class _BookDashboardState extends State<BookDashboard> {
                           const SizedBox(height: 10),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFFC44B6A),
+                              backgroundColor: const Color(0xFFC44B6A),
                               side: const BorderSide(color: Colors.transparent),
                             ),
                             onPressed: () {
-                              print(
-                                  'Add Review clicked: ${snapshot.data![index].title}');
-                              listReview = fetchReview(snapshot.data![index].id);
+                              // print(
+                              //     'Add Review clicked: ${snapshot.data![index].title}');
+                              // listReview = fetchReview(snapshot.data![index].id);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

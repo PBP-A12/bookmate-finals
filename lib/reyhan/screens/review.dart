@@ -87,7 +87,7 @@ class _DetailReviewPage extends State<DetailReviewPage> {
                       }));
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFC44B6A), // Pink background color
+                  backgroundColor: const Color(0xFFC44B6A), // Pink background color
                 ),
                 child: const Text(
                   'Add Review',
@@ -136,7 +136,7 @@ class _DetailReviewPage extends State<DetailReviewPage> {
                                 children: [
                                   const SizedBox(height: 15),
                                   Text(
-                                    "${review.review}",
+                                    review.review,
                                     style: const TextStyle(
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.bold,
@@ -144,7 +144,7 @@ class _DetailReviewPage extends State<DetailReviewPage> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    "${review.reviewerAccountUsername}",
+                                    review.reviewerAccountUsername,
                                     style: const TextStyle(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.bold,

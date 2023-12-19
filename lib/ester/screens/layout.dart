@@ -89,7 +89,7 @@ class _LayoutState extends State<Layout> {
           ),
           body: <Widget>[
             const HomePage(),
-            MatchPage(),
+            const MatchPage(),
             const BookDashboard(),
             const RequestPage(),
             ProfileDashboard(id: loggedInUserId)

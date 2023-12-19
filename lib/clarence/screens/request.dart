@@ -117,26 +117,26 @@ class _RequestsPageState extends State<RequestPage> {
         ]; // Return an empty list when no requests have been made
       } else {
         // Convert the JSON data to a list of Product objects
-        List<BookRequest> _userRequestList = [];
+        List<BookRequest> userRequestList = [];
         for (var d in data) {
           if (d != null) {
-            _userRequestList.add(BookRequest.fromJson(d));
+            userRequestList.add(BookRequest.fromJson(d));
           }
         }
         if (sort == "title") {
-          _userRequestList.sort((a, b) => a.title.compareTo(b.title));
+          userRequestList.sort((a, b) => a.title.compareTo(b.title));
         } else if (sort == "author") {
-          _userRequestList.sort((a, b) => a.author.compareTo(b.author));
+          userRequestList.sort((a, b) => a.author.compareTo(b.author));
         } else if (sort == "year") {
-          _userRequestList.sort((a, b) => a.year.compareTo(b.year));
+          userRequestList.sort((a, b) => a.year.compareTo(b.year));
         } else if (sort == "subjects") {
-          _userRequestList
+          userRequestList
               .sort((a, b) => a.subjects.join().compareTo(b.subjects.join()));
         } else if (sort == "date requested") {
-          _userRequestList
+          userRequestList
               .sort((a, b) => a.dateRequested.compareTo(b.dateRequested));
         }
-        return _userRequestList;
+        return userRequestList;
       }
     } else {
       return [

@@ -102,6 +102,7 @@ class _AddReview extends State<AddReview> {
                             'review': _review,
                           }),
                         );
+                        if (!context.mounted) return; 
                         if (response['status'] == 'success') {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

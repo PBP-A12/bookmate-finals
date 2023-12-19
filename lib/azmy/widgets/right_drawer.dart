@@ -85,8 +85,8 @@ class RightDrawer extends StatelessWidget {
             // },
           ),
           ListTile(
-            leading: Icon(Icons.person_outline),
-            title: Text('Profile'),
+            leading: const Icon(Icons.person_outline),
+            title: const Text('Profile'),
             onTap: () {
               Navigator.push(
               context,

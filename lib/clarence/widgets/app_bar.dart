@@ -10,20 +10,13 @@ class AppBarWidget extends StatefulWidget {
   const AppBarWidget({Key? key}) : super(key: key);
 
   @override
-  _AppBarWidgetState createState() => _AppBarWidgetState();
+  State<AppBar> createState() => _AppBarWidgetState();
 }
-class _AppBarWidgetState extends State<StatefulWidget> {
+class _AppBarWidgetState extends State<AppBar> {
   int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    // const fgColor = Colors.white;
-    // const bgColor = Color(0xFFC44B6A);
-    // const textStyle = TextStyle(
-    //   fontSize: 20,
-    //   fontWeight: FontWeight.bold,
-    //   color: fgColor,
-    // );
     Image appLogo = Image.asset(
       "assets/images/app-logo.png",
       fit: BoxFit.fitHeight,
@@ -34,26 +27,27 @@ class _AppBarWidgetState extends State<StatefulWidget> {
         AppBar(
           toolbarHeight: 100,
           title: Container(
-            child: appLogo,
-            padding: EdgeInsets.only(top: 20 ),
+            padding: const EdgeInsets.only(top: 20 ),
             alignment: Alignment.centerLeft,
+            child: appLogo,
           ),
           actions: [
-            IconButton(icon: Icon(Icons.logout,
+            IconButton(icon: const Icon(Icons.logout,
             color: Colors.black,),
               onPressed: () async {
                 final response = await request.logout("${globals.domain}/auth/logout-flutter/");
+                if (!context.mounted) return; 
                 if (response['status']) {
                 String username = response['username'];
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => LoginPage())
+                      MaterialPageRoute(builder: (context) => const LoginPage())
                       );
                   ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Goodbye, ${username}! See you soon! 👋')));
+                      SnackBar(content: Text('Goodbye, $username! See you soon! 👋')));
                 }
                 else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Logout failed')));
+                      const SnackBar(content: Text('Logout failed')));
                 }
               },
             ),
