@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:bookmate/globals.dart' as globals;
 
 class AppBarWidget extends StatefulWidget {
-  const AppBarWidget({Key? key}) : super(key: key);
+  const AppBarWidget({super.key});
 
   @override
   State<AppBarWidget> createState() => _AppBarWidgetState();

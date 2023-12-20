@@ -9,7 +9,7 @@ import 'package:bookmate/globals.dart' as globals;
 
 class DetailReviewPage extends StatefulWidget {
   final Book book;
-  const DetailReviewPage({Key? key, required this.book}) : super(key: key);
+  const DetailReviewPage({super.key, required this.book});
 
   @override
   State<DetailReviewPage> createState() => _DetailReviewPage();

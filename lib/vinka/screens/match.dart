@@ -9,7 +9,7 @@ import 'package:bookmate/azmy/screens/profile.dart';
 
 
 class MatchPage extends StatefulWidget {
-  const MatchPage({Key? key}) : super(key: key);
+  const MatchPage({super.key});
 
   @override
   MatchPageState createState() => MatchPageState();
@@ -174,7 +174,7 @@ class MatchPageState extends State<MatchPage> {
                                             Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => ProfileDashboard(id: int.parse(cards[currentIndex]['userId'])),
+                                              builder: (context) => ProfileDashboard(id: int.parse(cards[currentIndex]['userId']), header: true),
                                             ),
                                           );
                                         },
