@@ -10,8 +10,11 @@
 - Reyhan Wiyasa Puspanegara (2206081925)
 - Vinka Alrezky As (2206820200)
 
-
-# Nama Aplikasi: BookMate
+# BookMate
+[![Staging](https://github.com/PBP-A12/bookmate-finals/actions/workflows/staging.yml/badge.svg)](https://github.com/PBP-A12/bookmate-finals/actions/workflows/staging.yml)
+[![Pre-Release](https://github.com/PBP-A12/bookmate-finals/actions/workflows/pre-release.yml/badge.svg)](https://github.com/PBP-A12/bookmate-finals/actions/workflows/pre-release.yml)
+[![Release](https://github.com/PBP-A12/bookmate-finals/actions/workflows/release.yml/badge.svg)](https://github.com/PBP-A12/bookmate-finals/actions/workflows/release.yml)
+[![Build status](https://build.appcenter.ms/v0.1/apps/ad48a5ec-935e-42f4-8601-636deac35517/branches/main/badge)](https://appcenter.ms)
 
 ## 💡 Cerita dan Manfaat Aplikasi
  BookMate adalah platform yang menghubungkan pecinta buku. Tujuannya adalah memfasilitasi koneksi dan pengalaman berbagi antar pembaca dengan minat buku yang serupa. Di era digital ini, banyak orang merasa kesulitan menemukan teman dengan minat buku yang serupa. Oleh karena itu, BookMate menciptakan wadah yang memudahkan pecinta buku untuk terhubung, berinteraksi, dan memperdalam minat mereka dalam dunia literasi.
@@ -53,8 +56,8 @@ Tautan berita acara dapat diakses [di sini](https://1drv.ms/x/s!AjrL352WxT7K00bP
 
 ## 🚀 Deployment Aplikasi
 - Deployment Web-App dapat diakses [di sini](https://bookmate-a12-tk.pbp.cs.ui.ac.id/)
-- GitHub Release: APK BookMate akan tersedia [di sini]()
-- Platform Cloud: Kami akan menggunakan [Microsoft App Center]() untuk distribusi dan pengujian
+- GitHub Release: APK BookMate akan tersedia [di sini](https://github.com/PBP-A12/bookmate-finals/releases)
+- Platform Cloud: Kami akan menggunakan [Microsoft App Center](https://install.appcenter.ms/orgs/pebepe/apps/bookmate/distribution_groups/public) untuk distribusi dan pengujian
 
 
 # Panduan Penggunaan (Dev Only)
