@@ -92,7 +92,7 @@ class _LayoutState extends State<Layout> {
             const MatchPage(),
             const BookDashboard(),
             const RequestPage(),
-            ProfileDashboard(id: loggedInUserId)
+            ProfileDashboard(id: loggedInUserId, header: false)
           ][currentPageIndex]),
     );
   }

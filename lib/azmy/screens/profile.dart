@@ -13,8 +13,9 @@ import 'package:provider/provider.dart';
 
 class ProfileDashboard extends StatefulWidget {
   final int? id;
+  final bool header;
 
-  const ProfileDashboard({super.key, required this.id});
+  const ProfileDashboard({super.key, required this.id, required this.header});
 
   @override
   _ProfileDashboardState createState() => _ProfileDashboardState();
@@ -22,11 +23,13 @@ class ProfileDashboard extends StatefulWidget {
 
 class _ProfileDashboardState extends State<ProfileDashboard> {
   int? id;
+  late bool header;
 
   @override
   void initState() {
     super.initState();
     id = widget.id;
+    header = widget.header;
   }
 
   void refreshData() {
@@ -91,7 +94,7 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: (loggedInUser?.id != id)? AppBar(
+        appBar: (header)? AppBar(
           title: const Text('Profile', style : TextStyle( color: Color.fromARGB(255, 255, 255, 255))),
           backgroundColor: bgColor,
         ) : null,
@@ -234,9 +237,7 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           ProfileDashboard(
-                                                              id: userData[
-                                                                      index]
-                                                                  .pk),
+                                                              id: userData[index].pk, header: true),
                                                     ),
                                                   );
                                                 },

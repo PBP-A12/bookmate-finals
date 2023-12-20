@@ -174,7 +174,7 @@ class MatchPageState extends State<MatchPage> {
                                             Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => ProfileDashboard(id: int.parse(cards[currentIndex]['userId'])),
+                                              builder: (context) => ProfileDashboard(id: int.parse(cards[currentIndex]['userId']), header: true),
                                             ),
                                           );
                                         },
