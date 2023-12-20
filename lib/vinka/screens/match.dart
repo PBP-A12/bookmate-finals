@@ -235,11 +235,8 @@ class MatchPageState extends State<MatchPage> {
                                                     onPressed: () async {
                                                       Navigator.of(context).pop();
                                                       final response = await request.post("${globals.domain}/match/accept-flutter/",
-                                                          jsonEncode(<String, String>{
-                                                            "name": cards[currentIndex]['name'],
-                                                            "bio": cards[currentIndex]['bio'],
-                                                            "matching_id": cards[currentIndex]['matchingId'],
-                                                            'id': cards[currentIndex]['userId'],
+                                                          jsonEncode(<String, int>{
+                                                            "matching_id": int.parse(cards[currentIndex]['matchingId']),
                                                           }));
                                                       if (response['status'] == 'success') {
                                                         scaffoldMessenger.showSnackBar(
