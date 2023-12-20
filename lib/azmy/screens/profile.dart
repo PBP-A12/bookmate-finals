@@ -13,8 +13,9 @@ import 'package:provider/provider.dart';
 
 class ProfileDashboard extends StatefulWidget {
   final int? id;
+  final bool header;
 
-  const ProfileDashboard({super.key, required this.id});
+  const ProfileDashboard({super.key, required this.id, required this.header});
 
   @override
   _ProfileDashboardState createState() => _ProfileDashboardState();
@@ -22,11 +23,13 @@ class ProfileDashboard extends StatefulWidget {
 
 class _ProfileDashboardState extends State<ProfileDashboard> {
   int? id;
+  late bool header;
 
   @override
   void initState() {
     super.initState();
     id = widget.id;
+    header = widget.header;
   }
 
   void refreshData() {
@@ -91,6 +94,10 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        appBar: (header)? AppBar(
+          title: const Text('Profile', style : TextStyle( color: Color.fromARGB(255, 255, 255, 255))),
+          backgroundColor: bgColor,
+        ) : null,
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -230,9 +237,7 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           ProfileDashboard(
-                                                              id: userData[
-                                                                      index]
-                                                                  .pk),
+                                                              id: userData[index].pk, header: true),
                                                     ),
                                                   );
                                                 },
@@ -275,14 +280,20 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                                         child: ListView.builder(
                                           itemCount: snapshot.data!.length,
                                           itemBuilder: (context, index) {
-                                            return ListTile(
-                                              title: Text(userData[index]
-                                                  .book
-                                                  .fields
-                                                  .title),
-                                              subtitle: Text(
-                                                  'Review: ${userData[index].fields.review}'), // Add the review here
-                                            );
+                                            return Padding(
+                                              padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
+                                              child:ListTile(
+                                                shape: RoundedRectangleBorder(
+                                                  side: BorderSide(color: bgColor, width: 1),
+                                                  borderRadius: BorderRadius.circular(5),
+                                                ), 
+                                                title: Text(userData[index]
+                                                    .book
+                                                    .fields
+                                                    .title),
+                                                subtitle: Text(
+                                                    'Review: ${userData[index].fields.review}'), // Add the review here
+                                              ));
                                           },
                                         ),
                                       );
@@ -307,7 +318,7 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
 class EditModal extends StatefulWidget {
   final Function refreshCallback;
 
-  const EditModal({required this.refreshCallback, Key? key}) : super(key: key);
+  const EditModal({required this.refreshCallback, super.key});
 
   @override
   State<EditModal> createState() => _EditModalState();
@@ -406,7 +417,7 @@ class _EditModalState extends State<EditModal> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         final response = await request.postJson(
-                          "http://127.0.0.1:8000/user/edit_profile_flutter/$loggedInUserId",
+                          "${globals.domain}/user/edit_profile_flutter/$loggedInUserId",
                           jsonEncode(<String, String>{
                             'age': _age.toString(),
                             'bio': _bio,

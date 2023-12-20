@@ -12,7 +12,7 @@ import 'package:bookmate/globals.dart' as globals;
 import 'package:google_fonts/google_fonts.dart';
 
 class RequestPage extends StatefulWidget {
-  const RequestPage({Key? key}) : super(key: key);
+  const RequestPage({super.key});
 
   @override
   _RequestsPageState createState() => _RequestsPageState();
@@ -175,7 +175,12 @@ class _RequestsPageState extends State<RequestPage> {
       throw Exception('Failed to fetch subjects');
     }
   }
-
+  void refresh (request){
+    setState(() {
+      _future = fetchUserRequest(request, "title");
+      _futureAll = fetchAllRequest(request, "title");
+    });
+  }
   String sortBy = "title";
 
   @override
@@ -396,23 +401,19 @@ class _RequestsPageState extends State<RequestPage> {
                                                               const Text('OK'),
                                                           onPressed: () {
                                                             // Perform action
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                              _future =
-                                                                  fetchUserRequest(
-                                                                      request,
-                                                                      "title");
-                                                              Navigator.pushReplacement(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder: (BuildContext
-                                                                              context) => const RequestPage()
-                                                                        ));
-                                                              _future =
-                                                                  fetchAllRequest(
-                                                                      request,
-                                                                      "title");
+                                                            Navigator.of(context).pop();
+                                                              // _future =fetchUserRequest(request,"title");
+                                                              // _futureAll = fetchAllRequest(request,"title");
+                                                              refresh(request);
+                                                              // RefreshIndicatorState().setState(() {
+                                                                
+                                                              // });
+                                                            // Navigator.of(context).pop();
+                                                              // Navigator.pushReplacement(
+                                                              //     context,
+                                                              //     MaterialPageRoute(
+                                                              //       builder: (BuildContext context) => const RequestPage()
+                                                              //       ));
                                                           },
                                                         ),
                                                       ],
@@ -485,47 +486,65 @@ class _RequestsPageState extends State<RequestPage> {
                 Align(
                   alignment: Alignment.topRight,
                   child: 
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: [
-                      DropdownMenu<String>(
-                        width: 170,
-                        inputDecorationTheme: InputDecorationTheme(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(100.0),
-                            borderSide: const BorderSide(width: 1.0),
-                          ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          icon: const Icon(Icons.refresh, color: Colors.black),
+                          onPressed: () {
+                            refresh(request);
+                          },
                         ),
-                        initialSelection: dropdownValue,
-                        dropdownMenuEntries:
-                            sort.map<DropdownMenuEntry<String>>((String value) {
-                          return DropdownMenuEntry<String>(
-                              value: value, label: value);
-                        }).toList(),
-                        onSelected: (value) {
-                          if (value == "Sort By") {
-                            return;
-                          }
-                            _future = fetchUserRequest(
-                                request, value.toString().toLowerCase());
-                            _future = fetchAllRequest(
-                                request, value.toString().toLowerCase());
-                          setState(() {
-                            sortBy = value.toString().toLowerCase();
-                            dropdownValue = value!;
-                          });
-                        },
                       ),
-                    // ],
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: DropdownMenu<String>(
+                          width: 170,
+                          inputDecorationTheme: InputDecorationTheme(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(100.0),
+                              borderSide: const BorderSide(width: 1.0),
+                            ),
+                          ),
+                          initialSelection: dropdownValue,
+                          dropdownMenuEntries: sort.map<DropdownMenuEntry<String>>((String value) {
+                            return DropdownMenuEntry<String>(
+                              value: value,
+                              label: value,
+                            );
+                          }).toList(),
+                          onSelected: (value) {
+                            if (value == "Sort By") {
+                              return;
+                            }
+                            _future = fetchUserRequest(
+                              request,
+                              value.toString().toLowerCase(),
+                            );
+                            _future = fetchAllRequest(
+                              request,
+                              value.toString().toLowerCase(),
+                            );
+                            setState(() {
+                              sortBy = value.toString().toLowerCase();
+                              dropdownValue = value!;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                // ),
+                ),
                 const SizedBox(height: 10.0),
                 Expanded(
                   child: TabBarView(
                     children: [
                     RefreshIndicator(
                       onRefresh: () async {
-                          _future = fetchUserRequest(request, "title");
+                          // _future = fetchUserRequest(request, "title");
+                          refresh(request);
                       },
                       child:
                   FutureBuilder<List<BookRequest>>(
@@ -598,9 +617,6 @@ class _RequestsPageState extends State<RequestPage> {
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold,
                                                 fontFamily: "Poppins"))),
-                                    // Text("Subjects: ${snapshot.data![index].subjects.join(", ")}",
-                                    // style: GoogleFonts.lato(textStyle: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold, fontFamily: "Poppins"))
-                                    // ),
                                   ],
                                 ),
                                 trailing: Row(
@@ -899,8 +915,8 @@ class _RequestsPageState extends State<RequestPage> {
                                                                                                 // If the form is valid, display a Snackbar.
                                                                                                 final response = await request.postJson(
                                                                                                     "${globals.domain}/request/edit-request/",
-                                                                                                    // "http://10.0.2.2:8000/request/edit-request/",
                                                                                                     jsonEncode(<String, List>{
+                                                                                                      'id': [snapshot.data![index].id.toString()],
                                                                                                       'title': title,
                                                                                                       'author': author,
                                                                                                       'year': year,
@@ -924,9 +940,7 @@ class _RequestsPageState extends State<RequestPage> {
                                                                                                             onPressed: () {
                                                                                                               // Perform action
                                                                                                               Navigator.of(context).pop();
-                                                                                                                _future = fetchUserRequest(request, "title");
-                                                                                                                _future = fetchAllRequest(request, "title");
-                                                                                                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const RequestPage()));
+                                                                                                              refresh(request);
                                                                                                             },
                                                                                                           ),
                                                                                                         ],
@@ -980,9 +994,12 @@ class _RequestsPageState extends State<RequestPage> {
                                                               'id': snapshot.data![index].id.toString(),
                                                               }));
                                                             if (response["status"] == 'success'){
-                                                              _future = fetchUserRequest(request,"title");
-                                                              _futureAll = fetchAllRequest(request,"title");
+                                                              refresh(request);
                                                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Request has been deleted!")));
+                                                            }
+                                                            else if (response["status"] == 'failed'){
+                                                              String msg = response["message"];
+                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
                                                             }
                                                             else{
                                                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Request failed to be deleted! Please try again.")));
@@ -1016,7 +1033,7 @@ class _RequestsPageState extends State<RequestPage> {
                 ),
                   RefreshIndicator(
                     onRefresh: () async {
-                     _futureAll = fetchAllRequest(request, "title");
+                    refresh(request);
                     },
                     child: FutureBuilder<List<BookRequest>>(
                     future: _futureAll,
