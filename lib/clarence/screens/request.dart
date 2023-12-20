@@ -577,7 +577,7 @@ class _RequestsPageState extends State<RequestPage> {
                           itemBuilder: (context, index) {
                             String test =
                                 snapshot.data![index].dateRequested.toString();
-                            test = test.substring(0, test.length - 17);
+                            test = test.substring(0, test.length - 13);
                             return Card(
                               // color: Color(0xFFc44b6a),
                               child: ListTile(
@@ -1064,7 +1064,7 @@ class _RequestsPageState extends State<RequestPage> {
                           itemBuilder: (context, index) {
                             String test =
                                 snapshot.data![index].dateRequested.toString();
-                            test = test.substring(0, test.length - 17);
+                            test = test.substring(0, test.length - 13);
                             return Card(
                               // color: Color(0xFFc44b6a),
                               child: ListTile(
