@@ -8,8 +8,7 @@ import 'package:bookmate/globals.dart' as globals;
 class AddReview extends StatefulWidget {
   final Book book;
   // final Future<List<Review>> review;
-  const AddReview({Key? key, required this.book})
-      : super(key: key);
+  const AddReview({super.key, required this.book});
 
   @override
   State<AddReview> createState() => _AddReview();

@@ -10,7 +10,7 @@ import 'package:bookmate/reyhan/screens/dashboardbuku.dart';
 import 'package:provider/provider.dart'; 
 
 class Layout extends StatefulWidget {
-  const Layout({Key? key}) : super(key: key);
+  const Layout({super.key});
 
   @override
   State<Layout> createState() => _LayoutState();

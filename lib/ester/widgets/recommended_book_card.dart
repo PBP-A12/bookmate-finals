@@ -6,7 +6,7 @@ import 'package:bookmate/globals.dart' as globals;
 import 'package:bookmate/reyhan/screens/review.dart';
 
 class RecommendedBookCard extends StatefulWidget {
-  const RecommendedBookCard({Key? key}) : super(key: key);
+  const RecommendedBookCard({super.key});
 
   @override
   State<RecommendedBookCard> createState() => _RecommendedBookCardState();

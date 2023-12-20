@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'package:bookmate/globals.dart' as globals;
 
 class BookDashboard extends StatefulWidget {
-  const BookDashboard({Key? key}) : super(key: key);
+  const BookDashboard({super.key});
 
   @override
   State<BookDashboard> createState() => _BookDashboardState();

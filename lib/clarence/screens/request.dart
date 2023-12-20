@@ -12,7 +12,7 @@ import 'package:bookmate/globals.dart' as globals;
 import 'package:google_fonts/google_fonts.dart';
 
 class RequestPage extends StatefulWidget {
-  const RequestPage({Key? key}) : super(key: key);
+  const RequestPage({super.key});
 
   @override
   _RequestsPageState createState() => _RequestsPageState();
